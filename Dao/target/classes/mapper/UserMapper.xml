@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bookShop.mapper.UserMapper">
+
+    <resultMap id="userInfoResMap" type="UserInfo">
+        <id property="id" column="id"></id>
+        <result property="addr" column="addr"></result>
+        <result property="merchantFlag" column="merchantFlag"></result>
+        <result property="imageLogo" column="imageLogo"></result>
+        <result property="nikeName" column="nikename"></result>
+        <result property="freezeFlag" column="freezeFlag"></result>
+        <result property="name" column="name"></result>
+        <result property="password" column="password"></result>
+        <result property="username" column="username"></result>
+        <result property="phone" column="phone"></result>
+    </resultMap>
+
+    <!--查询用户常用sql-->
+    <sql id="queryUserSql">
+        <where>
+            <if test="username!=null and username.trim()!=''.toString()">
+                username=#{username} and
+            </if>
+            <if test="password!=null and password.trim()!=''.toString()">
+               password=#{password} and
+            </if>
+            <if test="id>0">
+                id=#{id} and
+            </if>
+            <if test="name!=null and name.trim()!=''.toString()">
+                name=#{name} and
+            </if>
+            <if test="nikeName!=null and nikeName.trim()!=''.toString()">
+                nikeName=#{nikeName}
+            </if>
+        </where>
+    </sql>
+    <!--更新常用sql片段!-->
+    <sql id="updateSql">
+    <trim prefixOverrides=","
+          suffixOverrides=",">
+        <if test="password!=null and password.trim()!=''.toString()">
+            password=#{password},
+        </if>
+        <if test="name!=null and name.trim()!=''.toString()">
+            name=#{name},
+        </if>
+        <if test="nikeName!=null and nikeName.trim()!=''.toString()">
+            nikeName=#{nikeName},
+        </if>
+        <if test="phone!=null and pbone.trim()!=''.toString() and phone.length()==11">
+            phone=#{phone},
+        </if>
+        <if test="addr!=null and addr.trim()!=''.toString()">
+           addr=#{addr},
+        </if>
+        <if test="imageLogo!=null and imageLogo.trim()!=''.toString()">
+            imageLogo=#{imageLogo}
+        </if>
+    </trim>
+    <where>
+         id=#{id}
+    </where>
+    </sql>
+    
+<!--    public int registUserInfo(@Param("userInfo") UserInfo userInfo);-->
+         <insert id="registUserInfo" keyProperty="id" useGeneratedKeys="true" >
+             insert into user('id','username','password','phone','addr','nikename','name') values(
+             #{id},#{username},#{password},#{phone},#{addr},#{nikeName},#{name})
+         </insert>
+
+    
+<!--    public UserInfo loginUser(@Param("username") String username, @Param("password") String password);-->
+          <select id="loginUser" resultMap="userInfoResMap" >
+              select * from user where username=#{username} and password=#{password}
+          </select>
+<!--    public  UserInfo queryUserInfo(@Param("userInfo")UserInfo userInfo);-->
+          <select id="queryUserInfo" resultMap="userInfoResMap">
+              select * from user
+              <include refid="queryUserSql"></include>
+          </select>
+
+<!--    public  List<UserInfo> queryAllUserInfo-->
+           <select id="queryAllUserInfo" resultMap="userInfoResMap"  >
+                select * from user
+           </select>
+
+<!--    public int reviseUserInfo(@Param("userInfo")UserInfo userInfo);-->
+           <update id="reviseUserInfo" >
+               update user set
+               <include refid="updateSql"></include>
+           </update>
+
+<!--    public int freezeUser(@Param("id")Integer userId);-->
+            <update id="freezeUser" >
+                update user set freezeFlag=1 where id=#{id}
+            </update>
+<!--    public int unfreezeUser(@Param("id")Integer userId);-->
+             <update id="unfreezeUser" >
+                update user set freezeFlag=0 where id=#{id}
+            </update>
+<!--    public int deleteUser(@Param("id")Integer userId);-->
+             <delete id="deleteUser" >
+                 delete from user where id=#{userId}
+             </delete>
+
+<!--    public int reigstMerchant(@Param("id")Integer userId);-->
+             <update id="reigstMerchant" >
+                 update user set merchantFlag=0
+             </update>
+
+</mapper>

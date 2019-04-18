@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.0.xsd
+         http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
+
+
+    <context:component-scan base-package="com.bookShop.service,com.bookShop.controller"></context:component-scan>
+    <import resource="spring-aop.xml"></import>
+    <mvc:annotation-driven></mvc:annotation-driven>
+
+
+    <bean id="internalResourceViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/jsp/"></property>
+        <property name="suffix" value=".jsp"></property>
+    </bean>
+
+    <mvc:resources mapping="static/**" location="/static/"></mvc:resources>
+
+<!--    拦截器，如果有mapping开头的就拦截请求-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/user/**"/>
+            <mvc:mapping path="/test/**"/>
+            <mvc:mapping path="/"/>
+            <bean class="com.bookShop.interceptor.LoginInterceptor"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+<!--    定义全局异常处理器-->
+    <bean class="com.bookShop.exceptionResolver.GobalExceptionResolver"></bean>
+</beans>

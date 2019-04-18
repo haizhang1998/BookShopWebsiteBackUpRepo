@@ -1,0 +1,315 @@
+
+* {
+     padding: 0;
+     margin: 0;
+ }
+#nav{
+
+    overflow:visible;
+    zoom:1;
+    height: 30px;
+    margin:0 auto;
+    width: 1100px;
+}
+#wrapper-top{
+
+    width:100%;
+    background: #f5f5f5;
+
+}
+#nav ul {
+    float: left;
+    background: #f5f5f5;
+    width:1000px;
+    list-style: none;
+    height:30px;
+
+}
+.li1{
+    font: 13px 微软雅黑 ;
+    float: left;
+    text-align: center;
+
+}
+
+.li2{
+    font: 13px 微软雅黑 ;
+    float:right;
+    text-align: center;
+
+
+}
+a{
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#nav ul li a:hover{
+    display:inline-block;
+    color:#ff4400;
+    background: white;
+}
+
+
+li:after{
+    content:"";
+    display: inline-block;
+    margin-right: 25px;
+}
+#nav li{
+    color:#6c6c6c;
+    padding-top:4px;
+    height: 20px;
+    cursor: pointer;
+
+}
+
+
+#wrapper-middle{
+    background: white;
+    width:100%;
+}
+
+#search-div{
+
+    overflow: auto;
+    margin:0 auto;
+
+    height:115px;
+    width:1100px;
+}
+
+.imageLogo{
+
+    float: left;
+    width: 120px;
+    height: 80px;
+}
+
+#lookupLogoDiv{
+    float: left;
+    width: 67px;
+    overflow: hidden;
+    height: 35px;
+    line-height: 31px;
+}
+
+#lookupDivWrapper{
+    padding-top:25px;
+
+    width:600px;
+    height:60px;
+    margin-left: 200px;
+    float: left;
+}
+#lookupLogo-ul{
+    list-style: none;
+
+
+}
+
+#lookupLogo-ul li{
+
+    margin-left:4px;
+    width: 50px;
+    height: 31px;
+    background: #f5f5f5;
+    padding-left:13px;
+
+}
+input{
+    outline:none;
+}
+#searchGoodsText{
+    height:33px;
+    border:2px solid #ff4400;
+    padding-left: 5px;
+}
+#searchBtn{
+
+    width: 80px;
+    height: 34px;
+    border: none;
+    border-radius:8%;
+    font-size: 18px;
+    background: #ff4400;
+    font-family: arial,'Hiragino Sans GB',"\5b8b\4f53",sans-serif;
+    color: whitesmoke;
+    font-weight: bold;
+    margin-top:-3px;
+    display: inline-block;
+    vertical-align:bottom;
+    margin-left: -5px;
+
+}
+
+#tabDiv{
+    height:43px;
+    float: left;
+    width:980px;
+    overflow: auto;
+    margin-left:75px;
+    border-bottom: 2px solid red;
+}
+
+
+#wrapper-middle{
+    background: white;
+    width:100%;
+
+}
+
+#require{
+    display: inline-block;
+    font-family: arial,'Hiragino Sans GB',"\5b8b\4f53",sans-serif;
+    width: 120px;
+    text-align: center;
+    font-size: 15px;
+    border: none;
+    background: #ff4400;
+    color:white;
+    font-weight: bold;
+    height: 34px;
+}
+#fieldWrap{
+    background: black;
+    width:200px;
+    height:460px;
+    z-index: 11;
+    display: inline-block;
+    position: absolute;
+}
+.bookField{
+    margin-left: 25px;
+    margin-top: 25px;
+}
+.bookField a{
+    color:white;
+    font-weight: bold;
+}
+
+#newBookShowWrapper{
+    margin-top: 20px;
+    width: 100%;height: 600px
+}
+
+#newBookShowDiv{
+    border-top: 1px solid black;
+    width:1100px;
+    height:560px;
+    margin-left: 50px;
+    overflow: hidden;
+}
+
+.newBookShowDiv-ul{
+    display: inline-block;
+    float: left;
+    width: 1100px;
+    height:560px;
+    margin-top: 5px;
+
+
+}
+
+.newBookShowDiv-ul li{
+    list-style: none;
+    float: left;
+    display: inline-block;
+    border: 1px solid #ededed;
+    width: 210px;
+    height:270px;
+    margin-top: 5px;
+    margin-left: 7px;
+}
+li img{
+    display: inline-block;
+    float: left;
+    width:210px;
+    height:180px
+}
+.p1{
+    float:left;
+    text-align:center;
+    color: gray;
+    font-size: 15px;
+    margin-top:5px;
+    overflow: hidden;
+    height:40px;
+    width: 200px;
+    display: inline-block;
+
+}
+.p2{
+    float:left;
+    text-align: center;
+    display: inline-block;
+    font-weight: bold;
+    margin-top: 5px;
+    width:200px;
+    height:30px;
+    font-size:17px;
+    color: #f40
+}
+
+#BookRecommendDiv{
+    float:left;
+    width: 100%;
+    height:630px;
+    margin-top: 20px;
+
+}
+
+
+
+#BookRecommendDiv-ul{
+    display: inline-block;
+    float: left;
+    width: 900px;
+    height:560px;
+    margin-top: 5px;
+    margin-left:45px;
+
+}
+
+#BookRecommendDiv-ul li{
+    list-style: none;
+    border: 1px solid #ededed;
+    float: left;
+    display: inline-block;
+
+    width: 205px;
+    height:270px;
+    margin-top: 5px;
+    margin-left: 4px;
+}
+#BookRecommendDiv-ul li img{
+    width:202px;
+}
+.div1, .div2{
+    float:left;
+    height:628px;
+
+    display: inline-block;
+}
+
+.p3,.p4{
+    margin-bottom: 5px;
+    border-bottom: 1px solid black;
+}
+
+.div2 ul li{
+    list-style: none;
+    margin-left:10px;
+    margin-top:19px;
+    height: 20px;
+    overflow: hidden;
+
+}
+.div2 ul{
+    border: 1px solid lightgray;
+    height:545px;
+    border-top:none;
+}
+.div2 ul li a{
+    color: #6c6c6c;
+}

@@ -1,0 +1,220 @@
+
+* {
+    padding: 0;
+    margin: 0;
+}
+#nav{
+
+    overflow: auto;
+    zoom:1;
+    margin:0 auto;
+    width: 1100px;
+}
+#wrapper-top{
+
+    width:100%;
+    background: #f5f5f5;
+
+}
+#nav ul {
+    float: left;
+    background: #f5f5f5;
+    width:1000px;
+    list-style: none;
+    height:30px;
+
+}
+.li1{
+    font: 13px 微软雅黑 ;
+    float: left;
+    text-align: center;
+
+}
+
+.li2{
+    font: 13px 微软雅黑 ;
+    float:right;
+    text-align: center;
+
+
+}
+a{
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#nav ul li a:hover{
+    display:inline-block;
+    color:#ff4400;
+    background: white;
+}
+
+
+li:after{
+    content:"";
+    display: inline-block;
+    margin-right: 25px;
+}
+#nav li{
+    color:#6c6c6c;
+    padding-top:4px;
+    cursor: pointer;
+
+}
+
+
+#wrapper-middle{
+    background: white;
+    width:100%;
+}
+
+#search-div{
+
+    overflow: auto;
+    margin:0 auto;
+
+    height:115px;
+    width:1100px;
+}
+
+.imageLogo{
+
+    float: left;
+    width: 120px;
+    height: 80px;
+}
+
+#lookupLogoDiv{
+    float: left;
+    width: 67px;
+    overflow: hidden;
+    height: 35px;
+    line-height: 31px;
+}
+
+#lookupDivWrapper{
+    padding-top:25px;
+   
+    width:600px;
+    height:60px;
+    margin-left: 200px;
+    float: left;
+}
+#lookupLogo-ul{
+    list-style: none;
+
+
+}
+
+#lookupLogo-ul li{
+
+    margin-left:4px;
+    width: 50px;
+    height: 31px;
+    background: #f5f5f5;
+    padding-left:13px;
+
+}
+input{
+    outline:none;
+}
+#searchGoodsText{
+    height:33px;
+    border:2px solid #ff4400;
+
+}
+#searchBtn{
+
+    width: 80px;
+    height: 34px;
+    border: none;
+    border-radius:8%;
+    font-size: 18px;
+    background: #ff4400;
+    font-family: arial,'Hiragino Sans GB',"\5b8b\4f53",sans-serif;
+    color: whitesmoke;
+    font-weight: bold;
+    margin-top:-3px;
+    display: inline-block;
+    vertical-align:bottom;
+    margin-left: -5px;
+
+}
+
+#tabDiv{
+    height:43px;
+    float: left;
+    width:980px;
+    overflow: auto;
+    margin-left:75px;
+    border-bottom: 2px solid red;
+}
+#lastWrapper{
+    height:1000px;
+    width:100%;
+
+}
+#tabDiv ul{
+    float: left;
+    list-style: none;
+}
+
+#tabDiv li{
+    width:104px;
+    height:38px;
+    background: #ff4400;
+    color: white;
+    font-size: 18px;
+    padding-left:20px;
+    padding-right:-10px;
+    padding-top:5px;
+    border-radius: 2%;
+    display: inline-block;
+
+}
+
+
+#itemListDiv {
+    height: 935px;
+    width: 1000px;
+    margin-left: 75px;
+    margin-top: 65px;
+}
+
+.outsideDiv{
+    margin-top: 10px;
+    float: left;
+    width: 182px;
+    height:311px;
+    margin-left:13px;
+    border:1px solid #ededed;
+
+}
+
+.itemInnerDiv{
+    width:180px;
+    height:300px;
+    margin-top:11px;
+}
+.itemImage{
+    width:180px;
+    height:180px;
+}
+.itemMoneyDiv{
+    width:180px;
+    height:27px;
+
+}
+.itemAddressDiv{
+    font-weight: 400;
+}
+.itemDetailDiv{
+    margin-left:8px;
+    height: 52px;
+    width: 180px;
+    margin-top:8px;
+}
+.itemAddressDiv{
+    margin-left: 8px;
+    margin-top:2px;
+}
