@@ -5,7 +5,6 @@ import java.util.List;
 public interface FootPrintMapper {
     //得到所有足迹
     public List<FootPrintItem> getAllFootPrint(int userId);
-
     /**
      *
      * @param userId
