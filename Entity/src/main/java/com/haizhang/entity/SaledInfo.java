@@ -1,6 +1,7 @@
 package com.haizhang.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 保存商品销售量的javabean
@@ -15,6 +16,9 @@ public class SaledInfo implements Serializable {
     private int merchantId;
     //销售数量
     private int saledNumber;
+
+    //日期出售
+    private Date saledDate;
 
     public SaledInfo(){
 

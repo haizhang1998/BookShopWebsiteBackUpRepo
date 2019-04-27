@@ -1,6 +1,9 @@
 package com.bookShop.controller;
 
+import com.alibaba.druid.sql.visitor.functions.Bin;
 import com.bookShop.service.UserService;
+import com.haizhang.ValidateGroup.LoginGroup;
+import com.haizhang.ValidateGroup.RegistGroup;
 import com.haizhang.entity.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -8,11 +11,17 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
+import javax.jws.WebParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -29,23 +38,44 @@ public class UserHandler {
     @Resource
     UserService userServiceImpl;
 
-    @RequestMapping("/login")
-    public void loginUser(HttpServletRequest request, HttpServletResponse response, @Valid UserInfo userInfo, Errors errors)throws Exception{
-        if(errors.hasErrors()){
-            request.setAttribute("userInfo",new UserInfo());
-            request.getRequestDispatcher("/jsp/login.jsp").forward(request,response);
-        }
+    public UserHandler() {
+    }
+    public UserHandler(UserService userService) {
+        this.userServiceImpl=userService;
+    }
 
 
+    /**
+     * 用户登录
+     * @param request
+     * @param response
+     * @param userInfo 用户信息
+     * @throws Exception
+     */
+    @RequestMapping(value = "/login",method = RequestMethod.POST)
+    public void loginUser(HttpServletRequest request, HttpServletResponse response,UserInfo userInfo)throws Exception{
         UserInfo user=userServiceImpl.loginUser(userInfo.getUsername(),userInfo.getPassword());
         HttpSession session=request.getSession();
-
-
-        session.setAttribute("user",user);
-        request.getRequestDispatcher("/jsp/success.jsp").forward(request,response);
+        session.setAttribute("userInfo",user);
+        response.sendRedirect("/jsp/success.jsp");
 
     }
 
+    /**
+     *  返回用户请求窗体
+     */
+    @RequestMapping(value = "/login",method = RequestMethod.GET)
+    public String loginForm(Model model) {
+        model.addAttribute(new UserInfo());
+        model.addAttribute("autoLogin","autoLogin");
+        return "login";
+    }
+
+    /**
+     * 查询所有用户
+     * @return
+     * @throws Exception
+     */
     @RequestMapping("/queryAllUser")
     public ModelAndView queryAllUser()throws Exception{
         ModelAndView modelAndView=new ModelAndView();
@@ -55,14 +85,27 @@ public class UserHandler {
         return  modelAndView;
     }
 
-    @RequestMapping("/regist")
-    public ModelAndView queryAllUser(UserInfo userInfo)throws Exception{
-        String res=userServiceImpl.registUserInfo(userInfo);
-        ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("regist");
-        modelAndView.addObject("state",res);
-        return  modelAndView;
+
+
+    @RequestMapping(value = "/regist",method = RequestMethod.GET)
+    public String registUserForm(Model model)throws Exception{
+        model.addAttribute(new UserInfo());
+        return "regist";
     }
+
+    @RequestMapping(value = "/regist",method = RequestMethod.POST)
+    public String registUser(@Validated(RegistGroup.class) UserInfo userInfo, BindingResult bindingResult, Model model)throws Exception{
+        if(bindingResult.hasErrors()){
+            System.err.println("bingRes error");
+            return "regist";
+
+        }
+        String res=userServiceImpl.registUserInfo(userInfo);
+        model.addAttribute("reg_state",res);
+        System.err.println(res);
+        return "login";
+    }
+
 
 
 }

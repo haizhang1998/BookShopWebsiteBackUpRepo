@@ -11,6 +11,7 @@
     <artifactId>Service</artifactId>
 
     <dependencies>
+
         <dependency>
             <groupId>com.haizhang</groupId>
             <artifactId>Dao</artifactId>

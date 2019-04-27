@@ -30,11 +30,16 @@ import org.springframework.web.context.WebApplicationContext;
 public class BaseTest {
 
     public Logger logger=Logger.getLogger(BaseTest.class);
+    //加载web环境
     @Autowired
     private WebApplicationContext webApplicationContext;
+    //mockMvc用于模拟MVC
     protected MockMvc mockMvc;
+    //模拟request请求
     protected MockHttpServletRequest request;
+    //模拟response请求
     protected MockHttpServletResponse response;
+
 
     /**
      * 初始化SpringmvcController测试类环境
@@ -44,6 +49,8 @@ public class BaseTest {
         mockMvc= MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
+
+    //校验Handler中的方法是否返回正确路径
     public String commonMockMethod(String url)throws Exception{
         ResultActions resultActions=mockMvc.perform(MockMvcRequestBuilders.get(url));
         MvcResult mvcResult=resultActions.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk()).andReturn();

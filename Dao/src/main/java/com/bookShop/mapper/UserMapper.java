@@ -12,11 +12,11 @@ import java.util.List;
  */
 public interface UserMapper {
     //注册
-    public int registUserInfo(@Param("userInfo") UserInfo userInfo);
+    public int registUserInfo(UserInfo userInfo);
     //登录
     public UserInfo loginUser(@Param("username") String username, @Param("password") String password);
     //查询指定用户
-    public  UserInfo queryUserInfo(@Param("userInfo")UserInfo userInfo);
+    public  UserInfo queryUserInfo(UserInfo userInfo);
     //查询全部用户
     public  List<UserInfo> queryAllUserInfo();
     //冻结用户
@@ -28,6 +28,6 @@ public interface UserMapper {
     //申请开店
     public int reigstMerchant(@Param("id")Integer userId);
     //修改账号信息
-    public int reviseUserInfo(@Param("userInfo")UserInfo userInfo);
+    public int reviseUserInfo(UserInfo userInfo);
 
 }

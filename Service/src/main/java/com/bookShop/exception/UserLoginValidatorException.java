@@ -1,34 +1,12 @@
 package com.bookShop.exception;
 
+import com.google.protobuf.ServiceException;
+
 /**
  *  `
  */
-public class UserLoginValidatorException  extends ServiceException{
-    private String userLoginVertifyCode;
-
-    public UserLoginValidatorException(String msg) {
-        super(msg);
+public class UserLoginValidatorException extends RuntimeException{
+    public UserLoginValidatorException(String message) {
+        super(message);
     }
-
-    public UserLoginValidatorException(String code, String msg, String userLoginVertifyCode) {
-        super(code, msg);
-        this.userLoginVertifyCode = userLoginVertifyCode;
-    }
-
-    public UserLoginValidatorException(String code, String msg, String logMsg, String userLoginVertifyCode) {
-        super(code, msg, logMsg);
-        this.userLoginVertifyCode = userLoginVertifyCode;
-    }
-
-    public String getUserLoginVertifyCode() {
-        return userLoginVertifyCode;
-    }
-
-    public void setUserLoginVertifyCode(String userLoginVertifyCode) {
-        this.userLoginVertifyCode = userLoginVertifyCode;
-    }
-
-
-
-
 }

@@ -8,8 +8,8 @@
         <outputRelativeToContentRoot value="true" />
         <module name="Dao" />
         <module name="Entity" />
-        <module name="Web" />
         <module name="Service" />
+        <module name="Web" />
       </profile>
     </annotationProcessing>
   </component>

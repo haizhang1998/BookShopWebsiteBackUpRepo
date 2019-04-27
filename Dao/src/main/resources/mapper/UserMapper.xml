@@ -21,19 +21,16 @@
     <sql id="queryUserSql">
         <where>
             <if test="username!=null and username.trim()!=''.toString()">
-                username=#{username} and
-            </if>
-            <if test="password!=null and password.trim()!=''.toString()">
-               password=#{password} and
+                username=#{username}
             </if>
             <if test="id>0">
-                id=#{id} and
+                and id = #{id}
             </if>
             <if test="name!=null and name.trim()!=''.toString()">
-                name=#{name} and
+                and name = #{name}
             </if>
             <if test="nikeName!=null and nikeName.trim()!=''.toString()">
-                nikeName=#{nikeName}
+                and nikeName = #{nikeName}
             </if>
         </where>
     </sql>
@@ -50,7 +47,7 @@
         <if test="nikeName!=null and nikeName.trim()!=''.toString()">
             nikeName=#{nikeName},
         </if>
-        <if test="phone!=null and pbone.trim()!=''.toString() and phone.length()==11">
+        <if test="phone!=null and phone.trim()!=''.toString() and phone.length()==11">
             phone=#{phone},
         </if>
         <if test="addr!=null and addr.trim()!=''.toString()">
@@ -67,8 +64,9 @@
     
 <!--    public int registUserInfo(@Param("userInfo") UserInfo userInfo);-->
          <insert id="registUserInfo" keyProperty="id" useGeneratedKeys="true" >
-             insert into user('id','username','password','phone','addr','nikename','name') values(
-             #{id},#{username},#{password},#{phone},#{addr},#{nikeName},#{name})
+             insert into user(id,username,password,phone,addr,nikename,name)
+             values(
+            #{id},#{username},#{password},#{phone},#{addr},#{nikeName},#{name});
          </insert>
 
     
@@ -108,7 +106,7 @@
 
 <!--    public int reigstMerchant(@Param("id")Integer userId);-->
              <update id="reigstMerchant" >
-                 update user set merchantFlag=0
+                 update user set merchantFlag=0 where id=#{id}
              </update>
 
 </mapper>

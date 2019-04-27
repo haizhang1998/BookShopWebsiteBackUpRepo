@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bookShop.mapper.SaledGoodsMapper">
+
+<!--    //商品编号-->
+<!--    private int goodsId;-->
+<!--    //商家编号-->
+<!--    private int merchantId;-->
+<!--    //销售数量-->
+<!--    private int saledNumber;-->
+
+<!--    //日期出售-->
+<!--    private Date saledDate;-->
+
+    <resultMap id="SaledGoodsInfoMap" type="SaledInfo">
+        <id property="goodsId" column="goodsId"></id>
+        <result property="merchantId" column="merchantId"></result>
+        <result property="saledNumber" column="saledNumber"></result>
+        <result property="saledDate" column="saledDate"></result>
+    </resultMap>
+
+<!--    //获取所有出售货物的信息(按时间排序)。  编号===出售货物具体信息-->
+    <!--    public HashMap<Integer, SaledInfo> getAllSaledInfo();-->
+    <select id="getAllSaledInfo" resultMap="SaledGoodsInfoMap">
+           select * from goodsrecord ORDER BY saledDate Desc ;
+    </select>
+
+<!--    //得到指定的出售货物-->
+<!--    public SaledInfo getSaledNumberById(int goodsId);-->
+    <select id="getSaledNumberById">
+       select * from goodsrecord where goodsId=#{goodsId}
+    </select>
+<!--    //得到热销销量前14的商品-->
+<!--    public List<SaledInfo> getHotGoods();-->
+    <select id="getHotGoods" resultMap="SaledGoodsInfoMap">
+           select * from (select * from  goodsrecord ORDER BY saledNumber Desc)as a  where 1=1 limit 14;
+    </select>
+
+</mapper>

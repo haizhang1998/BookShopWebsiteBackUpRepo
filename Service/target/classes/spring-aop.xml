@@ -3,16 +3,15 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:tx="http://www.springframework.org/schema/tx"
-       xsi:schemaLocation="
-        http://www.springframework.org/schema/beans
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
         http://www.springframework.org/schema/aop
        http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
         http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context-4.3.xsd
         http://www.springframework.org/schema/tx
-       http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+       http://www.springframework.org/schema/tx/spring-tx-4.3.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
 
     <!--    启动aop-->
@@ -20,7 +19,8 @@
      <bean class="com.bookShop.aop.DataBaseAffairAop"></bean>
      <context:component-scan base-package="com.bookShop.service"></context:component-scan>
      <context:property-placeholder location="classpath:db.properties"></context:property-placeholder>
-    <!--    define DataSource-->
+
+     <!--    define DataSource-->
     <bean class="com.alibaba.druid.pool.DruidDataSource" id="dataSource">
         <property name="url" value="${jdbc.url}"></property>
         <property name="driverClassName" value="${jdbc.driverClassName}"></property>
@@ -51,7 +51,8 @@
 
      <tx:advice id="txadvice" transaction-manager="transactionManager">
          <tx:attributes>
-             <tx:method name="query*" read-only="true"/>
+             <tx:method name="query*" read-only="true" propagation="SUPPORTS"/>
+             <tx:method name="get*" read-only="true" propagation="SUPPORTS"/>
              <tx:method name="inser*" propagation="REQUIRED"/>
              <tx:method name="update*" propagation="REQUIRED"/>
              <tx:method name="delete*" propagation="REQUIRED" />
@@ -70,4 +71,6 @@
          <aop:pointcut id="pointcut" expression="execution(* com.bookShop.service.*.*(..))"/>
          <aop:advisor advice-ref="txadvice" pointcut-ref="pointcut"></aop:advisor>
      </aop:config>
+
+
 </beans>

@@ -37,31 +37,34 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserInfo> queryAllUserInfo()throws Exception {
-        return null;
+        List<UserInfo>userInfos=userMapper.queryAllUserInfo();
+        return userInfos;
     }
 
     @Override
     public int freezeUser(Integer userId)throws Exception {
-        return 0;
+        return userMapper.freezeUser(userId);
+
     }
 
     @Override
     public int unfreezeUser(Integer userId)throws Exception {
-        return 0;
+        return userMapper.unfreezeUser(userId);
     }
 
     @Override
     public int deleteUser(Integer userId)throws Exception {
-        return 0;
+        return userMapper.deleteUser(userId);
+
     }
 
     @Override
     public int reigstMerchant(Integer userId)throws Exception {
-        return 0;
+        return userMapper.reigstMerchant(userId);
     }
 
     @Override
     public int reviseUserInfo(Integer userId, UserInfo userInfo)throws Exception {
-        return 0;
+        return userMapper.reviseUserInfo(userInfo);
     }
 }

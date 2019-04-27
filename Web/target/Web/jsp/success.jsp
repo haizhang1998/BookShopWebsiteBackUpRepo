@@ -7,14 +7,15 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<link rel="stylesheet" href="../static/css/common.css">
 <html>
 <head>
     <title>Title</title>
 </head>
 <body>
 <h1>Welcome!
-    <c:if test="${sessionScope.user !=null}">
-        <c:out value="${sessionScope.name}"></c:out>成功登录
+    <c:if test="${sessionScope.userInfo !=null}">
+        <c:out value="${sessionScope.userInfo.name}"></c:out>成功登录
     </c:if>
 
 </h1>

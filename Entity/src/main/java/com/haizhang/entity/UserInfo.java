@@ -1,5 +1,8 @@
 package com.haizhang.entity;
 
+import com.haizhang.ValidateGroup.LoginGroup;
+import com.haizhang.ValidateGroup.RegistGroup;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -12,19 +15,28 @@ import java.io.Serializable;
  * @create 2018-11-05 0:17
  */
 public class UserInfo implements Serializable {
-    @NotNull(message = "{username.empty}")
+    @NotNull(message = "{用户名不能为空}",groups ={RegistGroup.class, LoginGroup.class})
+    @Size(min = 4,max = 20,message = "用户名长度请保持在4和{max}之间",groups ={RegistGroup.class})
     private String username;    //用户账号名
-    @Size(min = 6,max = 20,message = "{password.size}")
+
+    @Size(min = 4,max = 30,message = "密码长度请保持在4和{max}之间",groups ={RegistGroup.class})
     private String password;
-    @Pattern(regexp ="\\d{11}",message = "手机格式不正确")
+
+    @Pattern(regexp ="\\d{11}",message = "电话格式不正确",groups ={RegistGroup.class})
     private String phone;
+
+    @Size(min=4,max = 100,message = "地址长度请保持在4和{max}之间" ,groups ={RegistGroup.class})
     private String addr;        //用户的收货地址
-    private int id;             //用户的id编号，用于数据库的查找
+    @NotNull(message = "姓名不许为空")
     private String name;        //用户的真实姓名
+
+    @Size(min = 2,max = 20,message = "昵称长度请保持在2和{max}之间",groups ={RegistGroup.class})
     private String nikeName;    //用户昵称
+
     private int merchantFlag=1; //1代表不是卖家 0是卖家
     private int freezeFlag=0;   //0代表没有冻结，1代表账号已冻结
     private String imageLogo;     //用户头像
+    private int id;             //用户的id编号，用于数据库的查找
 
     public int getFreezeFlag() {
         return freezeFlag;

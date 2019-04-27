@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
     <title>会员注册</title>
@@ -25,6 +26,15 @@
         font-size: 20px;
         font-weight: bold;
         background: #f40;
+        margin-top: 10px;
+    }
+    .input1{
+        width: 240px;
+        font-size: 14px;
+        line-height: 18px;
+        height: 30px;
+        padding-left:5px;
+        border: 1px solid #ddd;
     }
     body{
         background: cornsilk;
@@ -45,8 +55,20 @@
     .importent{
         font-weight: bold;
         color: red;
-        display: inline;
+        font-size:20px;
+
     }
+.label-font{
+    font-size: 20px;
+}
+    .row{
+        margin-top: 10px;
+    }
+
+    .error-font{
+        color: red;
+    }
+
 
 </style>
 
@@ -67,48 +89,53 @@
 </script>
 <body>
 <div id="nav">
-    <input type="button" name="loginBtn" value="点击返回登录界面" class="btn" onclick="window.location.href='/jsp/login.jsp'"/>
+
 </div>
 
 <div id="regDiv">
     <c:if test="${state!=null}">
         <p style="color: red;font-size: 18px" ><span>${state}</span></p>
     </c:if>
-    <h1>会员注册界面</h1>
-    <form action="user/regist" method="post" onsubmit="return onCheck()">
-        <table bgcolor="#fffaf0" cellspacing="8" border="0" style="text-align:left">
-            <tr>
-                <td><p class="importent"><span>*</span></p>注册用户名:</td>
-                <td><input type="text" name="regUsername" id="reg_username" value="${regUsername}" size="15"></td>
-            </tr>
-            <tr>
-                <td><p class="importent"><span>*</span></p>注册密码:</td>
-                <td><input type="password" size="15" id="reg_password" name="regPassword" value="${regPassword}" size="15"></td>
-            </tr>
-            <tr >
-                <td align="center">姓名:</td>
-                <td><input type="text" name="name"id="name" size="5" ></td>
-            </tr>
 
-            <tr >
-                <td align="center"><p class="importent"><span>*</span></p>手机:</td>
-                <td><input type="text" name="phone" id="phone" size="11" ></td>
-            </tr>
-            <tr>
-                <td><p class="importent"><span>*</span></p>收件地址:</td>
-                <td><input type="text" name="addr" id="addr" size="11" ></td>
-            </tr>
-            <tr>
-                <td>昵称:</td>
-                <td><input type="text" name="nikeName" id="nikeName" size="11" ></td>
-            </tr>
-            <tr>
-                <td colspan="2" align="center">
-                    <input type="submit" name="btn_reg" class="btn"  value="完成注册" /></td>
-            </tr>
-        </table>
+    <h1 class="text-center">会员注册界面</h1>
 
-    </form>
+    <div class="container">
+        <sf:form class="form-horizontal" action="/user/regist" commandName="userInfo" method="post" onsubmit="return onCheck()">
+               <span  class="importent">*</span><span class="label-font">注册用户名:</span>
+                    <sf:input type="text" path="username" cssClass="input1" id="reg_username"  size="15"/><span><sf:errors path="username" cssClass="error-font"></sf:errors></span></td>
+               </div>
+            <div class="row">
+                <span  class="importent">*</span><span class=" label-font">注册密码:</span>
+                <sf:input type="password"  id="reg_password" cssClass="input1" path="password" size="15"/><span><sf:errors path="password" cssClass="error-font"></sf:errors></span></td>
+            </div>
+
+            <div class="row">
+                <span class="label-font">姓名</span>
+                <sf:input type="text" path="name"  cssClass="input1" id="name" size="15" />
+            </div>
+
+            <div class="row">
+                <span  class="importent">*</span><span class="label-font">手机:</span>
+                <sf:input type="text" path="phone" cssClass="input1" id="phone" size="11" /><span><sf:errors path="phone" cssClass="error-font"></sf:errors></span>
+            </div>
+
+            <div class="row">
+                <span  class="importent">*</span><span class="label-font">收件地址:</span>
+                <sf:input type="text" path="addr" id="addr" cssClass="input1" size="11" /><span><sf:errors path="addr" cssClass="error-font"></sf:errors></span>
+            </div>
+
+            <div class="row">
+                <span class="label-font">昵称:</span>
+                <sf:input type="text" path="nikeName" id="nikeName" size="11" /><span><sf:errors path="nikeName" cssClass="error-font"></sf:errors></span>
+            </div>
+
+            <div class="row">
+                <input type="submit" name="btn_reg" class="btn"  value="完成注册" />
+             </div>
+            <input type="button" name="loginBtn" value="点击返回登录界面" class="btn" onclick="window.location.href='/jsp/login.jsp'"/>
+
+</sf:form>
+    </div>
 </div>
 </body>
 </html>
