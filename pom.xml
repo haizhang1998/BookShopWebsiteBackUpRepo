@@ -29,6 +29,7 @@
         <aspectj.version>1.8.9</aspectj.version>
         <commons-dbcp.version>1.4</commons-dbcp.version>
         <common.dbUtil.version>1.7</common.dbUtil.version>
+        <mocktio.version>1.10.19</mocktio.version>
     </properties>
 
     <build>

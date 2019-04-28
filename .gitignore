@@ -1,0 +1,21 @@
+# Created by .ignore support plugin (hsz.mobi)
+### Example user template template
+### Example user template
+
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
+.gitignore
+Dao/target/generated-sources/
+Entity/target/generated-sources/
+Entity/target/generated-test-sources/
+Service/src/test/resources/
+Service/target/generated-sources/
+Service/target/generated-test-sources/
+Web/src/test/resources/
+Web/target/Web/WEB-INF/classes/com/bookShop/mvcConfig/
+Web/target/Web/templates/
+Web/target/generated-sources/
+Web/target/generated-test-sources/
