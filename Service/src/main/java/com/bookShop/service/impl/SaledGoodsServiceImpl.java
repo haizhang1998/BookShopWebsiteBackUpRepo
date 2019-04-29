@@ -1,0 +1,35 @@
+package com.bookShop.service.impl;
+
+import com.bookShop.exception.SaledGoodsInfoNotFound;
+import com.bookShop.mapper.SaledGoodsMapper;
+import com.bookShop.service.SaledGoodsService;
+import com.haizhang.entity.GoodsInfo;
+import com.haizhang.entity.SaledInfo;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+
+@Service
+public class SaledGoodsServiceImpl implements SaledGoodsService {
+    @Resource
+    SaledGoodsMapper saledGoodsMapper;
+
+    @Override
+    public HashMap<Integer, SaledInfo> getAllSaledInfo() {
+        return  saledGoodsMapper.getAllSaledInfo();
+    }
+
+    @Override
+    public SaledInfo getSaledNumberById(int goodsId) {
+       SaledInfo saledInfo=saledGoodsMapper.getSaledNumberById(goodsId);
+       if(saledInfo==null)throw new SaledGoodsInfoNotFound("出售货物信息未找到！");
+       return saledInfo;
+    }
+
+    @Override
+    public List<SaledInfo> getHotGoods() {
+        return  saledGoodsMapper.getHotGoods();
+    }
+}

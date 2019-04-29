@@ -83,7 +83,7 @@
 <!--    //得到所有新上架的商品-->
 <!--    public List<GoodsInfo> getAllNewGood();-->
         <select id="getAllNewGood" resultMap="goodsInfoMap">
-           select * from (select * from goods ORDER BY upTime DESC)as a where 1=1 LIMIT 10
+           select * from (select * from goods ORDER BY upTime DESC)as a where 1=1 LIMIT 8
         </select>
 
 
@@ -101,4 +101,25 @@
             select * from goods
             where possesserId=#{merchantId}
         </select>
+
+<!--    //得到好书推荐列表-->
+<!--    public List<GoodsInfo> excellentBookRecommend();-->
+        <select id="queryExcellentBook" resultMap="goodsInfoMap">
+            select * from goods where 1=1 limit 8;
+        </select>
+
+<!--    //得到每种类型的3个随机样本-->
+<!--    public List<GoodsInfo> queryGoodsByCategorySample();-->
+    <select id="queryGoodsByCategorySample" resultMap="goodsInfoMap">
+          select a.*  from goods as a inner join goods
+           as b on a.type=b.type and b.goodsId > a.goodsId
+           group by a.goodsId having count(*)&lt;5;
+    </select>
+
+<!--    //获取货物靠id-->
+<!--    public GoodsInfo queryGoodsById(int id);-->
+    <select id="queryGoodsById" resultMap="goodsInfoMap">
+        select * from goods where goodsId=#{id}
+    </select>
+
 </mapper>

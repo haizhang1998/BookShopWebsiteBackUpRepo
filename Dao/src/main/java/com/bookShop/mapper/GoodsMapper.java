@@ -3,8 +3,10 @@ import com.haizhang.entity.GoodsInfo;
 import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public interface GoodsMapper {
@@ -23,6 +25,16 @@ public interface GoodsMapper {
 
      //得到商铺所有商品
     public List<GoodsInfo> queryShopGoods(@Param("merchantId") int merchantId);
+
+    //得到好书推荐列表
+    public List<GoodsInfo> queryExcellentBook();
+
+    //得到每种类型的3个随机样本
+    public List<GoodsInfo> queryGoodsByCategorySample();
+
+    //获取货物靠id
+    public GoodsInfo queryGoodsById(int id);
+
 
 
 }

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bookShop.mapper.MerchantMapper">
+<!--    private int merchantId;                           //卖家的账号ID-->
+<!--    private String addr;                                //发货地址-->
+<!--    private String shopName;                               //店铺名称-->
+<!--    private String shopLogo;                           //商家图标地址-->
+    <resultMap id="merchantShopMap" type="MerchantShop">
+        <id property="merchantId" column="merchantId"></id>
+        <result property="addr" column="addr"></result>
+        <result property="shopName" column="shopName"></result>
+        <result property="shopLogo" column="shopLogo"></result>
+
+    </resultMap>
+
+    <sql id="selectSql">
+        merchantId,addr,shopName,shopLogo from merchantshop
+    </sql>
+<!--    //注册商家-->
+<!--    public boolean regMerchant(int userId, String addr, String shopLogo, String shopName);-->
+
+<!--    //得到商铺信息-->
+<!--    public MerchantShop getShopInfoByName(String ShopName) throws SQLException;-->
+
+    <!--    //得到商铺信息by userId-->
+<!--    public MerchantShop getShopInfoByMerchantId(int userId) throws SQLException;-->
+
+    <!--    //得到所有的商铺-->
+<!--    public List<MerchantShop> getAllShop() throws SQLException;-->
+        <select id="getAllShop" resultMap="merchantShopMap">
+            select <include refid="selectSql"></include>
+        </select>
+
+<!--    //查询热销量前x的店铺-->
+<!--    public List<MerchantShop>getRankShop();-->
+    <select id="getRankShop" resultMap="merchantShopMap">
+       select merchantshop.merchantId,addr,shopLogo,shopName
+       from merchantshop INNER JOIN (select sum(saledNumber)as 'total'
+       ,merchantId from goodsrecord GROUP BY merchantId
+       ORDER BY total desc limit #{number})as a on merchantshop.merchantId=a.merchantId ORDER BY total desc
+    </select>
+<!--    //上架货物-->
+<!--    public boolean upGoods(GoodsInfo goodsInfo);-->
+
+<!--    //发货-->
+<!--    public boolean sendGood(int goodsId, int userId, int merchantId, int payFlag);-->
+
+<!--    //下架货物-->
+<!--    public boolean downGoods(int goodsId, int userId);-->
+
+
+<!--    //查询所有订单-->
+<!--    public List<OrderItem> getAllUserOrder(int merchantId) throws SQLException;-->
+
+</mapper>

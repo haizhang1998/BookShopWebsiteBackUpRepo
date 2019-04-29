@@ -3,8 +3,10 @@ package com.bookShop.service;
 import com.haizhang.entity.GoodsInfo;
 import org.apache.ibatis.annotations.MapKey;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public interface GoodService {
     //获取所有货物信息，HashMap，键值对===  货物编号====货物信息
@@ -21,4 +23,10 @@ public interface GoodService {
     public List<GoodsInfo>  queryGoodsInVague(GoodsInfo goodsInfo);
     //得到商铺所有商品
     public List<GoodsInfo> queryShopGoods(int merchantId);
+
+    //得到好书推荐列表
+    public List<GoodsInfo> queryExcellentBook();
+
+    //获取每种书籍的3个样本
+    public List<GoodsInfo> queryBookByEachType();
 }

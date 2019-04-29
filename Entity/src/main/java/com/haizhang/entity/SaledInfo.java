@@ -16,12 +16,29 @@ public class SaledInfo implements Serializable {
     private int merchantId;
     //销售数量
     private int saledNumber;
-
     //日期出售
     private Date saledDate;
+    //货物具体信息
+    private GoodsInfo goodsInfo;
 
     public SaledInfo(){
 
+    }
+
+    public Date getSaledDate() {
+        return saledDate;
+    }
+
+    public void setSaledDate(Date saledDate) {
+        this.saledDate = saledDate;
+    }
+
+    public GoodsInfo getGoodsInfo() {
+        return goodsInfo;
+    }
+
+    public void setGoodsInfo(GoodsInfo goodsInfo) {
+        this.goodsInfo = goodsInfo;
     }
 
     public int getGoodsId() {
@@ -46,5 +63,16 @@ public class SaledInfo implements Serializable {
 
     public void setSaledNumber(int saledNumber) {
         this.saledNumber = saledNumber;
+    }
+
+    @Override
+    public String toString() {
+        return "SaledInfo{" +
+                "goodsId=" + goodsId +
+                ", merchantId=" + merchantId +
+                ", saledNumber=" + saledNumber +
+                ", saledDate=" + saledDate +
+                ", goodsInfo=" + goodsInfo +
+                '}';
     }
 }

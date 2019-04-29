@@ -9,11 +9,11 @@ public interface MerchantMapper {
     //注册商家
     public boolean regMerchant(int userId, String addr, String shopLogo, String shopName);
      //得到商铺信息
-    public MerchantShop getShopInfoByName(String ShopName) throws SQLException;
+    public MerchantShop getShopInfoByName(String ShopName) ;
     //得到商铺信息by userId
-    public MerchantShop getShopInfoByMerchantId(int userId) throws SQLException;
+    public MerchantShop getShopInfoByMerchantId(int userId) ;
     //得到所有的商铺
-    public List<MerchantShop> getAllShop() throws SQLException;
+    public List<MerchantShop> getAllShop() ;
 
     //上架货物
     public boolean upGoods(GoodsInfo goodsInfo);
@@ -25,10 +25,11 @@ public interface MerchantMapper {
     //下架货物
     public boolean downGoods(int goodsId, int userId);
 
-
-    //获取所有的商店货物
-    public List<GoodsInfo> getAllShopGood(int merchantId);
-
     //查询所有订单
-    public List<OrderItem> getAllUserOrder(int merchantId) throws SQLException;
+    public List<OrderItem> getAllUserOrder(int merchantId);
+
+    //查询热销量前x的店铺
+    public List<MerchantShop>getRankShop(int number);
+
+
 }

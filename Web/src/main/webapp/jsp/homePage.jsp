@@ -15,6 +15,12 @@
     <link rel="stylesheet" type="text/css" href="css/homePage.css">
     <!--<script src="js/homePage.js"></script>-->
     <link rel="stylesheet" type="text/css" href="css/scrollPane.css">
+
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery -->
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
 </head>
 <script>
     function goSearch(){
@@ -82,164 +88,512 @@
 
 </script>
 
+<style>
+
+    body{
+        background:#EBEBEB;
+    }
+
+    #searchSection{
+        margin-top: 60px;
+
+        height: 100px;
+    }
+
+    #searchSection>div>div>img{
+        width:80px;
+        height:80px;
+        margin-top: 10px;
+        margin-left: 10px;
+
+    }
+    #searchSection>div>div>div{
+        display: inline-block;
+        width: 700px;
+        margin-top: 30px;
+        margin-left: 160px
+    }
+
+    #carouselSection{
+
+        margin-top: 10px;
+    }
+    .searchFont{
+        font-size: 24px;
+        margin-left: 20px;
+        line-height: 20px;
+        font-weight: bolder;
+
+
+    }
+
+    #categorySection{
+        margin-top: 20px;
+        margin-left: 30px;
+    }
+    #categorySection>div>ul>li>a{
+        color:black;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .tab_content{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display:-webkit-box;
+        -webkit-box-orient:vertical;
+        -webkit-line-clamp:3;
+        height:58px;
+    }
+    .tab_img{
+        height: 100px;
+    }
+
+    #BookContentSection>div>div>div>h3{
+        margin-left: 30px;
+    }
+    #RecommendSection{
+
+    }
+    #RecommendSection>div>div>div>h3{
+        margin-left: 30px;
+        color:#836FFF;
+
+    }
+    a:hover{
+        text-decoration: none;
+    }
+
+</style>
 <body>
-<!-- 导航栏div -->
-<div id="wrapper-top">
-    <div id="nav" >
-        <ul >
-            <c:choose>
-                <c:when test="${sessionScope.userInfo!=null}">
-                    <li  class="li1">欢迎,${userInfo.name}</li>
-                </c:when>
+<%--收藏成功--%>
+<c:if test="${enshrine_state!=null}">
+    <script>
+        alert(${enshrine_state});
+    </script>
+</c:if>
 
-                <c:otherwise>
-                    <li class="li1"> <a href="index.jsp" style="color: red">亲，请先登录</a></li>
-                </c:otherwise>
+<section id="navbarSection">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
 
-            </c:choose>
+            </div>
 
-            <li class="li1"> <a href="information2.jsp" >个人中心</a></li>
-            <li class="li1" ><a href="#" >消息 </a></li>
-            <c:if test="${sessionScope.userInfo!=null}">
-                <li class="li2" ><a href="logout.jsp" style="color: red;font-weight: bold">点我注销</a></li>
-            </c:if>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
 
-            <li class="li2"><a href="Cart.do?action=getCart" style="float: left"><p style="float:left;display:inline-block;color: #ff4400;"><span>购物车&nbsp;${sessionScope.myCart.allGoodsCount}</span></p></a></li>
-            <li class="li2"> <a id="enshrine">收藏夹</a> </li>
-            <li class="li2"><a id="myFootPrint">我的足迹</a></li>
-            <li class="li2"> <a href="openShop.jsp">我要开店</a></li>
-            <li class="li2"><a href="affair.do?action=updateHotAndNew">返回首页</a></li>
-            <li class="li2"><a href="affair.do?action=getUserOrders"> 我的订单</a>
-            <li class="li2"><a href="merchantManage.jsp">卖家管理</a>
+                    <li><a href="#">
+                    <li>亲，请登录</li>
+                    <span class="sr-only">(current)</span></a>
+                    </li>
 
-        </ul>
-    </div>
-</div>
+                    <li><a href="#" style="color:white">消息</a></li>
+                    <li><a href="#">店铺管理</a></li>
+                    <li><a href="#">我要开店</a></li>
 
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">信息管理<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">收藏夹</a></li>
+                            <li><a href="#">我的足迹</a></li>
+                            <li><a href="#">我的订单</a></li>
 
-<div id="wrapper-middle">
-    <div id="search-div">
-        <div id="lookupDivWrapper" style="width:800px">
-            <select name="require" id="require" style="float: left" >
-                <option value="shoppingName" selected>书籍名称</option>
-                <option value="shoppingFeild">书籍类别</option>
-                <option value="merchantShop">卖家店铺</option>
-            </select>
-            <input type="text" placeholder="请输入关键字"  style="float: left" size="60" id="searchGoodsText" maxlength="80"/>
-            <input type="button" value="搜索" style=" margin-left:0px;margin-top:0px;border-radius:0%;cursor: pointer;" onclick="goSearch()" id="searchBtn"/>
-        </div>
-    </div>
-</div>
+                        </ul>
+                    </li>
+                </ul>
 
-<div id="scrollPaneWarp">
-    <div id="fieldWrap" >
-        <ul>
-            <li class="bookField" style="color: whitesmoke;list-style:none; font-weight: bold; font-size: 18px">书籍分类&nbsp;&nbsp;:</li>
-            <li class="bookField"><a href="good.do?search=小说&require=shoppingFeild&action=queryGoods">小说&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;></a></li>
-            <li class="bookField"><a href="good.do?search=文学&require=shoppingFeild&action=queryGoods">文学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;></a></li>
-            <li class="bookField"><a href="good.do?search=科学技术&require=shoppingFeild&action=queryGoods">科学技术&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;></a></li>
-            <li class="bookField"><a href="good.do?search=儿童书籍&require=shoppingFeild&action=queryGoods">儿童书籍&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;></a></li>
-            <li class="bookField"><a href="good.do?search=家庭养生&require=shoppingFeild&action=queryGoods">家庭养生&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;></a></li>
-            <li class="bookField"><a href="good.do?search=军事历史&require=shoppingFeild&action=queryGoods">军事历史&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;></a></li>
-            <li class="bookField"><a href="good.do?search=艺术设计&require=shoppingFeild&action=queryGoods">艺术设计&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;></a></li>
-        </ul>
-    </div>
-    <div id="imgWarp" >
-        <a href="affair.do?goodsId=112&action=getGoodById"><img id="img1" src="images/轮播/1.jpg"  TITLE="img1" /></a>
-        <a href="affair.do?goodsId=113&action=getGoodById"><img id="img2" src="images/轮播/2.jpg" TITLE="img2"/></a>
-        <a href="affair.do?goodsId=114&action=getGoodById"><img id="img3" src="images/轮播/3.jpg" TITLE="img3"/></a>
-        <a href="affair.do?goodsId=115&action=getGoodById"><img id="img4" src="images/轮播/4.jpg" TITLE="img4"/></a>
-        <a href="affair.do?goodsId=116&action=getGoodById"><img id="img5" src="images/轮播/5.jpg" TITLE="img5" /></a>
-    </div>
-    <span class="btn" id="left" style="margin-left: 200px;z-index: 11;"><</span>
-    <span class="btn" id="right" style="margin-right: 10px;z-index: 11">></span>
-    <div class="links">
-        <em class="active"></em>
-        <em></em>
-        <em></em>
-        <em></em>
-        <em></em>
-    </div>
-</div>
+                <ul class="nav navbar-nav" style="margin-left: 500px">
+                    <li><a href="#"><span>购物车<span class="badge" style="margin-left: 5px">0</span></span></a></li>
+                    <li><a href="/jsp/information.jsp">个人中心</a></li>
+                    <li><a href="#">注销</a></li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
 
-<div id="newBookShowWrapper">
-    <p style="display: inline-block;font-size: 20px;margin-left: 54px"><span style="font-weight:bold">新书上架</span></p >
-    <div id="newBookShowDiv" style="overflow: hidden">
+</section>
 
-        <ul style="" class="newBookShowDiv-ul">
-            <c:forEach items="${sessionScope.newGoodList.newGoodList}" var="newGood">
-                <li>
-                    <a href="affair.do?goodsId=${newGood.goodsId}&action=getGoodById">
-                    <img src=${newGood.imgDir}>
-                    <p class="p1">
-                            ${newGood.goodsName}
-                    </p >
-                    <p class="p2">
-                        ￥${newGood.price}
-                    </p >
-                </a>
-                </li>
-            </c:forEach>
-        </ul>
-    </div >
-</div>
+<section id="searchSection">
+    <div class="container" >
+        <div class="row">
+            <img src="/images/logo.jpg" class="pull-left"><span class="searchFont col-md-2" style="margin-top: 40px">海淘商城</span>
+            <div >
+                <form class="form-horizontal">
+                    <div class="form-group" style="display: inline-block;margin-left: 150px;">
+                        <input type="text" class="form-control" style="width: 390px" placeholder="Search">
+                    </div>
+                    <button type="submit"class="btn btn-default" style="width:100px;display: inline-block;margin-left: 10px;margin-top: -2px">Submit</button>
+                </form>
+            </div>
 
-    <div id="BookRecommendDiv" >
-        <div class="div1" style="width:900px;">
-       <p class="p3" style="margin-left: 50px;font-weight: bold;color: black;font-size:20px ">
-           好书推荐
-       </p>
-        <ul id="BookRecommendDiv-ul">
-            <c:forEach items="${sessionScope.newGoodList.newGoodList}" var="good" begin="0" end="8" step="1">
-            <li>
-
-                <a href="affair.do?goodsId=${good.goodsId}&action=getGoodById">
-                <img src="${good.imgDir}"/>
-                    <p class="p1">
-                      ${good.goodsName}
-                    </p>
-                    <p class="p2">
-                        ￥${good.price}
-                    </p>
-                </a>
-            </li>
-            </c:forEach>
-        </ul>
         </div>
 
-        <div class="div2"  style="overflow: hidden;width: 250px; height:590px">
-            <p class="p4" style="margin-bottom: 0px;font-weight: bold;color: black;font-size:20px ">
-                热销排行
-            </p>
-            <ul >
-                <c:set var="step" value="0" scope="page"/>
-                <c:forEach var="hotGood" items="${sessionScope.hotGoodList.hotGoodList}">
-                    <c:set var="step" value="${pageScope.step+1}"/>
-                    <li>
-                        <c:choose>
-                        <c:when test="${pageScope.step==1}">
-                            <font style="color: red;font-weight: bold"><c:out value="${pageScope.step}"></c:out></font>
-                    &nbsp;&nbsp;&nbsp;<a  style="color:red;font-weight: bold" href="affair.do?goodsId=${hotGood.goodsId}&action=getGoodById">${hotGood.goodsName}</a></li>
-                        </c:when>
-                            <c:when test="${pageScope.step==2}">
-                                <font style="color: silver;font-weight: bold"> <c:out value="${pageScope.step}"></c:out></font>
-                                &nbsp;&nbsp;&nbsp;<a style="color: silver; font-weight: bold" href="affair.do?goodsId=${hotGood.goodsId}&action=getGoodById">${hotGood.goodsName}</a></li>
-                            </c:when>
-                            <c:when test="${pageScope.step==3}">
-                                <font style="color: goldenrod;;font-weight: bold"><c:out value="${pageScope.step}"></c:out></font>
-                                &nbsp;&nbsp;&nbsp;<a style="color: goldenrod; font-weight: bold" href="affair.do?goodsId=${hotGood.goodsId}&action=getGoodById">${hotGood.goodsName}</a></li>
-                            </c:when>
-                            <c:otherwise>
-                                <c:out value="${pageScope.step}"></c:out>
-                                &nbsp;&nbsp;&nbsp;<a href="affair.do?goodsId=${hotGood.goodsId}&action=getGoodById">${hotGood.goodsName}</a></li>
-                            </c:otherwise>
-                        </c:choose>
+    </div>
+</section>
 
-                </c:forEach>
+<section id="carouselSection" >
+    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+            <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+            <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+        </ol>
 
-            </ul>
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner"  role="listbox" style="height: 450px">
+            <div class="item active">
+                <img src="/images/carouselPic/carousel1.jpg" style="width:100%;height: 450px" alt="java开发实训教程">
+                <div class="carousel-caption">
+                    123123
+                </div>
+            </div>
+            <div class="item">
+                <img src="/images/carouselPic/carousel2.jpg"  width="100%" alt="python2.jpg">
+
+            </div>
+            <div class="item">
+                <img src="/images/carouselPic/carousel3.jpg"  width="100%" alt="python3.jpg">
+
+            </div>
+            <div class="item">
+                <img src="/images/carouselPic/carousel4.jpg"   width="100%" alt="python4.jpg">
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span >
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+</section>
+
+<section id="categorySection">
+    <div>
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#children" aria-controls="children" role="tab" data-toggle="tab">儿童书籍</a></li>
+            <li role="presentation"><a href="#history" aria-controls="history" role="tab" data-toggle="tab">军事历史</a></li>
+            <li role="presentation"><a href="#health" aria-controls="health" role="tab" data-toggle="tab">家庭养生</a></li>
+            <li role="presentation"><a href="#literature" aria-controls="literature" role="tab" data-toggle="tab">文学</a></li>
+            <li role="presentation"><a href="#it" aria-controls="it" role="tab" data-toggle="tab">科学技术</a></li>
+            <li role="presentation"><a href="#novel" aria-controls="novel" role="tab" data-toggle="tab">小说</a></li>
+            <li role="presentation"><a href="#art" aria-controls="art" role="tab" data-toggle="tab">美术</a></li>
+        </ul>
+
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="children">
+                <div class="row" style="margin-top:30px">
+                    <c:forEach varStatus="index" var="book" items="${booksCatagory}">
+                    <c:if test="${book.type=='儿童书籍'}">
+                            <div class="col-sm-4 col-md-3">
+                                <div class="thumbnail">
+                                    <img src="${book.imgDir}" style="width: 134px;height: 180px" alt="儿童1" class="tab_img">
+                                    <div class="caption">
+                                        <h4 class="tab_content">${book.detail}</h4>
+                                        <p><span style="color: #f40;" class="text-center">价格${book.price}</span></p>
+                                        <p><a href="/goods/enshrine/${book.goodsId}" class="btn btn-primary" role="button">收藏</a>
+                                           <a href="/goods/buy/${book.goodsId}" class="btn btn-default" role="button">购买</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                    </c:if>
+                    </c:forEach>
+                </div>
+            </div>
+
+
+            <div role="tabpanel" class="tab-pane" id="history">
+                <div class="row" style="margin-top:30px">
+                    <c:forEach varStatus="index" var="book" items="${booksCatagory}">
+                        <c:if test="${book.type=='军事历史'}">
+                            <div class="col-sm-4 col-md-3">
+                                <div class="thumbnail">
+                                    <img src="${book.imgDir}" style="width: 134px;height: 180px" alt="儿童1" class="tab_img">
+                                    <div class="caption">
+                                        <h4 class="tab_content">${book.detail}</h4>
+                                        <p><span style="color: #f40;" class="text-center">价格${book.price}</span></p>
+                                        <p><a href="/goods/enshrine/${book.goodsId}" class="btn btn-primary" role="button">收藏</a>
+                                            <a href="/goods/buy/${book.goodsId}" class="btn btn-default" role="button">购买</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:if>
+                    </c:forEach>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="health">
+                <div class="row" style="margin-top:30px">
+                    <c:forEach varStatus="index" var="book" items="${booksCatagory}">
+                        <c:if test="${book.type=='家庭养生'}">
+                            <div class="col-sm-4 col-md-3">
+                                <div class="thumbnail">
+                                    <img src="${book.imgDir}" style="width: 134px;height: 180px" alt="儿童1" class="tab_img">
+                                    <div class="caption">
+                                        <h4 class="tab_content">${book.detail}</h4>
+                                        <p><span style="color: #f40;" class="text-center">价格${book.price}</span></p>
+                                        <p><a href="/goods/enshrine/${book.goodsId}" class="btn btn-primary" role="button">收藏</a>
+                                            <a href="/goods/buy/${book.goodsId}" class="btn btn-default" role="button">购买</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:if>
+                    </c:forEach>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="literature">
+                <div class="row" style="margin-top:30px">
+                    <c:forEach varStatus="index" var="book" items="${booksCatagory}">
+                         <c:if test="${book.type=='文学'}">
+                            <div class="col-sm-4 col-md-3">
+                                <div class="thumbnail">
+                                    <img src="${book.imgDir}" style="width: 134px;height: 180px" alt="儿童1" class="tab_img">
+                                    <div class="caption">
+                                        <h4 class="tab_content">${book.detail}</h4>
+                                        <p><span style="color: #f40;" class="text-center">价格${book.price}</span></p>
+                                        <p><a href="/goods/enshrine/${book.goodsId}" class="btn btn-primary" role="button">收藏</a>
+                                            <a href="/goods/buy/${book.goodsId}" class="btn btn-default" role="button">购买</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                         </c:if>
+                    </c:forEach>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="it">
+                <div class="row" style="margin-top:30px">
+                    <c:forEach varStatus="index" var="book" items="${booksCatagory}">
+                        <c:if test="${book.type=='科学技术'}">
+                            <div class="col-sm-4 col-md-3">
+                                <div class="thumbnail">
+                                    <img src="${book.imgDir}" style="width: 134px;height: 180px" alt="儿童1" class="tab_img">
+                                    <div class="caption">
+                                        <h4 class="tab_content">${book.detail}</h4>
+                                        <p><span style="color: #f40;" class="text-center">价格${book.price}</span></p>
+                                        <p><a href="/goods/enshrine/${book.goodsId}" class="btn btn-primary" role="button">收藏</a>
+                                            <a href="/goods/buy/${book.goodsId}" class="btn btn-default" role="button">购买</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:if>
+                     </c:forEach>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="novel">
+                <div class="row" style="margin-top:30px">
+                     <c:forEach varStatus="index" var="book" items="${booksCatagory}">
+                        <c:if test="${book.type=='小说'}">
+                            <div class="col-sm-4 col-md-3">
+                                <div class="thumbnail">
+                                    <img src="${book.imgDir}" style="width: 134px;height: 180px" alt="儿童1" class="tab_img">
+                                    <div class="caption">
+                                        <h4 class="tab_content">${book.detail}</h4>
+                                        <p><span style="color: #f40;" class="text-center">价格${book.price}</span></p>
+                                        <p><a href="/goods/enshrine/${book.goodsId}" class="btn btn-primary" role="button">收藏</a>
+                                            <a href="/goods/buy/${book.goodsId}" class="btn btn-default" role="button">购买</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:if>
+                    </c:forEach>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="art">
+                <div class="row" style="margin-top:30px">
+                    <c:forEach varStatus="index" var="book" items="${booksCatagory}">
+                        <c:if test="${book.type=='艺术设计'}">
+                            <div class="col-sm-4 col-md-3">
+                                <div class="thumbnail">
+                                    <img src="${book.imgDir}" style="width: 134px;height: 180px" alt="儿童1" class="tab_img">
+                                    <div class="caption">
+                                        <h4 class="tab_content">${book.detail}</h4>
+                                        <p><span style="color: #f40;" class="text-center">价格${book.price}</span></p>
+                                        <p><a href="/goods/enshrine/${book.goodsId}" class="btn btn-primary" role="button">收藏</a>
+                                            <a href="/goods/buy/${book.goodsId}" class="btn btn-default" role="button">购买</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                         </c:if>
+                    </c:forEach>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="BookContentSection">
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-md-9" >
+                <div class="page-header">
+                    <h2 style="margin-left: 30px">新书上架<a href="#" style="font-size: 18px;margin-top:10px;" class="pull-right">获取更多<span class="badge">></span></a></h2>
+                </div>
+                        <div class="row" style="margin-top:30px">
+                            <c:forEach varStatus="index" var="book" items="${newGoodsList}">
+                                <div class="col-sm-4 col-md-3">
+                                    <div class="thumbnail">
+                                        <img src="${book.imgDir}" style="height: 180px;width: 134px" alt="${book.goodsName}" class="tab_img">
+                                        <div class="caption">
+                                            <h4 class="tab_content">${book.detail}</h4>
+                                            <p><span style="color: #f40;" class="text-center">价格${book.price}</span></p>
+                                            <p><a href="/goods/enshrine/${book.goodsId}" class="btn btn-primary" role="button">收藏</a>
+                                                <a href="/goods/buy/${book.goodsId}" class="btn btn-default" role="button">购买</a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </c:forEach>
+                        </div>
+            </div>
+
+            <div class="col-md-3">
+
+
+                <div class="panel panel-default"style="margin-top: 70px">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading">热销排行</div>
+                    <!-- List group -->
+                    <ul class="list-group">
+                        <li class="list-group-item"><a href="/goods/searchGoods/${hotGoodsList[0].goodsId}">${hotGoodsList[0].goodsInfo.goodsName}</a><span class="badge" style="background: red">1</span></li>
+                        <li class="list-group-item"><a href="/goods/searchGoods/${hotGoodsList[1].goodsId}">${hotGoodsList[1].goodsInfo.goodsName}</a><span class="badge" style="background: yellow">2</span></li>
+                        <li class="list-group-item"><a href="/goods/searchGoods/${hotGoodsList[2].goodsId}">${hotGoodsList[2].goodsInfo.goodsName}</a><span class="badge" style="background: lawngreen">3</span></li>
+                        <c:forEach var="book" items="${hotGoodsList}" begin="3" varStatus="index">
+                            <li class="list-group-item"><a href="/goods/searchGoods/${book.goodsId}">${book.goodsInfo.goodsName}</a><span class="badge">${index.index+1}</span></li>
+                        </c:forEach>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<img src="/images/image1.jpg" width="100%" height="240">
+<section id="RecommendSection">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-9" >
+                <div class="page-header">
+                    <h2 style="margin-left: 30px">好书推荐<a href="#" style="font-size: 18px;margin-top:10px;" class="pull-right">获取更多<span class="badge">></span></a></h2>
+                </div>
+                <!--<h3>好书推荐</h3>-->
+                <!--<hr style="margin-left: 30px;margin-top:-10px;border-color: black;width: 96%">-->
+                <div class="row" style="margin-top:30px">
+                     <c:forEach varStatus="index" var="book" items="${excellentGoodsList}">
+                            <div class="col-sm-4 col-md-3">
+                                <div class="thumbnail">
+                                    <img src="${book.imgDir}" style="width: 134px;height: 180px" alt="儿童1" class="tab_img">
+                                    <div class="caption">
+                                        <h4 class="tab_content">${book.detail}</h4>
+                                        <p><span style="color: #f40;" class="text-center">价格${book.price}</span></p>
+                                        <p><a href="/goods/enshrine/${book.goodsId}" class="btn btn-primary" role="button">收藏</a>
+                                            <a href="/goods/buy/${book.goodsId}" class="btn btn-default" role="button">购买</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                     </c:forEach>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="panel panel-default"style="margin-top: 70px">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading"><a href="#" style="color: black">必逛店铺</a></div>
+                    <!-- List group -->
+                    <ul class="list-group">
+                        <li class="list-group-item"><a href="/goods/searchGoods/${merchantShopsList[0].merchantId}">${merchantShopsList[0].shopName}</a><span class="badge" style="background: red">1</span></li>
+                        <li class="list-group-item"><a href="/goods/searchGoods/${merchantShopsList[2].merchantId}">${merchantShopsList[1].shopName}</a><span class="badge" style="background: yellow">2</span></li>
+                        <li class="list-group-item"><a href="/goods/searchGoods/${merchantShopsList[3].merchantId}">${merchantShopsList[2].shopName}</a><span class="badge" style="background: lawngreen">3</span></li>
+                        <c:forEach var="shop" items="${merchantShopsList}" begin="3" varStatus="index">
+                            <li class="list-group-item"><a href="/goods/searchGoods/${shop.merchantId}">${shop.shopName}</a><span class="badge">${index.index+1}</span></li>
+                        </c:forEach>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section id="FooterSection">
+    <div class="page-header" style="background: black;color:white;padding-top: 1px">
+        <h2 class="text-center" >友情提示</h2>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-1 text-center">
+                <h5 style="font-weight: bold">购物指南</h5>
+                购物流程
+                发票制度
+                账户管理
+                会员优惠
+            </div>
+            <div class="col-md-1 text-center">
+                <h5 style="font-weight: bold"> 支付方式</h5>
+                货到付款
+                网上支付
+                花呗支付
+            </div>
+            <div class="col-md-2 text-center">
+                <h5 style="font-weight: bold"> 订单服务</h5>
+                <h5>配送服务查询</h5>
+                <h5> 订单状态说明</h5>
+                <h5>自助取消订单</h5>
+                <h5> 自助修改订单</h5>
+            </div>
+            <div class="col-md-1 text-center">
+                <h5 style="font-weight: bold"> 配送方式</h5>
+                <h5>当日递</h5>
+                <h5> 次日递</h5>
+                <h5>订单自提</h5>
+                <h5>验货与签收</h5>
+            </div>
+            <div class="col-md-2 text-center">
+                <h5 style="font-weight: bold">退换货</h5>
+                <h5> 退换货服务查询</h5>
+                <h5> 自助申请退换货</h5>
+                <h5> 退换货进度查询</h5>
+                <h5>退款方式和时间</h5>
+            </div>
+            <div class="col-md-1 text-center">
+                <h5 style="font-weight: bold">商家服务</h5>
+                商家中心
+                运营服务
+                加入尾品汇
+            </div>
+
+            <div class="col-md-2"></div>
         </div>
     </div>
 
+</section>
 </body>
+
+
 </html>

@@ -10,10 +10,7 @@ import org.apache.log4j.*;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 测试货物相关的service接口
@@ -75,4 +72,19 @@ public class TestGoodService {
             System.out.println(r);
     }
 
-}
+    //测试好书推荐
+    @Test
+    public void  TestqueryExcellentBook(){
+        List<GoodsInfo> excellentBookList=goodService.queryExcellentBook();
+        for(GoodsInfo r:excellentBookList)
+            System.out.println(r);
+    }
+
+    @Test
+    public void queryBookByEachType() {
+        List<GoodsInfo> goodsInfos=goodService.queryBookByEachType();
+        for(GoodsInfo set:goodsInfos){
+            System.out.println(set);
+        }
+    }
+    }

@@ -9,8 +9,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="用户名" uri="http://www.springframework.org/tags/form" %>
-<link rel="stylesheet" type="text/css" href="../static/css/bootstrap.css">
+<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+<!-- jQuery -->
+<script src="http://code.jquery.com/jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
 <link rel="stylesheet" type="text/css" href="../static/css/login.css">
+
 <head>
     <title>登录界面</title>
 </head>
@@ -104,7 +109,6 @@
 
 
     <c:if test="${state!=null}">
-
         <p style="color: red"><em style="font-size: 18px;font-style: normal">
                 ${state}
         </em></p>

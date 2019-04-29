@@ -13,7 +13,7 @@ public class MerchantShop  implements Serializable {
     private String addr;                                //发货地址
     private String shopName;                               //店铺名称
     private String shopLogo;                           //商家图标地址
-    private List<GoodsInfo> possessGoods;              //拥有的商品信息
+
     public int getMerchantId() {
         return merchantId;
     }
@@ -46,11 +46,13 @@ public class MerchantShop  implements Serializable {
         this.shopLogo = shopLogo;
     }
 
-    public List<GoodsInfo> getPossessGoods() {
-        return possessGoods;
-    }
-
-    public void setPossessGoods(List<GoodsInfo> possessGoods) {
-        this.possessGoods = possessGoods;
+    @Override
+    public String toString() {
+        return "MerchantShop{" +
+                "merchantId=" + merchantId +
+                ", addr='" + addr + '\'' +
+                ", shopName='" + shopName + '\'' +
+                ", shopLogo='" + shopLogo + '\'' +
+                '}';
     }
 }

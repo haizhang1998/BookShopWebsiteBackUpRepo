@@ -4,7 +4,6 @@ import com.bookShop.service.impl.UserServiceImpl;
 import com.haizhang.entity.UserInfo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
@@ -14,11 +13,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.view.InternalResourceView;
-
 import javax.annotation.Resource;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
@@ -46,11 +41,7 @@ public class UserHanderTest extends BaseTest{
         //注册客户
         @Test
         public void regist()throws Exception{
-
-
             UserHandler userHandler=new UserHandler(userServiceImpl);
-
-
             //设置视图，mock框架就不用解析控制器中的视图名了。
             MockMvc mockMvc=standaloneSetup(userHandler).setSingleView(new InternalResourceView("/jsp/login.jsp")).build();
             //请求/user/regist 匹配对应的控制器方法，然后期盼结果：
@@ -62,11 +53,8 @@ public class UserHanderTest extends BaseTest{
                     .param("addr","beiging")
                     .param("nikeName","qqqqq")
                     .param("imageLogo","/static/images/grayBg.jpg")
-
             ).andExpect(view().name("login"));
-
         }
-
 
 
 

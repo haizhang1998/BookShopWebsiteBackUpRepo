@@ -4,6 +4,7 @@ import com.alibaba.druid.sql.visitor.functions.Bin;
 import com.bookShop.service.UserService;
 import com.haizhang.ValidateGroup.LoginGroup;
 import com.haizhang.ValidateGroup.RegistGroup;
+import com.haizhang.entity.GoodsInfo;
 import com.haizhang.entity.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -57,8 +58,7 @@ public class UserHandler {
         UserInfo user=userServiceImpl.loginUser(userInfo.getUsername(),userInfo.getPassword());
         HttpSession session=request.getSession();
         session.setAttribute("userInfo",user);
-        response.sendRedirect("/jsp/success.jsp");
-
+        response.sendRedirect("/goods/homepage");
     }
 
     /**
@@ -105,6 +105,9 @@ public class UserHandler {
         System.err.println(res);
         return "login";
     }
+
+
+
 
 
 

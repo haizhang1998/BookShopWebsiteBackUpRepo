@@ -7,8 +7,10 @@ import com.haizhang.entity.GoodsInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class GoodServiceImpl implements GoodService {
@@ -59,4 +61,22 @@ public class GoodServiceImpl implements GoodService {
     public List<GoodsInfo> queryShopGoods(int merchantId) {
         return goodsMapper.queryShopGoods(merchantId);
     }
+
+    /**
+     * @return 得到好书推荐列表
+     */
+    @Override
+    public List<GoodsInfo> queryExcellentBook() {
+        return goodsMapper.queryExcellentBook();
+    }
+
+    @Override
+    public List<GoodsInfo> queryBookByEachType() {
+        Map<String, ArrayList<GoodsInfo>> bookCategory=new HashMap<>();
+        GoodsInfo goodsInfo=new GoodsInfo();
+        List<GoodsInfo>goodsInfos=goodsMapper.queryGoodsByCategorySample();
+        return goodsInfos;
+
+    }
+
 }
