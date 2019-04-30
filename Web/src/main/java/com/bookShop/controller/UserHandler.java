@@ -2,8 +2,9 @@ package com.bookShop.controller;
 
 import com.alibaba.druid.sql.visitor.functions.Bin;
 import com.bookShop.service.UserService;
-import com.haizhang.ValidateGroup.LoginGroup;
+
 import com.haizhang.ValidateGroup.RegistGroup;
+import com.haizhang.ValidateGroup.ReviseUserInfoGroup;
 import com.haizhang.entity.GoodsInfo;
 import com.haizhang.entity.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -85,14 +87,26 @@ public class UserHandler {
         return  modelAndView;
     }
 
-
-
+    /**
+     * 返回注册用户窗体
+     * @param model
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/regist",method = RequestMethod.GET)
     public String registUserForm(Model model)throws Exception{
         model.addAttribute(new UserInfo());
         return "regist";
     }
 
+    /**
+     * 注册用户
+     * @param userInfo 用户信息
+     * @param bindingResult 校验信息
+     * @param model request模型
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/regist",method = RequestMethod.POST)
     public String registUser(@Validated(RegistGroup.class) UserInfo userInfo, BindingResult bindingResult, Model model)throws Exception{
         if(bindingResult.hasErrors()){
@@ -102,12 +116,31 @@ public class UserHandler {
         }
         String res=userServiceImpl.registUserInfo(userInfo);
         model.addAttribute("reg_state",res);
-        System.err.println(res);
         return "login";
     }
 
+    /**
+     * 修改个人信息
+     */
+    @RequestMapping(value = "/revise",method = RequestMethod.GET)
+    public String reviseInfo(Model model,HttpServletRequest request){
+        HttpSession session=request.getSession();
+        System.err.println(session.getAttribute("userInfo"));
+        model.addAttribute("userInfo",session.getAttribute("userInfo"));
+        return "information";
+    }
 
-
+    @RequestMapping(value = "/revisePersonalInfo",method = RequestMethod.POST)
+    public String revisePersonalInfo(@Validated(ReviseUserInfoGroup.class) UserInfo userInfo, BindingResult result,Model model, HttpServletRequest request) throws Exception {
+        HttpSession session=request.getSession();
+        UserInfo userInfo1=(UserInfo)session.getAttribute("userInfo");
+        int id=userInfo1.getId();
+        userInfo.setId(id);
+        userServiceImpl.reviseUserInfo(id,userInfo);
+        model.addAttribute("revise_state","修改成功！");
+        session.setAttribute("userInfo",userInfo);
+        return "information";
+    }
 
 
 

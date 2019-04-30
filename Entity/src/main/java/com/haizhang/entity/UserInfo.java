@@ -1,7 +1,8 @@
 package com.haizhang.entity;
 
-import com.haizhang.ValidateGroup.LoginGroup;
+
 import com.haizhang.ValidateGroup.RegistGroup;
+import com.haizhang.ValidateGroup.ReviseUserInfoGroup;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -15,22 +16,22 @@ import java.io.Serializable;
  * @create 2018-11-05 0:17
  */
 public class UserInfo implements Serializable {
-    @NotNull(message = "{用户名不能为空}",groups ={RegistGroup.class, LoginGroup.class})
-    @Size(min = 4,max = 20,message = "用户名长度请保持在4和{max}之间",groups ={RegistGroup.class})
+    @NotNull(message = "{用户名不能为空}",groups ={RegistGroup.class, ReviseUserInfoGroup.class})
+    @Size(min = 4,max = 20,message = "用户名长度请保持在4和{max}之间",groups ={RegistGroup.class, ReviseUserInfoGroup.class})
     private String username;    //用户账号名
 
-    @Size(min = 4,max = 30,message = "密码长度请保持在4和{max}之间",groups ={RegistGroup.class})
+    @Size(min = 4,max = 30,message = "密码长度请保持在4和{max}之间",groups ={RegistGroup.class, ReviseUserInfoGroup.class})
     private String password;
 
-    @Pattern(regexp ="\\d{11}",message = "电话格式不正确",groups ={RegistGroup.class})
+    @Pattern(regexp ="\\d{11}",message = "电话格式不正确",groups ={RegistGroup.class, ReviseUserInfoGroup.class})
     private String phone;
 
-    @Size(min=4,max = 100,message = "地址长度请保持在4和{max}之间" ,groups ={RegistGroup.class})
+    @Size(min=4,max = 100,message = "地址长度请保持在4和{max}之间" ,groups ={RegistGroup.class, ReviseUserInfoGroup.class})
     private String addr;        //用户的收货地址
     @NotNull(message = "姓名不许为空")
     private String name;        //用户的真实姓名
 
-    @Size(min = 2,max = 20,message = "昵称长度请保持在2和{max}之间",groups ={RegistGroup.class})
+    @Size(min = 2,max = 20,message = "昵称长度请保持在2和{max}之间",groups ={RegistGroup.class, ReviseUserInfoGroup.class})
     private String nikeName;    //用户昵称
 
     private int merchantFlag=1; //1代表不是卖家 0是卖家

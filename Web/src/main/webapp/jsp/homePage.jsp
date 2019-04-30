@@ -10,12 +10,7 @@
 <html>
 <head>
     <title>购书网首页</title>
-    <script src="js/scrollPane.js"></script>
-    <script src="js/jquery-3.2.1.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/homePage.css">
     <!--<script src="js/homePage.js"></script>-->
-    <link rel="stylesheet" type="text/css" href="css/scrollPane.css">
-
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
     <!-- jQuery -->
     <script src="http://code.jquery.com/jquery.js"></script>
@@ -168,13 +163,12 @@
 <body>
 <%--收藏成功--%>
 <c:if test="${enshrine_state!=null}">
-    <script>
-        alert(${enshrine_state});
-    </script>
+    <script>alert("收藏成功")</script>
 </c:if>
 
+<%--导航栏--%>
 <section id="navbarSection">
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav id="nav-head" class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -196,7 +190,7 @@
                     <span class="sr-only">(current)</span></a>
                     </li>
 
-                    <li><a href="#" style="color:white">消息</a></li>
+                    <li><a href="#">消息</a></li>
                     <li><a href="#">店铺管理</a></li>
                     <li><a href="#">我要开店</a></li>
 
@@ -206,20 +200,18 @@
                             <li><a href="#">收藏夹</a></li>
                             <li><a href="#">我的足迹</a></li>
                             <li><a href="#">我的订单</a></li>
-
                         </ul>
                     </li>
                 </ul>
 
                 <ul class="nav navbar-nav" style="margin-left: 500px">
                     <li><a href="#"><span>购物车<span class="badge" style="margin-left: 5px">0</span></span></a></li>
-                    <li><a href="/jsp/information.jsp">个人中心</a></li>
+                    <li><a href="/user/revise">个人中心</a></li>
                     <li><a href="#">注销</a></li>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
-
 </section>
 
 <section id="searchSection">
@@ -473,7 +465,7 @@
             <div class="col-md-3">
 
 
-                <div class="panel panel-default"style="margin-top: 70px">
+                <div class="panel panel-default"style="margin-top: 110px">
                     <!-- Default panel contents -->
                     <div class="panel-heading">热销排行</div>
                     <!-- List group -->

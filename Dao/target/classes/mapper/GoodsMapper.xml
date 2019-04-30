@@ -66,6 +66,8 @@
 
          </trim>
      </sql>
+
+    <cache readOnly="false"></cache>
 <!--    //获取所有货物信息，HashMap，键值对===  货物编号====货物信息-->
 <!--    public HashMap<Integer, GoodsInfo> getAllGoods();-->
         <select id="getAllGoods" resultMap="goodsInfoMap">

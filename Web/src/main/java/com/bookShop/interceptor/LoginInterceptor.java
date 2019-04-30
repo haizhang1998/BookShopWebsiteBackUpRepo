@@ -1,6 +1,7 @@
 package com.bookShop.interceptor;
 
 import com.haizhang.entity.UserInfo;
+import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -18,9 +19,10 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         for(int i=0;i<IGNORE_URL.length;i++){
             if(request.getRequestURI().contains(IGNORE_URL[i]))return true;
         }
-        UserInfo userInfo =(UserInfo) session.getAttribute("user");
+        UserInfo userInfo =(UserInfo) session.getAttribute("userInfo");
         if(userInfo!=null)return true;
-        request.getRequestDispatcher("/jsp/login.jsp").forward(request,response);
+
+        request.getRequestDispatcher("/user/login").forward(request,response);
         return false;
 
     }

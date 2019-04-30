@@ -1,4 +1,4 @@
 package com.haizhang.ValidateGroup;
 
-public interface LoginGroup {
+public interface ReviseUserInfoGroup {
 }
