@@ -130,8 +130,19 @@ public class UserHandler {
         return "information";
     }
 
+    /**
+     * 修改账号信息
+     * @param userInfo 用户信息
+     * @param result   校验错误结果
+     * @param model    模型
+     * @param request  请求玉
+     * @return
+     * @throws Exception
+     */
+
     @RequestMapping(value = "/revisePersonalInfo",method = RequestMethod.POST)
     public String revisePersonalInfo(@Validated(ReviseUserInfoGroup.class) UserInfo userInfo, BindingResult result,Model model, HttpServletRequest request) throws Exception {
+        if(result.hasErrors())return "information";
         HttpSession session=request.getSession();
         UserInfo userInfo1=(UserInfo)session.getAttribute("userInfo");
         int id=userInfo1.getId();

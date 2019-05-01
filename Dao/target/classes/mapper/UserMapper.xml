@@ -36,7 +36,7 @@
     </sql>
     <!--更新常用sql片段!-->
     <sql id="updateSql">
-    <trim prefixOverrides=","
+    <trim suffix="where" prefixOverrides=","
           suffixOverrides=",">
         <if test="password!=null and password.trim()!=''.toString()">
             password=#{password},
@@ -57,9 +57,6 @@
             imageLogo=#{imageLogo}
         </if>
     </trim>
-    <where>
-         id=#{id}
-    </where>
     </sql>
     
 <!--    public int registUserInfo(@Param("userInfo") UserInfo userInfo);-->
@@ -88,7 +85,7 @@
 <!--    public int reviseUserInfo(@Param("userInfo")UserInfo userInfo);-->
            <update id="reviseUserInfo" >
                update user set
-               <include refid="updateSql"></include>
+               <include refid="updateSql"></include>id=#{id}
            </update>
 
 <!--    public int freezeUser(@Param("id")Integer userId);-->

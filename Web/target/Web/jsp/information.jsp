@@ -102,7 +102,7 @@
             return false;
         }
         // 判断是否和session的password一致
-        if(newPassowrd.value!=ensurePassword.value){
+        if(passowrd.value!=ensurePassword.value){
             alert("两次密码确认不一致！");
             return false;
         }
@@ -224,7 +224,7 @@
                         <label class="text-right col-md-2">头像</label>
                         <c:choose>
                         <c:when test="${userInfo.imageLogo!=null}">
-                        <img  src="${userInfo.imgDir}" style="float: left;display: inline-block;width: 100px;height: 100px;margin-left: 20px;border: 2px dotted darkgray;padding: 5px">
+                        <img  src="${userInfo.imageLogo}" style="float: left;display: inline-block;width: 100px;height: 100px;margin-left: 20px;border: 2px dotted darkgray;padding: 5px">
                         </c:when>
                             <c:otherwise>
                                 <img  src="/images/defaultUserLogo.png" style="float: left;display: inline-block;width: 100px;height: 100px;margin-left: 20px;border: 2px dotted darkgray;padding: 5px">
@@ -240,7 +240,7 @@
             </sf:form>
         </div>
         <div role="tabpanel" class="tab-pane" id="accountInfo" style="margin-top: 80px">
-            <form action="/user/revisePersonalInfo" method="post" class="form-horizontal" onsubmit="return toVaild()">
+            <sf:form action="/user/revisePersonalInfo" method="post" commandName="userInfo" class="form-horizontal" onsubmit="return toVaild()">
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-12">
                         <label class="text-right col-md-2">原始密码</label>
@@ -254,8 +254,9 @@
                     <div class="col-md-offset-2 col-md-12">
                         <label class="text-right col-md-2">新密码</label>
                         <div class="col-md-3">
-                            <input type="password" id="newPassword" name="newPassword" class="form-control">
+                            <input type="password" id="newPassword"  name="password" class="form-control">
                         </div>
+                        <span><sf:errors path="password" cssStyle="color:red"></sf:errors></span>
                     </div>
                 </div>
 
@@ -272,7 +273,7 @@
                     <input type="submit" style="color:white;font-weight: bold;border: none;font-size: 20px"
                            class="col-md-3 col-md-offset-4 btn-success" value="提交修改">
                 </div>
-            </form>
+            </sf:form>
         </div>
     </div>
 </section>
