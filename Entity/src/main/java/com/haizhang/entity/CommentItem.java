@@ -1,10 +1,7 @@
 package com.haizhang.entity;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-
 /**
  * 用户评论的Javabean
  * @author 海章
@@ -16,6 +13,8 @@ public class CommentItem implements Serializable {
     private String commentDetail;  //评论的具体信息
     private Date time;     //评论发布的时间
     private String nikeName; //用户昵称
+    private int score; //书本的评分
+    private String imageLogo;//评论用户的头像
 
     public String getNikeName() {
         return nikeName;
@@ -55,5 +54,34 @@ public class CommentItem implements Serializable {
 
     public void setTime(Date time) {
         this.time = time;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public String getImageLogo() {
+        return imageLogo;
+    }
+
+    public void setImageLogo(String imageLogo) {
+        this.imageLogo = imageLogo;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    @Override
+    public String toString() {
+        return "CommentItem{" +
+                "goodsId=" + goodsId +
+                ", id=" + id +
+                ", commentDetail='" + commentDetail + '\'' +
+                ", time=" + time +
+                ", nikeName='" + nikeName + '\'' +
+                ", score=" + score +
+                ", imageLogo='" + imageLogo + '\'' +
+                '}';
     }
 }

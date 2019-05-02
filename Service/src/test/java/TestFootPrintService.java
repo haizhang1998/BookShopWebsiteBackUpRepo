@@ -14,6 +14,6 @@ import javax.annotation.Resource;
 @TransactionConfiguration(transactionManager = "transactionManager",defaultRollback = true)
 @ContextConfiguration("classpath:spring-aop.xml")
 
-public class TestFootPrintServic {
+public class TestFootPrintService {
 
 }

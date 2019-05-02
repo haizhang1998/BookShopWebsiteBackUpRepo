@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bookShop.mapper.CommentMapper">
+
+    <resultMap id="commemntInfoMap" type="CommentItem">
+       <id property="goodsId" column="goodsId"></id>
+        <result property="id" column="id"></result>
+        <result property="commentDetail" column="commentDetail"></result>
+        <result property="time" column="time"></result>
+        <result property="nikeName" column="nikeName"></result>
+        <result property="score" column="score"></result>
+        <result property="imageLogo" column="imageLogo"></result>
+    </resultMap>
+
+<!--    //获取商品所有的评价-->
+<!--    public List<CommentItem> getAllCommentOfGood(int goodsId);-->
+       <select id="getAllCommentOfGood" resultMap="commemntInfoMap">
+           select * from comment where goodsId=#{goodsId}
+       </select>
+<!--    //发送评价-->
+<!--    public boolean sendCommentItem(CommentItem commentItem);-->
+       <insert id="sendCommentItem">
+           insert into comment values(#{goodsId},#{id},#{commentDetail},#{time},#{nikeName},#{score},#{imageLogo});
+       </insert>
+
+<!--    //删除评价-->
+<!--    public boolean deleteCommentItem(int userId, int goodsId);-->
+        <delete id="deleteCommentItem">
+            delete from comment where id=#{userId} and goodsId=#{goodsId};
+        </delete>
+<!--    //得到某一个用户对商品的评价，可以判断是否追加评价-->
+<!--    public CommentItem  getOneUserComment(int userId, int goodsId);-->
+       <select id="getOneUserComment" resultMap="commemntInfoMap">
+           select * from comment where goodsId=#{goodsId} and id=#{userId}
+       </select>
+
+
+
+</mapper>

@@ -1,8 +1,10 @@
 package com.bookShop.controller;
 
+import com.bookShop.service.CommentService;
 import com.bookShop.service.GoodService;
 import com.bookShop.service.MerchantService;
 import com.bookShop.service.SaledGoodsService;
+import com.haizhang.entity.CommentItem;
 import com.haizhang.entity.GoodsInfo;
 import com.haizhang.entity.MerchantShop;
 import com.haizhang.entity.SaledInfo;
@@ -30,6 +32,9 @@ public class GoodsHandler {
     SaledGoodsService saledGoodsServiceImpl;
     @Resource
     MerchantService merchantServiceImpl;
+    @Resource
+    CommentService commentServiceImpl;
+
 
 
     public GoodsHandler(){}
@@ -82,7 +87,7 @@ public class GoodsHandler {
     }
 
     /**
-     *购买书籍
+     *购买书籍打开书本的详细界面
      * @param goodsId
      * @param model
      * @return
@@ -92,17 +97,27 @@ public class GoodsHandler {
         //根据goodsId和goodsName寻找指定书本
         GoodsInfo goodsInfo=new GoodsInfo();
         goodsInfo.setGoodsId(goodsId);
-        goodServiceImpl.queryGoodsByGoodsInfo(goodsInfo);
+        model.addAttribute("goodsInfo",  goodServiceImpl.queryGoodsByGoodsInfo(goodsInfo));
+        //寻找该书本的全部评价列表
+        List<CommentItem> commentItemLists=commentServiceImpl.getAllCommentOfGood(goodsId);
+        model.addAttribute("commentLists",commentItemLists);
+        //获取该书本的销量情况
+        SaledInfo saledInfo=saledGoodsServiceImpl.getSaledNumberById(goodsId);
+        model.addAttribute("saledInfo",saledInfo);
         //转到商品详细界面
         return "goodsInterface";
     }
 
+    /**
+     *
+     * @param goodsId
+     * @param model
+     * @return
+     */
     @RequestMapping("/searchGoods/{goodsId}")
     public String searchGoods(@PathVariable int goodsId,Model model){
         System.err.println("search:"+goodsId);
         return "homePage";
     }
-
-
 
 }

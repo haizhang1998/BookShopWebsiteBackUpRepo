@@ -1,6 +1,7 @@
 <html lang="en">
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!--<script src="js/homePage.js"></script>-->
 <head>
     <meta charset="UTF-8">
@@ -10,6 +11,7 @@
 <!-- jQuery -->
 <script src="http://code.jquery.com/jquery.js"></script>
 <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script src="/lib/jquery.raty.js"></script>
 <head>
     <title>商品详细信息</title>
     <link rel="stylesheet" type="text/css" href="css/goodsInterface_css.css">
@@ -125,7 +127,71 @@
         color:#f40;
         font-size:23px;
     }
+    #add,#sub{
+        cursor: pointer;
+    }
+
 </style>
+
+<script>
+    $(function() {
+        $.fn.raty.defaults.path = '/lib/img';
+        $("[class^=function-demo]").raty({
+            number: 5, //多少个星星设置
+            targetType: 'hint', //类型选择，number是数字值，hint，是设置的数组值
+            path: '/lib/img',
+
+            cancelOff: 'cancel-off.png',
+            cancelOn: 'cancel-on.png',
+            readOnly: true,
+            size: 24,
+            starHalf: 'star-half.png',
+            starOff: 'star-off.png',
+            starOn: 'star-on.png',
+            cancel: false,
+            targetKeep: true,
+
+            // targetText: '请选择评分',
+            score: function() {
+                return $(this).attr('data-score');
+            },
+            // click: function(score, evt) {
+            //     alert('ID: ' + $(this).attr('id') + "\nscore: " + score + "\nevent: " + evt.type);
+            //
+            // }
+        });
+        $("#sub").click(function () {
+            if(parseInt($("#goodsNumber").val())>0){
+                $("#goodsNumber").val(parseInt($("#goodsNumber").val())-1);
+            }
+        });
+        $("#add").click(function () {
+            var num=$("#goodsNumber").val();
+            if(parseInt(num)>=0&&parseInt(num)<parseInt(${goodsInfo.remainNumber})){
+                $("#goodsNumber").val(parseInt(num)+1);
+            }
+        });
+        $("#addGoodBtn").click(function () {
+            var num=$("#goodsNumber").val();
+            if(parseInt(num)>parseInt(${goodsInfo.remainNumber})){
+                alert("超出库存范围！如有需求请联系商家！");
+                return ;
+            }
+            if(parseInt(num)==0){
+                alert("请选择数量");
+                return;
+            }
+        });
+
+        var userId=parseInt(${sessionScope.userInfo.id});
+        var merchantId=parseInt(${goodsInfo.possesserId});
+        if(userId!=merchantId){
+            $("#delComment").addClass("disable","disabled");
+        }
+
+
+    });
+</script>
 <body>
 <!-- 导航栏div -->
 <section id="navbarSection">
@@ -208,12 +274,12 @@
                 <div class="row">
                     <div class="col-sm-12 col-md-8 col-md-offset-2" >
                         <div class="thumbnail">
-                            <img src="/images/文学/1.jpg" alt="图书图片">
+                            <img src="${goodsInfo.imgDir}" alt="图书图片">
                             <div class="caption">
-                                <h3 class="text-center">Thumbnail label</h3>
+                                <h3 class="text-center">${goodsInfo.goodsName}</h3>
                                 <p class="text-center">声明:此书绝对正版，读者朋友们请放心购买！</p>
-                                <p><a href="#" class="btn btn-danger col-md-6" role="button">点击收藏</a>
-                                    <a href="#" class="btn btn-primary  col-md-6"  role="button">联系卖家</a>
+                                <p><a href="/goods/enshrine/${goodsInfo.goodsId}" class="btn btn-danger col-md-6" role="button">点击收藏</a>
+                                    <a href="/merchant/chat/${goodsInfo.possesserId}" class="btn btn-primary  col-md-6"  role="button">联系卖家</a>
                                 </p>
                             </div>
                         </div>
@@ -222,14 +288,14 @@
             </div>
             <div class="col-md-6">
                 <div class="row">
-                    <p style="height: 23px; font-size:20px;color:#000;" ><span>书籍名称:bookName</span></p>
+                    <p style="height: 23px; font-size:20px;color:#000;" ><span>书籍名称:${goodsInfo.goodsName}</span></p>
                 </div>
                 <div class="row">
                     <p style="color:red; font-size:14px;font-weight: normal;width: 510px;height:38px;overflow: hidden;"><span>描述信息:${goodsInfo.detail}</span></p>
                 </div>
                 <div class="row">
                     <span style="color: #6c6c6c;font-size: 16px;">商品价格：</span>
-                    <span style=" font-weight: bold; font-size: 23px; color:#f40;">￥123</span>
+                    <span style=" font-weight: bold; font-size: 23px; color:#f40;">￥${goodsInfo.price}</span>
                 </div>
                 <div class="row" style="margin-top:10px">
                     <span class="col-md-4" style="margin-left: -16px; font-size: 16px; color: #6c6c6c;">请选择你所在区域:</span>
@@ -251,10 +317,10 @@
 
                 <div class="row" style="margin-top: 10px;">
                     <div class="col-md-4 text-center"  style="border: 1px dotted #6c6c6c" >
-                        <span class="hightLightFont">销量:</span><span class="text-muted normalFont">123</span>
+                        <span class="hightLightFont">销量:</span><span class="text-muted normalFont">${saledInfo.saledNumber}</span>
                     </div>
                     <div class="col-md-4 text-center"  style="border: 1px dotted #6c6c6c">
-                        <span class="hightLightFont">库存:</span><span class="text-muted normalFont">123</span>
+                        <span class="hightLightFont">库存:</span><span class="text-muted normalFont">${goodsInfo.remainNumber}</span>
                     </div>
 
                 </div>
@@ -264,9 +330,9 @@
                         购买数量:
                     </span>
                     <div class="input-group col-md-5" >
-                        <span class="input-group-addon sub">-</span>
-                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
-                        <span class="input-group-addon add">+</span>
+                        <span class="input-group-addon" id="sub">-</span>
+                        <input type="text" value="0" id="goodsNumber" class="form-control" aria-label="Amount (to the nearest dollar)">
+                        <span class="input-group-addon" id="add">+</span>
                     </div>
                 </div>
                 <div class="row" style="margin-top: 30px;">
@@ -287,8 +353,8 @@
     <div class="container">
         <div class="jumbotron">
             <h3>书本简介</h3>
-            <p>这是一本很好的书籍</p>
-            <p><a class="btn btn-primary btn-lg" href="#" role="button">进店看看</a></p>
+            <p>${goodsInfo.detail}</p>
+            <p><a class="btn btn-primary btn-lg" href="" role="button">进店看看</a></p>
         </div>
     </div>
 </section>
@@ -296,7 +362,12 @@
 <section id="commentSection" class="logoStyle" style="border: 1px solid #e7e7e7">
     <div class="container-fluid">
         <ul>
-            <li ><a href="#" style="background: #e7e7e7;color: black">用户评价</a></li>
+            <li ><a href="#" style="background: #e7e7e7;color: black">用户评价
+                    <span class="badge">
+                        <c:out value="${commentLists.size()}"></c:out>
+                    </span>
+                </a>
+            </li>
         </ul>
     </div>
 </section>
@@ -304,27 +375,34 @@
 
 <section id="commentDetailSection">
     <div class="container">
-        <div class="row" style="margin-top: 20px">
-            <div class="row" style="margin-left: 10px">
-                <div class="media">
-                    <div class="media-left">
-                        <a href="#">
-                            <img class="media-object" src="images/logo.jpg" alt="用户头像" width="64px" height="64px">
-                        </a>
-                    </div>
-                    <div class="media-body">
-                        <h4 class="media-heading">用户姓名</h4>
-                        adjoias
+        <c:forEach var="commentItem" items="${commentLists}" varStatus="index">
+            <div class="row" style="margin-top: 20px">
+                <div class="row" style="margin-left: 10px">
+                    <div class="media">
+                        <div class="media-left">
+                            <a href="#">
+                                <img class="media-object" src="${commentItem.imageLogo}" alt="用户头像" width="64px" height="64px">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading">用户昵称:${commentItem.nikeName}</h4>
+                            评论日期:
+                            <fmt:formatDate value="${commentItem.time}" pattern="yyyy年MM月dd日HH点mm分ss秒"></fmt:formatDate>
+                        </div>
                     </div>
                 </div>
+                <div class="row" style="margin-left: 10px">
+                    <textarea class="col-md-11 textarea1" rows="5" disabled="disabled" >${commentItem.commentDetail}</textarea>
+                </div>
+                <div class="row" style="margin-left: 10px">
+                    <span class="col-md-2 text-muted" style="font-weight: bold;font-size: 20px">用户评分：</span>
+                    <div class="demo  col-md-4" style="margin-left: -90px">
+                        <span class="function-demo${index.index} target-demo"   data-score="${commentItem.score}"></span><span id="function-hint${index.index}" class="hint" style="margin-left: 10px;"></span>
+                    </div>
+                        <input class="btn btn-primary col-md-2 col-md-offset-4" style="font-weight: bold;margin-top: 10px" id="delComment" value="删除">
+                </div>
             </div>
-            <div class="row" style="margin-left: 10px">
-                <textarea class="col-md-11 textarea1" rows="5" disabled="disabled" >123123</textarea>
-            </div>
-            <div class="row" style="margin-left: 10px">
-                <input class="btn btn-primary col-md-2 col-md-offset-9" style="font-weight: bold;margin-top: 10px" value="删除">
-            </div>
-        </div>
+        </c:forEach>
     </div>
 </section>
 
