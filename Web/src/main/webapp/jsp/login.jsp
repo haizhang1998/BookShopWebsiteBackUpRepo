@@ -104,6 +104,10 @@
     <c:if test="${reg_state!=null}">
         <script>alert("注册成功!请登录")</script>
     </c:if>
+    <c:if test="${logout_state!=null}">
+        <script>alert("注销成功！")</script>
+    </c:if>
+
     <h1 style="color: black">会员登录界面</h1>
     <!--如果登录失败，则打印失败信息-->
 

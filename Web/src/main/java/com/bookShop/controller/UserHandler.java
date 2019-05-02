@@ -3,6 +3,7 @@ package com.bookShop.controller;
 import com.alibaba.druid.sql.visitor.functions.Bin;
 import com.bookShop.service.UserService;
 
+import com.bookShop.utils.ResolveUpImage;
 import com.haizhang.ValidateGroup.RegistGroup;
 import com.haizhang.ValidateGroup.ReviseUserInfoGroup;
 import com.haizhang.entity.GoodsInfo;
@@ -11,15 +12,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
+import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.HttpRequestHandler;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -29,7 +35,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.File;
 import java.util.List;
+import java.util.UUID;
+
 /**
  * 处理用户操作信息
  */
@@ -46,6 +55,7 @@ public class UserHandler {
     public UserHandler(UserService userService) {
         this.userServiceImpl=userService;
     }
+
 
 
     /**
@@ -141,18 +151,33 @@ public class UserHandler {
      */
 
     @RequestMapping(value = "/revisePersonalInfo",method = RequestMethod.POST)
-    public String revisePersonalInfo(@Validated(ReviseUserInfoGroup.class) UserInfo userInfo, BindingResult result,Model model, HttpServletRequest request) throws Exception {
-        if(result.hasErrors())return "information";
+    public String revisePersonalInfo(MultipartFile profilePicture,@Validated(ReviseUserInfoGroup.class)UserInfo userInfo, BindingResult result,  Model model, HttpServletRequest request) throws Exception {
+        if(result.hasErrors()){
+            for(ObjectError o:result.getAllErrors()){
+                System.out.println(o.getDefaultMessage()+","+o.getObjectName());
+            }
+            return "information";
+        }
         HttpSession session=request.getSession();
-        UserInfo userInfo1=(UserInfo)session.getAttribute("userInfo");
-        int id=userInfo1.getId();
-        userInfo.setId(id);
-        userServiceImpl.reviseUserInfo(id,userInfo);
+        //处理图片
+        ResolveUpImage resolveUpImage=ResolveUpImage.getInstance();
+        UserInfo user=resolveUpImage.resolveUserUpImage( (UserInfo) session.getAttribute("userInfo"),profilePicture);
+        //同步数据库
+        userServiceImpl.reviseUserInfo(user.getId(),user);
         model.addAttribute("revise_state","修改成功！");
         session.setAttribute("userInfo",userInfo);
         return "information";
     }
 
+    @RequestMapping(value = {"/logout"},method ={RequestMethod.GET,RequestMethod.POST})
+    public String logout(HttpServletRequest request,Model model,HttpSession session){
+        UserInfo userInfo=(UserInfo) session.getAttribute("userInfo");
+        if(userInfo!=null)
+            session.removeAttribute("userInfo");
+        model.addAttribute("logout_state","注销成功！");
+        model.addAttribute(new UserInfo());
+        return "login";
+    }
 
 
 }

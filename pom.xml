@@ -30,6 +30,9 @@
         <commons-dbcp.version>1.4</commons-dbcp.version>
         <common.dbUtil.version>1.7</common.dbUtil.version>
         <mocktio.version>1.10.19</mocktio.version>
+        <fileupload.version>1.3.1</fileupload.version>
+        <commons-io.version>2.4</commons-io.version>
+        <commons-codec.version>1.10</commons-codec.version>
     </properties>
 
     <build>
@@ -198,6 +201,24 @@
             <version>${mocktio.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <!--上传组件包start -->
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>${fileupload.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>${commons-codec.version}</version>
+        </dependency>
+        <!--上传组件 end -->
     </dependencies>
     </dependencyManagement>
 

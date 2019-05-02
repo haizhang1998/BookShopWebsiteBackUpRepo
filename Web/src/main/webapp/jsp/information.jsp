@@ -110,6 +110,10 @@
 
 </script>
 <body>
+<c:if test="${revise_state!=null}">
+    <script>alert("修改成功");</script>
+</c:if>
+
 <section id="navbarSection">
     <nav id="nav-head" class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
@@ -175,7 +179,7 @@
 <section id="#tabpaneContent">
     <div class="tab-content" >
         <div role="tabpanel" class="tab-pane active" id="personalInfo" style="margin-top: 80px">
-            <sf:form action="/user/revisePersonalInfo" method="post" class="form-horizontal" commandName="userInfo">
+            <sf:form enctype="multipart/form-data"  action="/user/revisePersonalInfo" method="post" class="form-horizontal" commandName="userInfo">
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-12">
                         <label class="text-right col-md-2">姓名</label>
@@ -227,10 +231,10 @@
                         <img  src="${userInfo.imageLogo}" style="float: left;display: inline-block;width: 100px;height: 100px;margin-left: 20px;border: 2px dotted darkgray;padding: 5px">
                         </c:when>
                             <c:otherwise>
-                                <img  src="/images/defaultUserLogo.png" style="float: left;display: inline-block;width: 100px;height: 100px;margin-left: 20px;border: 2px dotted darkgray;padding: 5px">
+                                <img  src="/images/userLogo/wink.png" style="float: left;display: inline-block;width: 100px;height: 100px;margin-left: 20px;border: 2px dotted darkgray;padding: 5px">
                             </c:otherwise>
                         </c:choose>
-                        <input type="file" style="float: left;display: inline-block;" >
+                        <input type="file" name="profilePicture" accept="image/png,image/jpeg" class="col-md-2" />
                     </div>
                 </div>
                 <div class="form-group">

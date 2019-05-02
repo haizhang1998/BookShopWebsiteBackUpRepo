@@ -207,7 +207,7 @@
                 <ul class="nav navbar-nav" style="margin-left: 500px">
                     <li><a href="#"><span>购物车<span class="badge" style="margin-left: 5px">0</span></span></a></li>
                     <li><a href="/user/revise">个人中心</a></li>
-                    <li><a href="#">注销</a></li>
+                    <li><a href="/user/logout">注销</a></li>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->

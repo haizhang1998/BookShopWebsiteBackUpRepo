@@ -6,11 +6,13 @@ import com.bookShop.service.SaledGoodsService;
 import com.haizhang.entity.GoodsInfo;
 import com.haizhang.entity.MerchantShop;
 import com.haizhang.entity.SaledInfo;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletContext;
@@ -79,10 +81,20 @@ public class GoodsHandler {
         return "homePage";
     }
 
-    @RequestMapping("/buy/{goodsId}")
-    public String purchaseGoods(@PathVariable int goodsId,Model model){
-        System.err.println("buy:"+goodsId);
-        return "homePage";
+    /**
+     *购买书籍
+     * @param goodsId
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/buy/{goodsId}",method = RequestMethod.GET)
+    public String GoodsDetailForm(@PathVariable int goodsId,Model model){
+        //根据goodsId和goodsName寻找指定书本
+        GoodsInfo goodsInfo=new GoodsInfo();
+        goodsInfo.setGoodsId(goodsId);
+        goodServiceImpl.queryGoodsByGoodsInfo(goodsInfo);
+        //转到商品详细界面
+        return "goodsInterface";
     }
 
     @RequestMapping("/searchGoods/{goodsId}")

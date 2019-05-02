@@ -1,9 +1,6 @@
 package com.haizhang.entity;
-
-
 import com.haizhang.ValidateGroup.RegistGroup;
 import com.haizhang.ValidateGroup.ReviseUserInfoGroup;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -16,7 +13,7 @@ import java.io.Serializable;
  * @create 2018-11-05 0:17
  */
 public class UserInfo implements Serializable {
-    @NotNull(message = "{用户名不能为空}",groups ={RegistGroup.class, ReviseUserInfoGroup.class})
+    @NotNull(message = "{用户名不能为空}",groups ={RegistGroup.class})
     @Size(min = 4,max = 20,message = "用户名长度请保持在4和{max}之间",groups ={RegistGroup.class, ReviseUserInfoGroup.class})
     private String username;    //用户账号名
 
@@ -28,7 +25,7 @@ public class UserInfo implements Serializable {
 
     @Size(min=4,max = 100,message = "地址长度请保持在4和{max}之间" ,groups ={RegistGroup.class, ReviseUserInfoGroup.class})
     private String addr;        //用户的收货地址
-    @NotNull(message = "姓名不许为空")
+    @NotNull(message = "姓名不许为空",groups = {ReviseUserInfoGroup.class})
     private String name;        //用户的真实姓名
 
     @Size(min = 2,max = 20,message = "昵称长度请保持在2和{max}之间",groups ={RegistGroup.class, ReviseUserInfoGroup.class})

@@ -1,264 +1,386 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: 咯还长
-  Date: 2018/11/12
-  Time: 12:21
-  To change this template use File | Settings | File Templates.
---%>
+<html lang="en">
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<script type="text/javascript" src="js/jquery-3.2.1.js"></script>
-<html>
+<!--<script src="js/homePage.js"></script>-->
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+<!-- jQuery -->
+<script src="http://code.jquery.com/jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 <head>
     <title>商品详细信息</title>
     <link rel="stylesheet" type="text/css" href="css/goodsInterface_css.css">
 </head>
-<script>
-
-   $(function () {
-       $(document).ready(function () {
-
-
-           $("#myFootPrint").click(function () {
-               <c:choose>
-               <c:when test="${sessionScope.userInfo==null}">
-               window.location.href="index.jsp";
-               </c:when>
-               <c:otherwise>
-               window.location.href="affair.do?action=getAllFootPrint&userId=${sessionScope.userInfo.id}";
-               </c:otherwise>
-               </c:choose>
-           });
-           $("#enshrine").click(function () {
-               <c:choose>
-               <c:when  test="${sessionScope.userInfo==null}">
-               window.location.href="index.jsp";
-               </c:when>
-               <c:otherwise>
-               window.location.href="affair.do?action=getEnshrineGoods&userId=${sessionScope.userInfo.id}";
-               </c:otherwise>
-               </c:choose>
-           });
-       });
-       $("#increaseBtn").click(function () {
-           var num=$("#selectNumText").val();
-            if(parseInt($("#selectNumText").val())>=0&&parseInt(num)<parseInt(${sessionScope.goodsInfo.remainNumber})){
-                $("#selectNumText").val(parseInt($("#selectNumText").val())+1);
-            }
-       });
-       $("#decreaseBtn").click(function () {
-           if(parseInt($("#selectNumText").val())>0){
-               $("#selectNumText").val(parseInt($("#selectNumText").val())-1);
-           }
-       });
-
-       $("#addGoodBtn").click(function () {
-           var num=$("#selectNumText").val();
-           if(parseInt(num)>parseInt(${sessionScope.goodsInfo.remainNumber})){
-              alert("超出库存范围！如有需求请联系商家！");
-              return ;
-           }
-           if(parseInt(num)==0){
-               alert("请选择数量");
-               return;
-           }
-
-           <c:if test="${sessionScope.userInfo==null}">
-           <c:redirect url="index.jsp"></c:redirect>
-           </c:if>
-           var num=$("#selectNumText").val();
-           window.location.href="Cart.do?action=addInCart&userId=${sessionScope.userInfo.id}&goodsId=${goodsInfo.goodsId}&selectNumber="+num;
-
-       })
-
-
-       $("#sendComent-a").click(function () {
-           var comment=$("#commentAear").val();
-           window.location.href="affair.do?action=sendComment&userId=${sessionScope.userInfo.id}&goodsId=${sessionScope.goodsInfo.goodsId}&commentDetail="+comment;
-
-       })
-   });
-
-
-
-
-</script>
 <style>
     #moneyDiv{
         height:60px;
         width: 510px;
-        background-image: url("images/grayBg.jpg");
-        background-repeat: no-repeat;
-        background-size: 100%,100%;
+
         float: left;
         margin-top:10px
+    }
+
+    #searchSection{
+        margin-top: 60px;
+        height: 100px;
+    }
+
+    #searchSection>div>div>img{
+        width:80px;
+        height:80px;
+        margin-top: 10px;
+        margin-left: 10px;
 
     }
-    img{
-        width:300px;
-        height: 350px;
+    #searchSection>div>div>div{
+        display: inline-block;
+        width: 700px;
+        margin-top: 30px;
+        margin-left: 160px
+    }
+    .logoStyle{
+        margin-top:30px;
+        border-bottom: 1px solid black;
+        height: 47px;
+        margin-left: 60px;
+        width: 1165px;
+    }
+
+    ul{
+
+        list-style: none;
+    }
+    #commentSection>div>ul>li，#secondSection>div>ul>li{
+        display: inline-block;
+        float:left;
+    }
+    #commentSection>div>ul>li>a,#secondSection>div>ul>li>a{
+        background: black;
+        margin-left: -58px;
+        color: white;
+        font-size: 24px;
+        padding: 15px;
+    }
+
+    #goodsDetailSection{
+        margin-top: 60px;
+    }
+
+    #commentSection{
+        margin-top: 60px;
+    }
+
+    #addGoodBtn{
+        width: 300px;
+        height: 42px;
+        border-radius: 3px;
+        border: 0;
+        color: #fff;
+        display: inline-block;
+        overflow: hidden;
+        cursor: pointer;
+        zoom: 1;
+        font-size: 20px;
+        font-weight: bold;
+        background: #f40;
+    }
+    .textarea1{
+        padding-top: 20px;
+        padding-left:40px;
+        font-size:20px;
+        background: white;
+        color: #6c6c6c;
+    }
+
+    a {
+        text-decoration: none;
+
+
+    }
+    a:hover {
+        text-decoration: none;
+        color:antiquewhite;
+    }
+    a:active{
+        text-decoration: none;
+        color:antiquewhite;
+    }
+    a:visited{
+        text-decoration: none;
+        color:antiquewhite;
+    }
+    a:link{
+        text-decoration: none;
+        color:antiquewhite;
+    }
+    .hightLightFont{
+        color: #6c6c6c;
+        font-size:16px;
+    }
+    .normalFont{
+        margin-left: 10px;
+        color:#f40;
+        font-size:23px;
     }
 </style>
 <body>
 <!-- 导航栏div -->
-<div id="wrapper-top">
-    <div id="nav" >
-        <ul >
-            <c:choose>
-
-                <c:when test="${sessionScope.userInfo!=null}">
-                    <li  class="li1">欢迎,${userInfo.name}</li>
-                </c:when>
-
-                <c:otherwise>
-                    <li class="li1"> <a href="index.jsp" style="color: red">亲，请先登录</a></li>
-                </c:otherwise>
-
-            </c:choose>
-
-            <li class="li1"> <a href="#" >个人中心</a></li>
-            <li class="li1" ><a href="#" >消息 </a></li>
-            <c:if test="${sessionScope.userInfo!=null}">
-                <li class="li2" ><a href="logout.jsp" style="color: red;font-weight: bold">点我注销</a></li>
-            </c:if>
-            <li class="li2"><a href="Cart.do?action=getCart" style="float: left"><p style="float:left;display:inline-block;color: #ff4400;"><span>购物车&nbsp;${sessionScope.myCart.allGoodsCount}</span></p></a></li>
-            <li class="li2"> <a id="enshrine">收藏夹</a> </li>
-            <li class="li2"><a id="myFootPrint">我的足迹</a></li>
-            <li class="li2"> <a href="openShop.jsp">我要开店</a></li>
-            <li class="li2"><a href="affair.do?action=updateHotAndNew">返回首页</a></li>
-            <li class="li2"><a href="affair.do?action=getUserOrders"> 我的订单</a>
-            <li class="li2"><a href="merchantManage.jsp">卖家管理</a>
-        </ul>
-    </div>
-</div>
-
-<div id="tabDiv">
-    <ul>
-        <li><a href="goodsInterface.jsp" style="color: white;">所有宝贝</a></li>
-    </ul>
-</div>
-<c:if test="${goodsInfo!=null}">
-
-<div id="goodsDetailWrapper" >
-<div class="imgDiv">
-    <img src="${goodsInfo.imgDir}" alt="糟糕！网速似乎很慢...."/>
-    <a class="enshrine" id="enshrine-a" href="affair.do?action=addEnshrineGood&goodsId=${goodsInfo.goodsId}&userId=${userInfo.id}">点我收藏</a>
-</div>
-    <div id="goodsDetailDiv">
-        <p class="f1" style="height: 23px"><span>书籍名称：${goodsInfo.goodsName}</span></p>
-        <p class="f1" style="color:red; font-size:14px;font-weight: normal;width: 510px;height:35px"><span>描述信息:${goodsInfo.detail}</span></p>
-
-        <div id="moneyDiv">
-            <div id="moneyDiv-son">
-                <p class="f3"><span>商品价格：</span></p>
-            <p class="f2" ><span>￥${goodsInfo.price}</span></p>
-            </div>
-        </div>
-        <div id="postPriceDiv">
-            <p class="f3" style="margin-top: 7px;"><span>请选择你所在区域:</span></p>
-            <div id="selectAddrDiv">
-                <select name="Addr" style="background:gold;border: none;height:25px">
-                    <option value="广东">广东</option>
-                    <option value="北京">北京</option>
-                    <option value="上海">上海</option>
-                    <option value="南京">南京</option>
-                    <option value="重庆">重庆</option>
-                    <option value="黑龙江">黑龙江</option>
-                </select>
+<section id="navbarSection">
+    <nav id="nav-head" class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
 
             </div>
-            <p class="f3" style="margin-top: 7px;font-size: 14px;margin-left:90px;"><span>运费:</span></p>
-            <p class="f3" style="margin-top: 7px;font-size: 16px;margin-left:10px;color: red"><span>￥6</span></p>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+
+                    <li><a href="#">
+                    <li>亲，请登录</li>
+                    <span class="sr-only">(current)</span></a>
+                    </li>
+
+                    <li><a href="#">消息</a></li>
+                    <li><a href="#">店铺管理</a></li>
+                    <li><a href="#">我要开店</a></li>
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">信息管理<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">收藏夹</a></li>
+                            <li><a href="#">我的足迹</a></li>
+                            <li><a href="#">我的订单</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <ul class="nav navbar-nav" style="margin-left: 500px">
+                    <li><a href="#"><span>购物车<span class="badge" style="margin-left: 5px">0</span></span></a></li>
+                    <li><a href="/user/revise">个人中心</a></li>
+                    <li><a href="/user/logout">注销</a></li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+</section>
+
+<section id="searchSection">
+    <div class="container" >
+        <div class="row">
+            <img src="/images/logo.jpg" width="64px" height="64px" class="pull-left"><span class="searchFont col-md-2" style="margin-top: 40px">海淘商城</span>
+            <div >
+                <form class="form-horizontal">
+                    <div class="form-group" style="display: inline-block;margin-left: 150px;">
+                        <input type="text" class="form-control" style="width: 390px" placeholder="搜一搜，更多好书等你看">
+                    </div>
+                    <button type="submit"class="btn btn-default" style="width:100px;display: inline-block;margin-left: 10px;margin-top: -2px">Submit</button>
+                </form>
+            </div>
+
         </div>
-        <ul id="comment-ul">
-            <li class="li3" style="padding-left:50px;padding-right:50px;">销量:<p class="f4"><span>
-                <c:out value="${saledInfo.saledNumber}" default="0"></c:out>
-            </span></p></li>
-            <li class="li3" style="padding-left:50px;padding-right:50px;">库存量：<p class="f4">${goodsInfo.remainNumber}</p></li>
-        </ul>
-
-        <div id="selectNumberDiv">
-            <p style="margin-right: 50px;margin-left:25px;margin-top:5px;height: 20px;width:80px;display: inline-block;font-size: 15px;color: #6c6c6c">
-                购买数量:
-            </p>
-
-            <input type="button" id="decreaseBtn" class="btn1" style="margin-right:-4px;" value="<" >
-            <input id="selectNumText" type="text" size="3" maxlength="10" style="text-align:center;height:32px;margin-top: 1px" value="0">
-            <input type="button" id="increaseBtn" class="btn1" style="margin-left:-4px" value=">">
-        </div>
-
-        <div id="addGoodDiv">
-            <input type="button"  id="addGoodBtn" value="加入购物车">
-
-            <c:if test="${sessionScope.message=='添加失败'}">
-                <script>alert("添加失败")</script>
-            </c:if>
-        </div>
-        <p style="display: inline-block;float: left;margin-top:14px"><span>卖家承诺:正品保障、下单即送、7日包退、诚信交易</span></p>
-        <p style="color: #6c6c6c;height: 30px;width: 500px;font-size:14px;background: lightgoldenrodyellow;float: left;margin-top:20px;padding-top:5px;padding-bottom:-1px;"><span>温馨提示：亲,请注意选清楚配送地址喔~</span></p>
 
     </div>
-</div>
+</section>
 
-    </c:if>
-<div id="talkDiv">
-    <a href="#">联系卖家</a>
-</div>
-<div id="bookShortDetailWrapper">
-        <a style="text-decoration: none"><p class="p1" style="margin-left: 70px;background: #6c6c6c"><span>商品详情</span></p></a>
-
-    <div id="bookShortDetail_div">
-        <textarea class="textarea1" disabled rows="13" cols="106">
-            ${sessionScope.goodsInfo.detail}
-        </textarea>
-    </div>
-</div>
-
-<div id="sendCommentDiv" >
-
-    <p class="p1" style="margin-left: 70px;background: whitesmoke;color: black">
-        <span>
-            发表评论
-        </span>
-    </p>
-    <textarea class="textarea1" id="commentAear" style="margin-left: 70px;" rows="4" cols="105"></textarea>
-     <a class="sendComment" id="sendComent-a" >点击发布</a>
-     <c:if test="${sessionScope.sendflag==true}"><script>alert("发布成功!")</script></c:if>
-
-</div>
-
-<div id="commentDiv" >
-    <a style="text-decoration: none" href="affair.do?action=getAllUserComment&goodsId=${sessionScope.goodsInfo.goodsId}">
-    <p class="p1" style="margin-left: 70px;background: whitesmoke;color: black">
-        <span>
-            累计评价&nbsp;<font style="color: red">${sessionScope.commentList.totalNumber}</font>
-        </span>
-    </p>
-    </a>
-    <hr style="margin-left: 70px;width: 1100px">
-
-    <div id="commentDiv-items">
-        <c:if test="${sessionScope.commentList==null}">
-                <h1> 该商品暂时无人评价喔！</h1>
-        </c:if>
-        <c:forEach var="comment"  items="${sessionScope.commentList.commentItemList}" >
-        <div class="commentDiv-items-innerDiv">
-            <p class="p2" >
-                <span>评论账户:&nbsp;&nbsp;${comment.value.nikeName}</span>
-            </p>
-        <ul class="commentDiv-items-ul">
-                ${comment.value.commentDetail}
+<section id="secondSection" class="logoStyle">
+    <div class="container-fluid">
+        <ul>
+            <li><a href="#">宝贝信息</a></li>
         </ul>
-            <div class="commentDiv-items-innerDiv-operate">
-                <a class="p2" style="float: right;text-decoration: none;margin-left: 20px" id="delete${comment.key}" href="affair.do?goodsId=${sessionScope.goodsInfo.goodsId}&action=deleteComment">删除</a>
-                <p class="p2" style="float: right;margin-right: 20px"><span>发布时间${comment.value.time}</span></p>
+    </div>
+</section>
 
+<section id="goodsDetailSection">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-sm-12 col-md-8 col-md-offset-2" >
+                        <div class="thumbnail">
+                            <img src="/images/文学/1.jpg" alt="图书图片">
+                            <div class="caption">
+                                <h3 class="text-center">Thumbnail label</h3>
+                                <p class="text-center">声明:此书绝对正版，读者朋友们请放心购买！</p>
+                                <p><a href="#" class="btn btn-danger col-md-6" role="button">点击收藏</a>
+                                    <a href="#" class="btn btn-primary  col-md-6"  role="button">联系卖家</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <p style="height: 23px; font-size:20px;color:#000;" ><span>书籍名称:bookName</span></p>
+                </div>
+                <div class="row">
+                    <p style="color:red; font-size:14px;font-weight: normal;width: 510px;height:38px;overflow: hidden;"><span>描述信息:${goodsInfo.detail}</span></p>
+                </div>
+                <div class="row">
+                    <span style="color: #6c6c6c;font-size: 16px;">商品价格：</span>
+                    <span style=" font-weight: bold; font-size: 23px; color:#f40;">￥123</span>
+                </div>
+                <div class="row" style="margin-top:10px">
+                    <span class="col-md-4" style="margin-left: -16px; font-size: 16px; color: #6c6c6c;">请选择你所在区域:</span>
+                    <div  class="col-md-2" style="margin-left: -40px;">
+                        <select name="Addr" style="background:gold;border: none;height:25px">
+                            <option value="广东">广东</option>
+                            <option value="北京">北京</option>
+                            <option value="上海">上海</option>
+                            <option value="南京">南京</option>
+                            <option value="重庆">重庆</option>
+                            <option value="黑龙江">黑龙江</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 10px;" >
+                    <span style="font-size: 16px;color:#6c6c6c;">运费:</span>
+                    <span style="font-size: 23px;color: red">￥6</span>
+                </div>
+
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col-md-4 text-center"  style="border: 1px dotted #6c6c6c" >
+                        <span class="hightLightFont">销量:</span><span class="text-muted normalFont">123</span>
+                    </div>
+                    <div class="col-md-4 text-center"  style="border: 1px dotted #6c6c6c">
+                        <span class="hightLightFont">库存:</span><span class="text-muted normalFont">123</span>
+                    </div>
+
+                </div>
+
+                <div class="row" style="margin-top: 15px;">
+                    <span class="col-md-2" style="margin-left: -16px;margin-top:5px;display: inline-block;font-size: 15px;color: #6c6c6c">
+                        购买数量:
+                    </span>
+                    <div class="input-group col-md-5" >
+                        <span class="input-group-addon sub">-</span>
+                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                        <span class="input-group-addon add">+</span>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 30px;">
+                    <input type="button" id="addGoodBtn" value="加入购物车">
+                </div>
+
+                <div class="row"style="margin-top: 30px;">
+                    <span  style="display: inline-block;float: left;margin-top:14px">卖家承诺:正品保障、下单即送、7日包退、诚信交易</span>
+                    <p style="color: #6c6c6c;height: 30px;width: 500px;font-size:14px;background: lightgoldenrodyellow;float: left;margin-top:20px;padding-top:5px;padding-bottom:-1px;"><span>温馨提示：亲,请注意选清楚配送地址喔~</span></p>
+                </div>
             </div>
         </div>
-        </c:forEach>
+    </div>
+</section>
+
+<!--商品描述-->
+<section id="goodsCommendSection"style="margin-top: 20px">
+    <div class="container">
+        <div class="jumbotron">
+            <h3>书本简介</h3>
+            <p>这是一本很好的书籍</p>
+            <p><a class="btn btn-primary btn-lg" href="#" role="button">进店看看</a></p>
+        </div>
+    </div>
+</section>
+
+<section id="commentSection" class="logoStyle" style="border: 1px solid #e7e7e7">
+    <div class="container-fluid">
+        <ul>
+            <li ><a href="#" style="background: #e7e7e7;color: black">用户评价</a></li>
+        </ul>
+    </div>
+</section>
+
+
+<section id="commentDetailSection">
+    <div class="container">
+        <div class="row" style="margin-top: 20px">
+            <div class="row" style="margin-left: 10px">
+                <div class="media">
+                    <div class="media-left">
+                        <a href="#">
+                            <img class="media-object" src="images/logo.jpg" alt="用户头像" width="64px" height="64px">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading">用户姓名</h4>
+                        adjoias
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-left: 10px">
+                <textarea class="col-md-11 textarea1" rows="5" disabled="disabled" >123123</textarea>
+            </div>
+            <div class="row" style="margin-left: 10px">
+                <input class="btn btn-primary col-md-2 col-md-offset-9" style="font-weight: bold;margin-top: 10px" value="删除">
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="FooterSection">
+    <div class="page-header" style="background: black;color:white;padding-top: 1px">
+        <h2 class="text-center" >友情提示</h2>
+
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-1 text-center">
+                <h5 style="font-weight: bold">购物指南</h5>
+                购物流程
+                发票制度
+                账户管理
+                会员优惠
+            </div>
+            <div class="col-md-1 text-center">
+                <h5 style="font-weight: bold"> 支付方式</h5>
+                货到付款
+                网上支付
+                花呗支付
+            </div>
+            <div class="col-md-2 text-center">
+                <h5 style="font-weight: bold"> 订单服务</h5>
+                <h5>配送服务查询</h5>
+                <h5> 订单状态说明</h5>
+                <h5>自助取消订单</h5>
+                <h5> 自助修改订单</h5>
+            </div>
+            <div class="col-md-1 text-center">
+                <h5 style="font-weight: bold"> 配送方式</h5>
+                <h5>当日递</h5>
+                <h5> 次日递</h5>
+                <h5>订单自提</h5>
+                <h5>验货与签收</h5>
+            </div>
+            <div class="col-md-2 text-center">
+                <h5 style="font-weight: bold">退换货</h5>
+                <h5> 退换货服务查询</h5>
+                <h5> 自助申请退换货</h5>
+                <h5> 退换货进度查询</h5>
+                <h5>退款方式和时间</h5>
+            </div>
+            <div class="col-md-1 text-center">
+                <h5 style="font-weight: bold">商家服务</h5>
+                商家中心
+                运营服务
+                加入尾品汇
+            </div>
+
+            <div class="col-md-2"></div>
+        </div>
     </div>
 
-</div>
-
+</section>
 </body>
 </html>
