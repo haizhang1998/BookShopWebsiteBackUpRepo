@@ -25,5 +25,9 @@ public interface UserService {
     //修改账号信息
     public int reviseUserInfo(Integer userId,UserInfo userInfo)throws Exception;
 
+    //实现分页查询
+    public List<UserInfo> queryUserByPage(@Param("limit")int limit,@Param("offset")int offset);
 
+    //计算用户数
+    public int countUserNum();
 }

@@ -1,43 +1,25 @@
 package com.bookShop.controller;
 
-import com.alibaba.druid.sql.visitor.functions.Bin;
 import com.bookShop.service.UserService;
 
-import com.bookShop.utils.ResolveUpImage;
+import com.bookShop.utils.CommonUtil;
 import com.haizhang.ValidateGroup.RegistGroup;
 import com.haizhang.ValidateGroup.ReviseUserInfoGroup;
-import com.haizhang.entity.GoodsInfo;
 import com.haizhang.entity.UserInfo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.HttpRequestHandler;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
-import javax.jws.WebParam;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-import java.io.File;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * 处理用户操作信息
@@ -61,16 +43,21 @@ public class UserHandler {
     /**
      * 用户登录
      * @param request
-     * @param response
      * @param userInfo 用户信息
      * @throws Exception
      */
     @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public void loginUser(HttpServletRequest request, HttpServletResponse response,UserInfo userInfo)throws Exception{
+    public String loginUser(HttpServletRequest request,UserInfo userInfo)throws Exception{
         UserInfo user=userServiceImpl.loginUser(userInfo.getUsername(),userInfo.getPassword());
         HttpSession session=request.getSession();
         session.setAttribute("userInfo",user);
-        response.sendRedirect("/goods/homepage");
+        //判断是否为普通用户
+        if(user.getManagerFlag()==0){
+            //管理员
+            return "managerPage";
+        }
+
+        return "forward:/goods/homepage";
     }
 
     /**
@@ -160,8 +147,8 @@ public class UserHandler {
         }
         HttpSession session=request.getSession();
         //处理图片
-        ResolveUpImage resolveUpImage=ResolveUpImage.getInstance();
-        UserInfo user=resolveUpImage.resolveUserUpImage( (UserInfo) session.getAttribute("userInfo"),profilePicture);
+        CommonUtil commonUtil = CommonUtil.getInstance();
+        UserInfo user= commonUtil.resolveUserUpImage( (UserInfo) session.getAttribute("userInfo"),profilePicture);
         //同步数据库
         userServiceImpl.reviseUserInfo(user.getId(),user);
         model.addAttribute("revise_state","修改成功！");
@@ -169,6 +156,7 @@ public class UserHandler {
         return "information";
     }
 
+    //注销
     @RequestMapping(value = {"/logout"},method ={RequestMethod.GET,RequestMethod.POST})
     public String logout(HttpServletRequest request,Model model,HttpSession session){
         UserInfo userInfo=(UserInfo) session.getAttribute("userInfo");
@@ -178,6 +166,8 @@ public class UserHandler {
         model.addAttribute(new UserInfo());
         return "login";
     }
+
+
 
 
 }

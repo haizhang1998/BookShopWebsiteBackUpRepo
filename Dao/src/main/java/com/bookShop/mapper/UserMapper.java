@@ -29,5 +29,9 @@ public interface UserMapper {
     public int reigstMerchant(@Param("id")Integer userId);
     //修改账号信息
     public int reviseUserInfo(UserInfo userInfo);
+    //实现分页查询
+    public List<UserInfo> queryUserByPage(@Param("limit")int limit,@Param("offset")int offset);
+    //得到所有用户数量
+    public int countUserNum();
 
 }

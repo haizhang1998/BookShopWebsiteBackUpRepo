@@ -104,4 +104,18 @@ public class TestUserService {
         userInfo.setId(2);
         System.out.println(userServiceImpl.reviseUserInfo(2,userInfo ));
     }
+
+    @Test
+    public void queryUserInfobyPage(){
+        List<UserInfo> userInfos=userServiceImpl.queryUserByPage(6,1);
+        for(UserInfo u:userInfos){
+            System.out.println(u);
+        }
+    }
+    //计算用户数
+    @Test
+    public void countUserNum(){
+        System.out.println(userServiceImpl.countUserNum());
+    }
+
 }

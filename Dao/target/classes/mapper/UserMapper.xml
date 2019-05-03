@@ -15,6 +15,7 @@
         <result property="password" column="password"></result>
         <result property="username" column="username"></result>
         <result property="phone" column="phone"></result>
+        <result property="managerFlag" column="managerFlag"></result>
     </resultMap>
 
     <!--查询用户常用sql-->
@@ -105,5 +106,15 @@
              <update id="reigstMerchant" >
                  update user set merchantFlag=0 where id=#{id}
              </update>
+<!--    //实现分页查询-->
+<!--    public List<UserInfo> queryUserByPage(@Param("limit")int limit,@Param("offset")int offset);-->
+             <select id="queryUserByPage" resultMap="userInfoResMap">
+                 select u1.* from user u1 INNER JOIN user u2 on u1.id>=u2.id  GROUP BY u1.id having count(*)>=#{offset} and count(*)&lt;=#{limit}
+             </select>
 
+<!--    //得到所有用户数量-->
+<!--    public int countUserNum();-->
+            <select id="countUserNum" resultType="int">
+                 select count(*) from user;
+            </select>
 </mapper>

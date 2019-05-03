@@ -38,6 +38,7 @@
         <mvc:interceptor>
             <mvc:mapping path="/user/**"/>
             <mvc:mapping path="/merchant/**"/>
+            <mvc:mapping path="/sys/**"/>
             <mvc:mapping path="/goods/**"/>
             <mvc:mapping path="/test/**"/>
             <mvc:mapping path="/"/>

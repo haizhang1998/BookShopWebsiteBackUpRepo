@@ -68,4 +68,14 @@ public class UserServiceImpl implements UserService {
     public int reviseUserInfo(Integer userId, UserInfo userInfo)throws Exception {
         return userMapper.reviseUserInfo(userInfo);
     }
+
+    @Override
+    public List<UserInfo> queryUserByPage(int limit, int offset) {
+        return userMapper.queryUserByPage(limit,offset);
+    }
+
+    @Override
+    public int countUserNum() {
+        return userMapper.countUserNum();
+    }
 }

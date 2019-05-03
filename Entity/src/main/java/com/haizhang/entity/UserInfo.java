@@ -35,6 +35,7 @@ public class UserInfo implements Serializable {
     private int freezeFlag=0;   //0代表没有冻结，1代表账号已冻结
     private String imageLogo;     //用户头像
     private int id;             //用户的id编号，用于数据库的查找
+    private int managerFlag;    //管理员标记 0是管理员， 1不是
 
     public int getFreezeFlag() {
         return freezeFlag;
@@ -120,6 +121,15 @@ public class UserInfo implements Serializable {
         this.addr = addr;
     }
 
+
+    public int getManagerFlag() {
+        return managerFlag;
+    }
+
+    public void setManagerFlag(int managerFlag) {
+        this.managerFlag = managerFlag;
+    }
+
     @Override
     public String toString() {
         return "UserInfo{" +
@@ -127,12 +137,13 @@ public class UserInfo implements Serializable {
                 ", password='" + password + '\'' +
                 ", phone='" + phone + '\'' +
                 ", addr='" + addr + '\'' +
-                ", id=" + id +
                 ", name='" + name + '\'' +
                 ", nikeName='" + nikeName + '\'' +
                 ", merchantFlag=" + merchantFlag +
                 ", freezeFlag=" + freezeFlag +
                 ", imageLogo='" + imageLogo + '\'' +
+                ", id=" + id +
+                ", managerFlag=" + managerFlag +
                 '}';
     }
 }
