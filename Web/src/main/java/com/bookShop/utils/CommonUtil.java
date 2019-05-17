@@ -1,13 +1,11 @@
 package com.bookShop.utils;
 
-import com.haizhang.entity.UserInfo;
+import com.haizhang.entity.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class CommonUtil {
     //单例设计模式
@@ -27,6 +25,13 @@ public class CommonUtil {
         return commonUtil;
     }
 
+    /**
+     * 上传用户头像代码
+     * @param userInfo
+     * @param profilePicture
+     * @return
+     * @throws IOException
+     */
     public UserInfo resolveUserUpImage(UserInfo userInfo, MultipartFile profilePicture) throws IOException {
 
         synchronized (CommonUtil.class){
@@ -46,7 +51,6 @@ public class CommonUtil {
                 }
             }
 
-            //更新数据库
             if(newFilename!=null && newFilename.trim().length()>0){
                 userInfo.setImageLogo("/images/userLogo/"+newFilename);
             }
@@ -55,12 +59,133 @@ public class CommonUtil {
     }
 
 
-    //封装数据进map
+    /**
+     * 修改上传店铺头像
+     * @param merchantShop
+     * @param profilePicture
+     * @return
+     * @throws IOException
+     */
+    public MerchantShop updateShopImage(MerchantShop merchantShop,MultipartFile profilePicture) throws IOException {
+
+        synchronized (CommonUtil.class){
+
+            //删除原先的图片
+            String path="F:\\uploads\\";
+            String pathInProject="F:\\BookShopWebsite\\Web\\src\\main\\webapp\\images\\shopImage\\";
+            if(merchantShop.getShopLogo()!=null){
+                System.err.println(merchantShop.getShopLogo().substring(merchantShop.getShopLogo().lastIndexOf('/')));
+                File file = new File(path+merchantShop.getShopLogo().substring(merchantShop.getShopLogo().lastIndexOf('/')));
+                if(file.exists() && file.isFile()){
+                    System.err.println(file.getName().substring(file.getName().lastIndexOf('.')));
+                    file.delete();
+                }
+
+                File relativeFile = new File(pathInProject+merchantShop.getShopLogo().substring(merchantShop.getShopLogo().lastIndexOf('/')));
+                if(relativeFile.exists() && relativeFile.isFile()){
+                    System.err.println(file.getName().substring(file.getName().lastIndexOf('.')));
+                    file.delete();
+                }
+            }
+
+            String newFilename="";
+            if(!profilePicture.isEmpty()){
+                String originalName=profilePicture.getOriginalFilename();
+                if(originalName!=null && originalName.trim().length()>0){
+                    newFilename= UUID.randomUUID()+originalName.substring(originalName.lastIndexOf("."));
+                    profilePicture.transferTo(new File(path+newFilename));
+                    profilePicture.transferTo(new File(pathInProject+newFilename));
+                }
+            }
+
+            if(newFilename!=null && newFilename.trim().length()>0){
+                merchantShop.setShopLogo("/images/shopImage/"+newFilename);
+            }
+        }
+        return merchantShop;
+    }
+
+    /**
+     * 商家货物
+     * @param profilePicture
+     * @return
+     * @throws IOException
+     */
+
+    public GoodsInfo upGoodsImage(GoodsInfo goodsInfo, MultipartFile profilePicture) throws IOException {
+        synchronized (CommonUtil.class){
+
+            String newFilename="";
+            if(profilePicture!=null){
+                String originalName=profilePicture.getOriginalFilename();
+                if(originalName!=null && originalName.trim().length()>0){
+                    String path="F:\\uploads\\";
+
+                    String pathInProject="F:\\BookShopWebsite\\Web\\src\\main\\webapp\\images\\\\"+goodsInfo.getType()+"\\\\";
+                    newFilename= UUID.randomUUID()+originalName.substring(originalName.lastIndexOf("."));
+                    profilePicture.transferTo(new File(path+newFilename));
+                    profilePicture.transferTo(new File(pathInProject+newFilename));
+                }
+            }
+
+            //更新数据库
+            if(newFilename!=null && newFilename.trim().length()>0){
+                goodsInfo.setImgDir("/images/"+goodsInfo.getType()+"/"+newFilename);
+            }
+        }
+        return goodsInfo;
+    }
+
+
+
+
+
+    public RequestRecordShop resolveShopUpImage(RequestRecordShop requestRecordShop, MultipartFile profilePicture) throws IOException {
+
+        synchronized (CommonUtil.class){
+
+            //获取个人头像，并生成头像名，然后存储到指定目录
+
+            String newFilename="";
+            if(profilePicture!=null){
+                String originalName=profilePicture.getOriginalFilename();
+                if(originalName!=null && originalName.trim().length()>0){
+                    String path="F:\\uploads\\";
+                    String pathInProject="F:\\BookShopWebsite\\Web\\src\\main\\webapp\\images\\shopImage\\";
+                    newFilename= UUID.randomUUID()+originalName.substring(originalName.lastIndexOf("."));
+                    profilePicture.transferTo(new File(path+newFilename));
+                    profilePicture.transferTo(new File(pathInProject+newFilename));
+                }
+            }
+
+            //更新数据库
+            if(newFilename!=null && newFilename.trim().length()>0){
+                requestRecordShop.setShopLogo("/images/shopImage/"+newFilename);
+            }
+        }
+        return requestRecordShop;
+    }
+
+
+    //封装用户数据进map
     public Map<String,Object> packageDataIntoMap(int rowCount, List<UserInfo>userInfos){
         Map<String,Object> map=new HashMap<>();
         map.put("data",userInfos);
         map.put("total",rowCount);
-
         return map;
+    }
+
+    //封装冻结数据进map
+    public Map<String,Object> packageFreezeDataIntoMap(int rowCount, List<Freezerecord>freezerecords){
+        Map<String,Object> map=new HashMap<>();
+        map.put("data",freezerecords);
+        map.put("total",rowCount);
+        return map;
+    }
+
+    //检查日期是否合理
+    public boolean checkDateValid(Date d1, Date d2){
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
+        return d2.after(d1)?true:false;
     }
 }

@@ -30,56 +30,11 @@
         }
     }
 
+    function  openShop() {
 
-    $(document).ready(function () {
-
+        window.location.href="/user/registShop";
         
-        $("#myFootPrint").click(function () {
-            <c:choose>
-            <c:when test="${sessionScope.userInfo==null}">
-             window.location.href="index.jsp";
-            </c:when>
-            <c:otherwise>
-            window.location.href="affair.do?action=getAllFootPrint&userId=${sessionScope.userInfo.id}";
-            </c:otherwise>
-            </c:choose>
-        });
-        $("#enshrine").click(function () {
-            <c:choose>
-            <c:when  test="${sessionScope.userInfo==null}">
-            window.location.href="index.jsp";
-            </c:when>
-            <c:otherwise>
-            window.location.href="affair.do?action=getEnshrineGoods&userId=${sessionScope.userInfo.id}";
-            </c:otherwise>
-            </c:choose>
-        });
-        $("#itemListDiv .outsideDiv").mousemove(function () {
-            $(this).css("border","1px solid #f40");
-        })
-        $("#itemListDiv .outsideDiv").mouseout(function () {
-            $(this).css("border","1px solid #ededed");
-        })
-        $("#lookupLogo-ul").mouseover(function () {
-            $("#lookupLogoDiv").css("overflow","visible");
-        });
-        $("#lookupLogo-ul").mouseout(function () {
-            $("#lookupLogoDiv").css("overflow","hidden")
-        });
-        $("#lookupLogo-ul li").click(function () {
-            if($(this).prev()) {
-                if($(this).attr("name")=="baobei"){
-                    address="baobei.jsp"
-                }
-                else {
-                    address="dianpu.jsp"
-                }
-                $(this).after($(this).prev());
-            }
-
-        });
-
-    });
+    }
 
 </script>
 
@@ -165,6 +120,10 @@
 <c:if test="${enshrine_state!=null}">
     <script>alert("收藏成功")</script>
 </c:if>
+<%--申请店铺成功--%>
+<c:if test="${requestScope.msg!=null}">
+    <script>alert("申请店铺发送成功!请即使查阅反馈信息喔！");</script>
+</c:if>
 
 <%--导航栏--%>
 <section id="navbarSection">
@@ -185,19 +144,37 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
 
-                    <li><a href="#">
-                    <li>亲，请登录</li>
-                    <span class="sr-only">(current)</span></a>
+                    <li>
+                        <c:choose>
+                        <c:when test="${sessionScope.userInfo==null}">
+                            <a href="/user/login">
+                            <li>亲，请登录</li>
+                            <span class="sr-only">(current)</span></a>
+                        </c:when>
+                        <c:otherwise>
+                            <a href="/user/revise">
+                                <li>欢迎，${sessionScope.userInfo.nikeName}</li>
+                                <span class="sr-only">(current)</span></a>
+                         </c:otherwise>
+                         </c:choose>
                     </li>
+                    <li><a href="#">消息<span class="badge">0</span></a></li>
 
-                    <li><a href="#">消息</a></li>
-                    <li><a href="#">店铺管理</a></li>
-                    <li><a href="#">我要开店</a></li>
+                    <c:if test="${sessionScope.userInfo.merchantFlag==0}">
+                        <li>
+                            <a href="/merchant/shop/${sessionScope.userInfo.id}">店铺管理</a>
+                        </li>
+                    </c:if>
+
+                    <c:if test="${sessionScope.requestRecordShop==null}">
+                        <li><a onclick="openShop()">我要开店</a></li>
+                    </c:if>
 
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">信息管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="#">收藏夹</a></li>
+                            <li><a href="#">反馈信息<span class="badge"></span> </a> </li>
                             <li><a href="#">我的足迹</a></li>
                             <li><a href="#">我的订单</a></li>
                         </ul>

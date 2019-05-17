@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bookShop.mapper.FreezeRecordMapper">
+
+    <resultMap id="freezeRecordMap" type="Freezerecord">
+        <id property="id" column="id"></id>
+        <result property="date" column="date"></result>
+        <result property="endDate" column="endDate"></result>
+        <result property="reason" column="reason"></result>
+        <result property="userId" column="userId"></result>
+        <association property="userInfo" select="com.bookShop.mapper.UserMapper.queryUserInfoById"
+         column="userId"></association>
+    </resultMap>
+
+<!--    //获取所有冻结的列表数-->
+<!--    public int queryFreezeCount();-->
+        <select id="queryFreezeCount" resultType="int">
+             select count(*) from freezerecord ;
+        </select>
+<!--    //获取指定的冻结记录-->
+<!--    public Freezerecord queryIndentifyFreezeRecord(Freezerecord freezerecord);-->
+        <select id="queryIndentifyFreezeRecord" resultMap="freezeRecordMap">
+             select * from freezerecord
+             <where>
+                 <if test="userInfo.id > 0">
+                     userId = #{userInfo.id} and
+                 </if>
+                 <if test="date != null">
+                     date = #{date} and
+                 </if>
+                 <if test="endDate != null">
+                     endDate = #{endDate}
+                 </if>
+             </where>
+        </select>
+
+    <!--    //获取冻结记录 分页 limit表示一页多少个-->
+<!--    public List<Freezerecord> queryRecordByPage(int limit,int offset);-->
+        <select id="queryRecordByPage" resultMap="freezeRecordMap">
+            select a.* from freezerecord a INNER JOIN freezerecord b on b.id>=a.id
+            GROUP BY a.id having count(*)>=#{offset} and count(*)&lt;= #{offset}+#{limit}
+        </select>
+<!--    //插入一条冻结记录-->
+<!--    public int insertFreezeRecord(Freezerecord freezerecord);-->
+        <insert id="insertFreezeRecord" useGeneratedKeys="true" keyProperty="id">
+            insert into freezerecord values (#{id},#{date},#{reason},#{userInfo.id},#{endDate});
+        </insert>
+<!--    //删除一条或多条冻结记录-->
+<!--    public int deleteFreezeRecord(List<Integer>ids);-->
+        <delete id="deleteFreezeRecord" >
+            delete from freezerecord where userId in
+            <foreach collection="ids" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </delete>
+
+</mapper>

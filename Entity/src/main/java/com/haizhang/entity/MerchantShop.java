@@ -1,4 +1,6 @@
 package com.haizhang.entity;
+import org.hibernate.validator.constraints.NotBlank;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -10,8 +12,11 @@ import java.util.List;
  */
 public class MerchantShop  implements Serializable {
     private int merchantId;                           //卖家的账号ID
+    @NotBlank(message = "发货地址不许为空")
     private String addr;                                //发货地址
+    @NotBlank(message = "店铺名不许为空")
     private String shopName;                               //店铺名称
+
     private String shopLogo;                           //商家图标地址
 
     public int getMerchantId() {

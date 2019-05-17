@@ -22,13 +22,13 @@ public class MerchantServiceImpl implements MerchantService {
     }
 
     @Override
-    public MerchantShop getShopInfoByName(String ShopName) {
-        return null;
+    public List<MerchantShop> getShopInfoByName(String ShopName) {
+        return merchantMapper.getShopInfoByName(ShopName);
     }
 
     @Override
     public MerchantShop getShopInfoByMerchantId(int userId) {
-        return null;
+        return merchantMapper.getShopInfoByMerchantId(userId);
     }
 
     @Override
@@ -36,20 +36,12 @@ public class MerchantServiceImpl implements MerchantService {
         return merchantMapper.getAllShop();
     }
 
-    @Override
-    public boolean upGoods(GoodsInfo goodsInfo) {
-        return false;
-    }
 
     @Override
     public boolean sendGood(int goodsId, int userId, int merchantId, int payFlag) {
         return false;
     }
 
-    @Override
-    public boolean downGoods(int goodsId, int userId) {
-        return false;
-    }
 
     @Override
     public List<OrderItem> getAllUserOrder(int merchantId) {
@@ -59,5 +51,10 @@ public class MerchantServiceImpl implements MerchantService {
     @Override
     public List<MerchantShop> getRankShop(int number) {
         return number<=0?null:merchantMapper.getRankShop(number);
+    }
+
+    @Override
+    public boolean updateShopInfo(MerchantShop merchantShop) {
+        return merchantMapper.updateShopInfo(merchantShop);
     }
 }

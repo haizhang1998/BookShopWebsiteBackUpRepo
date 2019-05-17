@@ -1,24 +1,31 @@
 package com.bookShop.controller;
 
+import com.bookShop.service.RequestShopRecordService;
 import com.bookShop.service.UserService;
 
 import com.bookShop.utils.CommonUtil;
 import com.haizhang.ValidateGroup.RegistGroup;
 import com.haizhang.ValidateGroup.ReviseUserInfoGroup;
+import com.haizhang.entity.RequestRecordShop;
 import com.haizhang.entity.UserInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,6 +38,8 @@ public class UserHandler {
 
     @Resource
     UserService userServiceImpl;
+    @Resource
+    RequestShopRecordService requestShopRecordServiceImpl;
 
     public UserHandler() {
     }
@@ -50,6 +59,12 @@ public class UserHandler {
     public String loginUser(HttpServletRequest request,UserInfo userInfo)throws Exception{
         UserInfo user=userServiceImpl.loginUser(userInfo.getUsername(),userInfo.getPassword());
         HttpSession session=request.getSession();
+        //检查用户状态,0表示没冻结，1表示冻结
+        if(user.getFreezeFlag()==1){
+            request.setAttribute("freeze_state","账户已冻结，若需解冻请与管理员联系！");
+            return "login";
+        }
+
         session.setAttribute("userInfo",user);
         //判断是否为普通用户
         if(user.getManagerFlag()==0){
@@ -57,6 +72,9 @@ public class UserHandler {
             return "managerPage";
         }
 
+        //验证用户先前是否申请过店铺
+        RequestRecordShop requestRecordShop=requestShopRecordServiceImpl.queryUserRecord(user.getId());
+        session.setAttribute("requestRecordShop",requestRecordShop);
         return "forward:/goods/homepage";
     }
 
@@ -122,7 +140,6 @@ public class UserHandler {
     @RequestMapping(value = "/revise",method = RequestMethod.GET)
     public String reviseInfo(Model model,HttpServletRequest request){
         HttpSession session=request.getSession();
-        System.err.println(session.getAttribute("userInfo"));
         model.addAttribute("userInfo",session.getAttribute("userInfo"));
         return "information";
     }
@@ -169,5 +186,34 @@ public class UserHandler {
 
 
 
+    /**
+     * 获得商家注册界面
+     * @return
+     */
+    @RequestMapping(value="/registShop",method = RequestMethod.GET)
+    public String getOpenShopForm(Model model){
+        model.addAttribute(new RequestRecordShop());
+        return "openShop";
+    }
+
+
+    /**
+     * 注册商家
+     * @return
+     */
+    @RequestMapping(value="/registShop",method = RequestMethod.POST ,produces ="application/json;charset=utf-8")
+    public String registShop(HttpServletRequest request,MultipartFile profilePicture,@Valid RequestRecordShop requestRecordShop,BindingResult bindingResult) throws IOException {
+        if(bindingResult.hasErrors()){
+            return "openShop";
+        }
+        RequestRecordShop requestRecordShop1=CommonUtil.getInstance().resolveShopUpImage(requestRecordShop,profilePicture);
+        HttpSession session=request.getSession();
+        UserInfo userInfo=(UserInfo)session.getAttribute("userInfo");
+        requestRecordShop1.setUserId(userInfo.getId());
+        requestRecordShop1.setRequestDate(new Date());
+        String msg=requestShopRecordServiceImpl.insertRequsetshoprecord(requestRecordShop1);
+        request.setAttribute("msg",msg);
+        return "homePage";
+    }
 
 }

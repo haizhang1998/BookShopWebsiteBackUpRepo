@@ -21,7 +21,6 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         }
         UserInfo userInfo =(UserInfo) session.getAttribute("userInfo");
         if(userInfo!=null)return true;
-
         request.getRequestDispatcher("/user/login").forward(request,response);
         return false;
 

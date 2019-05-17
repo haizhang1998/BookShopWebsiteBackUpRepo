@@ -1,5 +1,6 @@
 package com.bookShop.service.impl;
 
+import com.bookShop.exception.GoodsInfoInValidException;
 import com.bookShop.exception.GoodsNotFoundException;
 import com.bookShop.mapper.GoodsMapper;
 import com.bookShop.service.GoodService;
@@ -7,10 +8,7 @@ import com.haizhang.entity.GoodsInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class GoodServiceImpl implements GoodService {
@@ -77,6 +75,45 @@ public class GoodServiceImpl implements GoodService {
         List<GoodsInfo>goodsInfos=goodsMapper.queryGoodsByCategorySample();
         return goodsInfos;
 
+    }
+
+    /**
+     * 上架货物
+     * @param goodsInfo 货物信息
+     * @return
+     */
+    @Override
+    public boolean upGoods(GoodsInfo goodsInfo) {
+        //判断合理性
+        if(goodsInfo.getPrice()<0||goodsInfo.getRemainNumber()<=0)
+           throw new GoodsInfoInValidException("货物信息不合法！");
+        //设置上架时间
+        goodsInfo.setUpTime(new Date());
+        return goodsMapper.upGoods(goodsInfo);
+    }
+
+
+    /**
+     * 下架货物
+     * @param goodsId 货物编号
+     * @param userId 用户编号
+     * @return
+     */
+    @Override
+    public boolean downGoods(int goodsId, int userId) {
+        return goodsMapper.downGoods(goodsId,userId);
+    }
+
+    /**
+     * 更新货物价格
+     * @param goodsId 货物编号
+     * @param price 货物价格
+     * @return
+     */
+    @Override
+    public boolean updateGoodsPrice(int goodsId, double price) {
+        if(price<0)throw new GoodsInfoInValidException("价格必须大于0！");
+        return goodsMapper.updateGoodsPrice(goodsId,price);
     }
 
 }

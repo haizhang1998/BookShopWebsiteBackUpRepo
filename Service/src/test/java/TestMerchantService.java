@@ -55,5 +55,22 @@ public class TestMerchantService {
         }
     }
 
+    @Test
+    public void testQueryMerchantShop(){
+        System.out.println(merchantServiceImpl.getShopInfoByMerchantId(1));
+    }
+
+    @Test
+    public void testQueryMerchantShopByName(){
+        System.out.println(merchantServiceImpl.getShopInfoByName("爱书"));
+    }
+
+    @Test
+    public void testUpdateShopInfo(){
+        MerchantShop merchantShop =new MerchantShop();
+        merchantShop.setMerchantId(6);
+        merchantShop.setShopName("南岸书城");
+        System.out.println(merchantServiceImpl.updateShopInfo(merchantShop));
+    }
 
 }

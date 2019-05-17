@@ -35,6 +35,14 @@ public interface GoodsMapper {
     //获取货物靠id
     public GoodsInfo queryGoodsById(int id);
 
+    //上架货物
+    public boolean upGoods(GoodsInfo goodsInfo);
+
+    //下架货物
+    public boolean downGoods(@Param("goodsId") int goodsId,@Param("userId") int userId);
+
+    //更新货物金额
+    public boolean updateGoodsPrice(@Param("goodsId") int goodsId,@Param("price")double price);
 
 
 }

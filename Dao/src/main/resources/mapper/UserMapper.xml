@@ -98,8 +98,8 @@
                 update user set freezeFlag=0 where id=#{id}
             </update>
 <!--    public int deleteUser(@Param("id")Integer userId);-->
-             <delete id="deleteUser" >
-                 delete from user where id=#{userId}
+             <delete id="deleteUser">
+                 delete from user where id=#{id}
              </delete>
 
 <!--    public int reigstMerchant(@Param("id")Integer userId);-->
@@ -116,5 +116,9 @@
 <!--    public int countUserNum();-->
             <select id="countUserNum" resultType="int">
                  select count(*) from user;
+            </select>
+
+            <select id="queryUserInfoById" resultMap="userInfoResMap">
+                 select * from user where id=#{id}
             </select>
 </mapper>

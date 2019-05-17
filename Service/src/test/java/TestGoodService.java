@@ -87,4 +87,29 @@ public class TestGoodService {
             System.out.println(set);
         }
     }
+
+    @Test
+    public void testUpGoods(){
+        GoodsInfo goodsInfo=new GoodsInfo();
+        goodsInfo.setPossesserId(1);
+        goodsInfo.setUpTime(new Date());
+        goodsInfo.setType("科学与技术");
+        goodsInfo.setGoodsName("test");
+        goodsInfo.setDetail("testdetail");
+        goodsInfo.setRemainNumber(1);
+        goodsInfo.setPrice(-1);
+        goodsInfo.setImgDir("123");
+        goodsInfo.setAddr("123");
+        goodService.upGoods(goodsInfo);
     }
+
+    @Test
+    public void testUpdateGoodsPrice(){
+        System.out.println(goodService.updateGoodsPrice(121,12));
+    }
+
+    @Test
+    public void testDownGoods(){
+       goodService.downGoods(121,1);
+    }
+}

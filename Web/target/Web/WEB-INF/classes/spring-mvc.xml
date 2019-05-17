@@ -44,6 +44,7 @@
             <mvc:mapping path="/"/>
             <bean class="com.bookShop.interceptor.LoginInterceptor"></bean>
         </mvc:interceptor>
+
     </mvc:interceptors>
 
     <bean id="multipartResolver"

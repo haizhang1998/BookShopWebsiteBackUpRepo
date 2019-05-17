@@ -100,6 +100,9 @@
 <p id="mentionP"> 为确保您账户的安全及正常使用，依《网络安全法》相关要求，6月1日起会员账户需绑定手机。如您还未绑定，请尽快完成，感谢您的理解及支持！</p>
 <div id="loginDiv">
 
+    <c:if test="${freeze_state!=null}">
+        <script>alert("账户已冻结，若需解冻请与管理员联系!")</script>
+    </c:if>
 
     <c:if test="${reg_state!=null}">
         <script>alert("注册成功!请登录")</script>

@@ -40,4 +40,10 @@
            select * from (select * from  goodsrecord ORDER BY saledNumber Desc)as a  where 1=1 limit 16;
     </select>
 
+<!--    //删除指定的销售记录-->
+<!--    public boolean deleteSaledInfoByGoodsId(int goodsId);-->
+    <delete id="deleteSaledInfoByGoodsId">
+        delete from goodsrecord where goodsId=#{goodsId}
+    </delete>
+
 </mapper>

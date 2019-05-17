@@ -90,18 +90,6 @@
             $("#lookupLogo-ul").mouseout(function () {
                 $("#lookupLogoDiv").css("overflow","hidden")
             });
-            $("#lookupLogo-ul li").click(function () {
-                if($(this).prev()) {
-                    if($(this).attr("name")=="baobei"){
-                     address="baobei.jsp"
-                    }
-                    else {
-                     address="dianpu.jsp"
-                }
-                    $(this).after($(this).prev());
-                }
-
-            });
 
             $("#searchGoodsText").focus(function () {
                 if($("#searchGoodsText").val()=="请输入要搜索的商品名字"){

@@ -2,6 +2,7 @@ package com.bookShop.service;
 
 import com.haizhang.entity.GoodsInfo;
 import org.apache.ibatis.annotations.MapKey;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,4 +30,16 @@ public interface GoodService {
 
     //获取每种书籍的3个样本
     public List<GoodsInfo> queryBookByEachType();
+
+    //上架货物
+    public boolean upGoods(GoodsInfo goodsInfo);
+
+    //下架货物
+    public boolean downGoods(int goodsId, int userId);
+
+
+    //更新货物金额
+    public boolean updateGoodsPrice( int goodsId,double price);
+
+
 }

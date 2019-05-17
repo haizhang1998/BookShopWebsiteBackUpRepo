@@ -2,6 +2,7 @@ package com.bookShop.service.impl;
 
 import com.bookShop.exception.QueryUserException;
 import com.bookShop.exception.UserLoginValidatorException;
+import com.bookShop.exception.UserNotFoundException;
 import com.bookShop.mapper.UserMapper;
 import com.bookShop.service.UserService;
 import com.haizhang.entity.UserInfo;
@@ -37,15 +38,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserInfo queryUserInfoById(int id) throws UserNotFoundException {
+        return userMapper.queryUserInfoById(id);
+    }
+
+    @Override
     public List<UserInfo> queryAllUserInfo()throws Exception {
         List<UserInfo>userInfos=userMapper.queryAllUserInfo();
         return userInfos;
     }
 
     @Override
-    public int freezeUser(Integer userId)throws Exception {
-        return userMapper.freezeUser(userId);
-
+    public String freezeUser(Integer userId) {
+        return userMapper.freezeUser(userId)>0?"冻结成功!":"冻结失败!请检查该用户是否已被冻结！";
     }
 
     @Override
@@ -54,9 +59,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int deleteUser(Integer userId)throws Exception {
-        return userMapper.deleteUser(userId);
-
+    public String deleteUser(Integer userId)throws Exception {
+        return userMapper.deleteUser(userId)>0?"删除成功!":"删除无效!请检查是否存在该用户!";
     }
 
     @Override
@@ -65,8 +69,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int reviseUserInfo(Integer userId, UserInfo userInfo)throws Exception {
-        return userMapper.reviseUserInfo(userInfo);
+    public String reviseUserInfo(Integer userId, UserInfo userInfo)throws Exception {
+        return userMapper.reviseUserInfo(userInfo)>0?"修改成功!":"修改失败!";
     }
 
     @Override

@@ -124,4 +124,27 @@
         select * from goods where goodsId=#{id}
     </select>
 
+    <!--    //上架货物-->
+    <!--    public boolean upGoods(GoodsInfo goodsInfo);-->
+    <insert id="upGoods" useGeneratedKeys="true" keyProperty="goodsId">
+        insert into goods values(
+           #{goodsName},#{imgDir},#{price},#{detail},#{goodsId},#{addr},#{remainNumber},#{possesserId},#{upTime},#{type}
+        );
+    </insert>
+
+
+    <!--    //下架货物-->
+    <!--    public boolean downGoods(int goodsId, int userId);-->
+    <delete id="downGoods">
+        delete from goods where goodsId=#{goodsId}
+    </delete>
+
+   <!-- //更新货物金额
+    public boolean updateGoodsPrice(@Param("goodsId") int goodsId,@Param("price")double price);
+-->
+    <update id="updateGoodsPrice">
+        update goods set price = #{price} where goodsId=#{goodsId}
+    </update>
+
+
 </mapper>

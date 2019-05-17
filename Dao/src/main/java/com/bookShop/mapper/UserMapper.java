@@ -24,7 +24,7 @@ public interface UserMapper {
     //解冻用户
     public int unfreezeUser(@Param("id")Integer userId);
     //删除用户
-    public int deleteUser(@Param("id")Integer userId);
+    public int deleteUser(@Param("id")Integer id);
     //申请开店
     public int reigstMerchant(@Param("id")Integer userId);
     //修改账号信息
@@ -33,5 +33,7 @@ public interface UserMapper {
     public List<UserInfo> queryUserByPage(@Param("limit")int limit,@Param("offset")int offset);
     //得到所有用户数量
     public int countUserNum();
+    //根据用户id获取用户
+    public UserInfo queryUserInfoById(int id);
 
 }

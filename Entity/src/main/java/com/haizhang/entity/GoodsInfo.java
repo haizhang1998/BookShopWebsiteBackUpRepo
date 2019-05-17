@@ -1,5 +1,6 @@
 package com.haizhang.entity;
 
+import com.haizhang.ValidateGroup.UpdatePriceGroup;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotNull;
@@ -10,7 +11,7 @@ import java.util.Date;
 public class GoodsInfo implements Serializable {
 	@NotNull(message = "货物名称不能为空")
     private String goodsName; //商品名称
-	@Range(min =0,max =Long.MAX_VALUE,message = "价格不合法！")
+	@Range(min =0,max =Long.MAX_VALUE,message = "价格不合法！",groups = {UpdatePriceGroup.class})
 	private double price;  //商品价格
 	@Range(min =10,message = "请输入至少10个字的商品描述信息")
     private String detail; //商品信息

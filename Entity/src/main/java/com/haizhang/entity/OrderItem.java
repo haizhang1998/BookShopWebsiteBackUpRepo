@@ -104,4 +104,6 @@ private  int sendFlag=1; //1代表未发货 0发货
     public void setBackFlag(int backFlag) {
         this.backFlag = backFlag;
     }
+
+
 }
