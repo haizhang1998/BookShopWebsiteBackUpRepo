@@ -13,7 +13,7 @@
 <!-- jQuery -->
 <script src="http://code.jquery.com/jquery.js"></script>
 <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-
+<script src="/static/js/jquery.form.js"></script>
 <html>
 
 <head>
@@ -77,22 +77,46 @@
     );
 
     //修改价格
-    function revisePrice(){
+    function revisePrice(i){
+        $("#goodsName").val(optionJson[i].goodsName);
+        $("#goodsId").val(optionJson[i].goodsId);
+        $("#primitivePrice").val(optionJson[i].price);
         $("#reviseGoodsModel").modal();
     }
 
+    //提交修改后的价格
+    function submitRevisePrice(){
+        var price=$("#price").val();
+        if(parseInt(price)>0){
+            $.ajax({
+                url:"/merchant/updateGoodsPrice",
+                type:"POST",
+                data:{
+                    goodsId:$("#goodsId").val(),
+                    price:price,
+                    oldPrice:$("#primitivePrice").val()
+                },
+                dataType:"json"
+            }).done(function(data){
+                alert(data.msg);
+                qeuryGoods();
+            });
+
+        }else{
+            alert("价格必须大于0")
+        }
+        return false;
+    }
         //检查店铺信息
         function oncheck() {
-
         var shopName=document.getElementById("shopName");
         var addr=document.getElementById("addr");
-        alert(shopName.val());
-        if(shopName.val().length==0){
-            alert("店铺名不得为空!");
+            if(shopName.value.length<=0){
+                alert("店铺名字不得为空!");
+                return false;
+            }
 
-            return false;
-        }
-        if(addr.val().trim()==""){
+        if(addr.value.length<=0){
             alert("店铺地址不得为空!");
             return false;
         }
@@ -101,27 +125,45 @@
     }
 
 
+
     //提交店铺更新
-    function updateShopInfo(){
-            alert(3);
-            $.ajax({
-                url:"/merchant/updateShopInfo",
-                type:"POST",
-                data: $('#shopForm').serialize(),
-                cache:false,
-                dataType:"json"
+    function subimtBtn() {
+       if(oncheck()){
+        $("#subForm").ajaxSubmit({
+            type: "POST",
+            url: "/merchant/updateShopInfo",
+            data:{
+                merchantId:${sessionScope.userInfo.id}
+            },
 
-            }).done(function(data){
-                   alert(12);
-            });
+            dataType: "json",
+            success:function (data) {
+                alert(data.msg);
+                if(data.shopName!="") {
+                    $("#shopName").val(data.shopName);
+                }
+                if(data.addr!="") {
+                    $("#addr").val(data.addr);
+                }
+                if(data.shopLogo!="") {
+                    $("#imgId").attr("src",data.shopLogo);
+                }
+                for(var key in data) {
+
+                    if(key === "shopNameError"){
+                        $("#shopNameError").html(data[key]);
+                    }
+                    if(key === "addrError"){
+                        $("#addrError").html(data[key]);
+                    }
+                }
+            }
+        });
+       }
+        return false;
     }
 
-    function subBtn(){
-        $('#shopForm').submit(function () {
-        updateShopInfo();
-    });
-    }
-
+    optionJson=[];
     //获取所有货物列表
     function qeuryGoods(){
 
@@ -132,21 +174,18 @@
                 merchantId:${sessionScope.userInfo.id}
             },
             dataType:"json"
-
         }).done(function(data){
-            optionJson=[];
             optionJson=data;
             var str="";
-            alert(optionJson.length);
                 for(var i=0;i<optionJson.length;i++){
                    str+="<div class=\"col-sm-4 col-md-3\">\n" +
                        "                    <div class=\"thumbnail\">\n" +
                        "                        <img src=\""+optionJson[i].imgDir+"\" style=\"width: 134px;height: 180px\" alt=\"商品土坯an\" class=\"tab_img\">\n" +
                        "                        <div class=\"caption\">\n" +
-                       "                            <h4 class=\"tab_content\">"+optionJson[i].goodsName+"</h4>\n" +
-                       "                            <p><span style=\"color: #f40;\" class=\"text-center\">价格"+optionJson[i].price+"</span></p>\n" +
-                       "                            <p><a href=\"#\" onclick=\"revisePrice()\" class=\"btn btn-primary\" role=\"button\">调整价位</a>\n" +
-                       "                                <a onclick=\"downGoods()\" class=\"btn  btn-success\"  role=\"button\">下架货物</a>\n" +
+                       "                            <h4 class=\"tab_content text-center\" style='font-size: 18px;height:20px;overflow: hidden'>"+optionJson[i].goodsName+"</h4>\n" +
+                       "                            <p><span style=\"color:#f40;overflow:hidden;font-size: 18px;margin-left: 90px;height: 20px;\">￥"+optionJson[i].price+"</span></p>\n" +
+                       "                            <p class='text-center'><a href=\"#\" onclick=\"revisePrice("+i+")\" class=\"btn btn-primary\" role=\"button\">调整价位</a>\n" +
+                       "                                <a onclick=\"downGoods("+i+")\" class=\"btn  btn-success\"  role=\"button\">下架货物</a>\n" +
                        "                            </p>\n" +
                        "                        </div>\n" +
                        "                    </div>\n" +
@@ -158,10 +197,95 @@
         );
     }
 
-    //下架货物
-    function downGoods(){
+    function checkUpGoods() {
+        var up_img=document.getElementById("up_img");
+        alert(up_img.value);
+        var up_goodsName=document.getElementById("up_goodsName");
+        alert(up_goodsName.value);
+        var up_price=document.getElementById("up_price");
+        alert(up_price.value);
+        var up_addr=document.getElementById("up_addr");
+        alert(up_addr.value);
+        var up_detail=document.getElementById("up_detail");
+        alert(up_detail.value);
+        var up_remainNumber=document.getElementById("up_remainNumber");
+        alert(up_remainNumber.value);
+        var up_type=document.getElementById("up_type");
+        alert(up_type.value);
 
+        if(up_detail.value=="" || up_detail.value.trim()==null || up_detail.value.length<10){
+            alert("商品描述信息不得为空,且至少10个字！");
+            return false;
+        }
+        if(up_img.value==""){
+            alert("请选择一张商品图片！");
+            return false;
+        }
+        if(up_goodsName.value=="" || up_goodsName.value.trim()==null){
+            alert("商品名称不得为空！");
+            return false;
+        }
+        if(up_type.value=="" || up_type.value.trim()==null){
+            alert("请选择商品类型！");
+            return false;
+        }
+        if(up_addr.value=="" || up_addr.value.trim()==null){
+            alert("卖家发货地址不得为空！");
+            return false;
+        }
+        if(parseInt(up_price.value)<=0){
+            alert("货物价格要大于0！");
+            return false;
+        }
+        if(parseInt(up_remainNumber.value)<=0){
+            alert("货物库存要大于0！");
+            return false;
+        }
+        return true;
     }
+
+    //上架货物
+    function upGoods(){
+        if(checkUpGoods()){
+            $("#upGoodsForm").ajaxSubmit({
+                    type: "POST",
+                    url: "/merchant/upGoods",
+                    data:{
+                        possesserId:${sessionScope.userInfo.id}
+                    },
+
+                    dataType: "json",
+                    success:function (data) {
+                        alert(data.msg);
+                    }
+            });
+        }
+        return false;
+    }
+
+    //下架货物
+    function downGoods(i) {
+        if(confirm("你确定要下架书名为:"+optionJson[i].goodsName+"的书籍吗")){
+            $.ajax({
+                type: "POST",
+                url: "/merchant/downGoods",
+                data:{
+                    possesserId:${sessionScope.userInfo.id},
+                    goodsId:optionJson[i].goodsId
+                },
+
+                dataType: "json",
+                success:function (data) {
+                    alert(data.msg);
+                    qeuryGoods();
+                }
+            });
+
+        }
+        return false;
+    }
+
+
 </script>
 <body>
 
@@ -245,24 +369,24 @@
     <div class="tab-content" style="margin-left: 40px;margin-top: 20px">
         <!--修改信息-->
         <div role="tabpanel" class="tab-pane fade in active" id="shopInfo" style="padding-left: 150px">
-           <sf:form method="post" commandName="merchantShop" enctype="multipart/form-data" name="updateShopForm" id="shopForm">
+           <sf:form method="post"   commandName="merchantShop" enctype="multipart/form-data" name="updateShopForm" id="subForm">
                 <div class="row">
                     <span style="color:#3B3B3B;font-size: 22px; font-weight: bold;margin-right: 20px">店铺名称:</span>
-                    <sf:input type="text" maxlength="120" size="50" path="shopName" style="height: 40px;padding:20px;font-size: 21px"/>
-                    <sf:errors path="shopName" id="shopName" cssStyle="color:red"></sf:errors>
+                    <sf:input type="text" id="shopName" maxlength="120" size="50" path="shopName" style="height: 40px;padding:20px;font-size: 21px"/>
+                    <span name="shopNameError" id="shopNameError" style="color: red"></span>
                 </div>
                 <div class="row" style="margin-top: 20px">
                     <span style="color:#3B3B3B;font-size: 22px; margin-right: 20px; font-weight: bold" >店铺头像:</span>
-                    <img src="${merchantShop.shopLogo}" width="100px" height="100px">
-                    <input type="file" value="更换头像" name="shopLogo" id="shopLogo"  style="display:inline-block;" class="btn-primary">
+                    <img id="imgId" src="${merchantShop.shopLogo}" width="100px" height="100px">
+                    <input type="file" value="更换头像" name="picture" id="picture"  style="display:inline-block;" class="btn-primary">
                 </div>
                 <div class="row" style="margin-top: 20px">
                     <span style="color:#3B3B3B;font-size: 22px;margin-right: 20px; font-weight: bold">店铺地址:</span>
                     <sf:input type="text" path="addr"  id="addr"  maxlength="120" size="50"  style="height: 40px;padding:20px;font-size: 21px" />
-                    <sf:errors cssStyle="color:red"></sf:errors>
+                    <span name="addrError" id="addrError" style="color: red"></span>
                 </div>
                 <div class="row" style="margin-top: 20px">
-                    <button  class="btn btn-success btn-lg col-md-5 col-md-offset-2"  onclick="subBtn()">提交</button>
+                    <button  class="btn btn-success btn-lg col-md-5 col-md-offset-2"  onclick="subimtBtn()">提交</button>
                 </div>
            </sf:form>
 
@@ -275,45 +399,50 @@
         </div>
         <!--上架货物-->
         <div role="tabpanel" class="tab-pane fade" id="upgoods" style="margin-left: 200px">
-            <div class="row" style="margin-top:15px">
-                <span style="color:#3B3B3B;font-size: 22px; font-weight: bold;margin-right: 20px">货物名称:</span>
-                <input type="text" maxlength="120" size="50" name="goodsName" style="height: 40px;padding:20px;font-size: 21px" value="asdasdas" >
-            </div>
-            <div class="row" style="margin-top:15px">
-                <span style="color:#3B3B3B;font-size: 22px; font-weight: bold;margin-right: 20px">发货地址:</span>
-                <input type="text" maxlength="120" size="50" name="addr" style="height: 40px;padding:20px;font-size: 21px" value="asdasdas" >
-            </div>
-            <div class="row" style="margin-top:15px">
-                <span style="color:#3B3B3B;font-size: 22px; font-weight: bold;margin-right: 20px">货物库存:</span>
-                <input type="text" maxlength="120" size="50" name="remainNumber" style="height: 40px;padding:20px;font-size: 21px" placeholder="货物库存必须大于0" >
-            </div>
-            <div class="row" style="margin-top:15px">
-                <span style="color:#3B3B3B;font-size: 22px; font-weight: bold;margin-right: 20px">货物价格:</span>
-                <input type="text" maxlength="120" size="50" name="price" style="height: 40px;padding:20px;font-size: 21px" value="asdasdas" >
-            </div>
-            <div class="row" style="margin-top:15px">
-                <span style="color:#3B3B3B;font-size: 22px; font-weight: bold;margin-right: 20px">货物详细描述:</span>
-                <input type="text" maxlength="120" size="50" name="detail" style="height: 40px;padding:20px;font-size: 21px" value="asdasdas" >
-            </div>
+           <form id="upGoodsForm">
+                <div class="row" style="margin-top:15px">
+                   <span style="color:#3B3B3B;font-size: 22px; font-weight: bold;margin-right: 20px">货物名称:</span>
+                   <input type="text" maxlength="120" size="50" id="up_goodsName" name="goodsName" style="height: 40px;padding:20px;font-size: 21px" value="asdasdas" >
+                </div>
+                <div class="row" style="margin-top:15px">
+                   <span style="color:#3B3B3B;font-size: 22px; font-weight: bold;margin-right: 20px">发货地址:</span>
+                   <input type="text" maxlength="120" size="50" id="up_addr" name="addr" style="height: 40px;padding:20px;font-size: 21px" value="asdasdas" >
+                </div>
+                <div class="row" style="margin-top:15px">
+                   <span style="color:#3B3B3B;font-size: 22px; font-weight: bold;margin-right: 20px">货物库存:</span>
+                   <input type="text" maxlength="120" size="50" id="up_remainNumber" name="remainNumber" style="height: 40px;padding:20px;font-size: 21px" placeholder="货物库存必须大于0" >
+                </div>
+                <div class="row" style="margin-top:15px">
+                   <span style="color:#3B3B3B;font-size: 22px; font-weight: bold;margin-right: 20px">货物价格:</span>
+                   <input type="text" maxlength="120" size="50" id="up_price" name="price" style="height: 40px;padding:20px;font-size: 21px" value="asdasdas" >
+                </div>
+                <div class="row" style="margin-top:15px">
+                   <span style="color:#3B3B3B;font-size: 22px; font-weight: bold;margin-right: 20px">货物详细描述:</span>
+                   <input type="text" maxlength="120" size="50" id="up_detail" name="detail" style="height: 40px;padding:20px;font-size: 21px" value="asdasdas" placeholder="请输入至少10个字的商品描述信息" >
+                </div>
 
-            <div class="row" style="margin-top:15px">
-                <span style="color:#3B3B3B;font-size: 22px; font-weight: bold;margin-right: 20px">货物类型:</span>
-                <select style="font-size: 22px;padding: 10px;text-align:center;text-align-last:center;" name="type">
-                    <option value="">-----</option>
-                    <option value="科学技术">科学技术</option>
-                    <option value="儿童书籍">儿童书籍</option>
-                    <option value="小说">小说</option>
-                    <option value="军事历史">军事历史</option>
-                    <option value="家庭养生">家庭养生</option>
-                    <option value="艺术设计">艺术设计</option>
-                    <option value="文学">文学</option>
-                </select>
-            </div>
+                <div class="row" style="margin-top:15px">
+                   <span style="color:#3B3B3B;font-size: 22px;  font-weight: bold;margin-right: 20px">货物类型:</span>
+                   <select style="font-size: 22px;padding: 10px;text-align:center;text-align-last:center;" id="up_type" name="type">
+                       <option value="">-----</option>
+                       <option value="科学技术">科学技术</option>
+                       <option value="儿童">儿童</option>
+                       <option value="小说">小说</option>
+                       <option value="军事历史">军事历史</option>
+                       <option value="家庭养生">家庭养生</option>
+                       <option value="艺术设计">艺术设计</option>
+                       <option value="文学">文学</option>
+                   </select>
+                </div>
 
-            <div class="row" style="margin-top:15px">
-                <span style="color:#3B3B3B;font-size: 22px; font-weight: bold;margin-right: 20px">货物图片:</span>
-                <input name="imageLogo" type="file" style="display: inline-block">
-            </div>
+                <div class="row" style="margin-top:15px">
+                   <span style="color:#3B3B3B;font-size: 22px; font-weight: bold;margin-right: 20px">货物图片:</span>
+                   <input name="img" type="file" id="up_img" style="display: inline-block">
+                </div>
+                <div class="row" style="margin-top:30px">
+                    <button type="button" onclick="upGoods()" class="col-md-4 col-md-offset-2 btn btn-success btn-lg">上架货物</button>
+                </div>
+           </form>
         </div>
     </div>
 </section>
@@ -343,12 +472,10 @@
                     <label for="price">价格调整</label>
                     <input type="text" name="price" id="price" class="form-control">
                 </div>
-
-
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"><span class="" aria-hidden="true"></span>关闭</button>
-                <button type="button" id="freeze_submit" class="btn btn-primary" data-dismiss="modal" onclick="oncheck()"><span class="" aria-hidden="true"></span>确认调整</button>
+                <button type="button" id="freeze_submit" class="btn btn-primary" data-dismiss="modal" onclick="submitRevisePrice()"><span class="" aria-hidden="true"></span>确认调整</button>
             </div>
         </div>
     </div>

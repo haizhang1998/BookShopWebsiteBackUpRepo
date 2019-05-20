@@ -166,7 +166,7 @@
                         </li>
                     </c:if>
 
-                    <c:if test="${sessionScope.requestRecordShop==null}">
+                    <c:if test="${sessionScope.requestRecordShop==null && sessionScope.userInfo.merchantFlag!=0}">
                         <li><a onclick="openShop()">我要开店</a></li>
                     </c:if>
 

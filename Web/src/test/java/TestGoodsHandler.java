@@ -22,7 +22,7 @@ public class TestGoodsHandler extends BaseTest{
       MockMvc mockMvc=standaloneSetup(goodsHandler).setSingleView(new InternalResourceView("/jsp/homePage.jsp")).build();
       String res=commonMockMethod("/goods/homepage");
       System.out.println(res);
-   }
+}
 
 
 
