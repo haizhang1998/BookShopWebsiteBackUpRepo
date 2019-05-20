@@ -97,7 +97,8 @@ public class GoodsHandler {
         //根据goodsId和goodsName寻找指定书本
         GoodsInfo goodsInfo=new GoodsInfo();
         goodsInfo.setGoodsId(goodsId);
-        model.addAttribute("goodsInfo",  goodServiceImpl.queryGoodsByGoodsInfo(goodsInfo));
+        goodsInfo=goodServiceImpl.queryGoodsByGoodsInfo(goodsInfo);
+        model.addAttribute("goodsInfo",  goodsInfo);
         //寻找该书本的全部评价列表
         List<CommentItem> commentItemLists=commentServiceImpl.getAllCommentOfGood(goodsId);
         model.addAttribute("commentLists",commentItemLists);

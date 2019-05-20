@@ -44,7 +44,7 @@ public class CommonUtil {
                 String originalName=profilePicture.getOriginalFilename();
                 if(originalName!=null && originalName.trim().length()>0){
                     String path="F:\\uploads\\";
-                    String pathInProject="F:\\BookShopWebsite\\Web\\src\\main\\webapp\\images\\userLogo\\";
+                    String pathInProject="\\BookShopWebsite\\Web\\src\\main\\webapp\\images\\userLogo\\";
                     newFilename= UUID.randomUUID()+originalName.substring(originalName.lastIndexOf("."));
                     profilePicture.transferTo(new File(path+newFilename));
                     profilePicture.transferTo(new File(pathInProject+newFilename));
@@ -73,7 +73,7 @@ public class CommonUtil {
 
             //删除原先的图片
             String path="F:\\uploads\\";
-            String pathInProject="F:\\BookShopWebsite\\Web\\src\\main\\webapp\\images\\shopImage\\";
+            String pathInProject="\\BookShopWebsite\\Web\\src\\main\\webapp\\images\\shopImage\\";
             if(curPic!=null){
 
                 File file = new File(path+curPic.substring(curPic.lastIndexOf('/')+1));
@@ -112,16 +112,14 @@ public class CommonUtil {
      * @return
      * @throws IOException
      */
-
     public GoodsInfo upGoodsImage(GoodsInfo goodsInfo, MultipartFile profilePicture) throws IOException {
         synchronized (CommonUtil.class){
-
             String newFilename="";
             if(profilePicture!=null){
                 String originalName=profilePicture.getOriginalFilename();
                 if(originalName!=null && originalName.trim().length()>0){
                     String path="F:\\uploads\\";
-                    String pathInProject="F:\\BookShopWebsite\\Web\\src\\main\\webapp\\images\\"+goodsInfo.getType()+"\\";
+                    String pathInProject="\\BookShopWebsite\\Web\\src\\main\\webapp\\images\\"+goodsInfo.getType()+"\\";
                     newFilename= UUID.randomUUID()+originalName.substring(originalName.lastIndexOf("."));
                     profilePicture.transferTo(new File(pathInProject+newFilename));
                     profilePicture.transferTo(new File(path+newFilename));
@@ -138,8 +136,6 @@ public class CommonUtil {
 
 
 
-
-
     public RequestRecordShop resolveShopUpImage(RequestRecordShop requestRecordShop, MultipartFile profilePicture) throws IOException {
 
         synchronized (CommonUtil.class){
@@ -151,7 +147,7 @@ public class CommonUtil {
                 String originalName=profilePicture.getOriginalFilename();
                 if(originalName!=null && originalName.trim().length()>0){
                     String path="F:\\uploads\\";
-                    String pathInProject="F:\\BookShopWebsite\\Web\\src\\main\\webapp\\images\\shopImage\\";
+                    String pathInProject="\\BookShopWebsite\\Web\\src\\main\\webapp\\images\\shopImage\\";
                     newFilename= UUID.randomUUID()+originalName.substring(originalName.lastIndexOf("."));
                     profilePicture.transferTo(new File(path+newFilename));
                     profilePicture.transferTo(new File(pathInProject+newFilename));

@@ -203,9 +203,7 @@
                     <button type="submit"class="btn btn-default" style="width:100px;display: inline-block;margin-left: 10px;margin-top: -2px">Submit</button>
                 </form>
             </div>
-
         </div>
-
     </div>
 </section>
 
