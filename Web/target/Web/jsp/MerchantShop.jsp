@@ -103,9 +103,7 @@
 
     //提交店铺更新
     function updateShopInfo(){
-
-
-            alert(3)
+            alert(3);
             $.ajax({
                 url:"/merchant/updateShopInfo",
                 type:"POST",
@@ -116,11 +114,10 @@
             }).done(function(data){
                    alert(12);
             });
-       
     }
+
     function subBtn(){
         $('#shopForm').submit(function () {
-
         updateShopInfo();
     });
     }

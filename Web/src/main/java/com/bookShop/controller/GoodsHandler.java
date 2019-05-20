@@ -110,13 +110,13 @@ public class GoodsHandler {
 
     /**
      *
-     * @param goodsId
+     * @param
      * @param model
      * @return
      */
-    @RequestMapping("/searchGoods/{goodsId}")
-    public String searchGoods(@PathVariable int goodsId,Model model){
-        System.err.println("search:"+goodsId);
+    @RequestMapping(value ="/searchGoods/{goodsName}",method = RequestMethod.GET)
+    public String searchGoods(@PathVariable String goodsName, Model model){
+        System.out.println("search:"+goodsName);
         return "homePage";
     }
 
