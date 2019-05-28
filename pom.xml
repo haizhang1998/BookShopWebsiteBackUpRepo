@@ -34,6 +34,7 @@
         <commons-io.version>2.4</commons-io.version>
         <commons-codec.version>1.10</commons-codec.version>
         <gson.version>2.2.4</gson.version>
+        <pagehelper.version>4.1.2</pagehelper.version>
     </properties>
 
     <build>
@@ -45,18 +46,6 @@
             <configuration>
                 <source>1.8</source>
                 <target>1.8</target>
-            </configuration>
-        </plugin>
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-war-plugin</artifactId>
-            <version>2.4</version>
-            <configuration>
-                <webResources>
-                    <resource>
-                        <directory>webContent</directory>
-                    </resource>
-                </webResources>
             </configuration>
         </plugin>
     </plugins>
@@ -312,6 +301,13 @@
             <version>${commons-codec.version}</version>
         </dependency>
         <!--上传组件 end -->
+
+        <!--&lt;!&ndash;分页插件&ndash;&gt;-->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper</artifactId>
+            <version>${pagehelper.version}</version>
+        </dependency>
     </dependencies>
     </dependencyManagement>
 
