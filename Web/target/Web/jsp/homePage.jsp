@@ -158,7 +158,7 @@
                          </c:otherwise>
                          </c:choose>
                     </li>
-                    <li><a href="#">消息<span class="badge">0</span></a></li>
+                    <li><a href="/chat/chatPage">消息<span class="badge">0</span></a></li>
 
                     <c:if test="${sessionScope.userInfo.merchantFlag==0}">
                         <li>
@@ -203,9 +203,7 @@
                     <button type="submit"class="btn btn-default" style="width:100px;display: inline-block;margin-left: 10px;margin-top: -2px">Submit</button>
                 </form>
             </div>
-
         </div>
-
     </div>
 </section>
 

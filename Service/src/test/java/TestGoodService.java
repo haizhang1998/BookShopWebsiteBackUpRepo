@@ -58,7 +58,7 @@ public class TestGoodService {
     @Test
     public void  TestqueryGoodsInVague(){
         GoodsInfo goodsInfo=new GoodsInfo();
-
+        goodsInfo.setType("学");
         List<GoodsInfo> goodsInfos=goodService.queryGoodsInVague(goodsInfo);
         for(GoodsInfo r:goodsInfos)
             System.out.println(r);
