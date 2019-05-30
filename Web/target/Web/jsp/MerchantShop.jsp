@@ -125,6 +125,7 @@
     }
 
 
+<<<<<<< HEAD
 
     //提交店铺更新
     function subimtBtn() {
@@ -161,6 +162,27 @@
         });
        }
         return false;
+=======
+    //提交店铺更新
+    function updateShopInfo(){
+            alert(3);
+            $.ajax({
+                url:"/merchant/updateShopInfo",
+                type:"POST",
+                data: $('#shopForm').serialize(),
+                cache:false,
+                dataType:"json"
+
+            }).done(function(data){
+                   alert(12);
+            });
+    }
+
+    function subBtn(){
+        $('#shopForm').submit(function () {
+        updateShopInfo();
+    });
+>>>>>>> 9354ae8eacdde675f742f181f01bc10a1fce0410
     }
 
     optionJson=[];

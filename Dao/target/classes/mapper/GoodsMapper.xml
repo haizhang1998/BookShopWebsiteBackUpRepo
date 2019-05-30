@@ -61,7 +61,7 @@
                  or  goodsName like #{_goodsName}
              </if>
              <if test="type!=null and type.trim()!=null">
-                 or type like '%${type}%'
+                 or type like #{_type}
              </if>
 
          </trim>

@@ -1,21 +1,37 @@
 package com.haizhang.entity;
 
-/**
- * @author 海章
- * @create 2018-12-16 21:02
- */
+import java.sql.*;
+
 public class OrderItem {
-private int goodsId;
-private int id;          //用户id
-private int merchantId;
-private int sumOfGoods;
-private String name;    //买家名字
-private String addr;    //买家收货地址
-private String phone;   //买家联系方式
-private double totalMoney;//总价
-private int payFlag=1;  //1代表未付款   0付款
-private int backFlag=1; //1代表不退货  0退货
-private  int sendFlag=1; //1代表未发货 0发货
+    private int orderId;     //订单号
+    private int goodsId;     //商品编号
+    private int id;          //用户id
+    private int merchantId;
+    private int sumOfGoods;
+    private String name;    //买家名字
+    private String addr;    //买家收货地址
+    private String phone;   //买家联系方式
+    private Date createTime;//订单创建时间
+    private int payFlag=0;  //0代表未付款   1付款
+    private int backFlag=0; //0代表不退货  1退货  2同意退款 3拒绝退款
+    private int sendFlag=0; //0代表未发货 1发货 2收货
+    private int orderFlag=0; //正在交易 1完成交易
+
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 
     public String getPhone() {
         return phone;
@@ -39,14 +55,6 @@ private  int sendFlag=1; //1代表未发货 0发货
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public double getTotalMoney() {
-        return totalMoney;
-    }
-
-    public void setTotalMoney(double totalMoney) {
-        this.totalMoney = totalMoney;
     }
 
     public int getId() {
@@ -105,5 +113,11 @@ private  int sendFlag=1; //1代表未发货 0发货
         this.backFlag = backFlag;
     }
 
+    public int getOrderFlag() {
+        return orderFlag;
+    }
 
+    public void setOrderFlag(int orderFlag) {
+        this.orderFlag = orderFlag;
+    }
 }

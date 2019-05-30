@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+<script src="http://code.jquery.com/jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>聊天界面</title>
+</head>
+
+<script type="text/javascript">
+
+    //更新用户列表
+    //更新用户列表
+    function updateUser(){
+        var u = document.getElementById("userOnlinePage");
+        var str="                    <div class=\"media\" style=\"width: 95%;margin-top: 20px;margin-left: 20px;cursor: pointer;border: 1px solid #e7e7e7;padding: 10px\" v-on:click=\"showUserChat("+12+")\" >\n" +
+            "                        <div class=\"media-left\">\n" +
+            "                            <a href=\"#\">\n" +
+            "                                <img class=\"media-object\" style=\"width: 64px;height: 64px;\" src=\"images/userLogo/wink.png\">\n" +
+            "                            </a>\n" +
+            "                        </div>\n" +
+            "                        <div class=\"media-body\">\n" +
+            "                            <h5 class=\"media-heading text-muted\">Media heading</h4>\n" +
+            "                            <span style=\"font-size: 21px\">something</span>\n" +
+            "                        </div>\n" +
+            "                    </div>\n";
+
+        $("#userOnlinePage").append(str);
+
+    }
+
+
+    //发送消息
+    function  sendMsg() {
+        var m = document.getElementById("chatMsg").value;
+        if (m === "") {
+            alert("请输入信息！")
+        } else {
+
+            var str="    <div class=\"media\" style=\"margin-top: 10px\">\n" +
+                "                    <div class=\"media-body\">\n" +
+                "                        <h6 style=\"float: right\" class=\"media-heading text-muted\">haizhang</h6>\n" +
+                "                        <p  style=\"float:right;font-size: 20px;margin-top: 5px\" >"+m+"</p>\n" +
+                "                    </div>\n" +
+                "                    <div class=\"media-right\">\n" +
+                "                        <a href=\"#\">\n" +
+                "                            <img class=\"media-object\" style=\"width: 30px;height: 30px;\" src=\"images/userLogo/wink.png\">\n" +
+                "                        </a>\n" +
+                "                    </div>\n" +
+                "                </div>";
+        $("#msgBox").append(str);
+
+        $("#chatMsg").val("");
+        }
+
+    }
+
+    function showUserChat(param) {
+        alert(1);
+    }
+    function clear(){
+        $("#chatMsg").val("");
+    }
+
+    function queryFriend() {
+        $("#addFriendModal").modal();
+    }
+
+    function addFriend() {
+
+    }
+
+
+
+</script>
+<style>
+    body{
+        background:white;
+    }
+    a{
+        color:#6c6c6c;
+    }
+
+</style>
+<body>
+<section id="navbarSection">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+
+                    <li><a href="#">
+                    <li>亲，请登录</li>
+                    <span class="sr-only">(current)</span></a>
+                    </li>
+
+                    <li><a href="#" style="color:white">消息</a></li>
+                    <li><a href="#">店铺管理</a></li>
+                    <li><a href="#">我要开店</a></li>
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">信息管理<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">收藏夹</a></li>
+                            <li><a href="#">我的足迹</a></li>
+                            <li><a href="#">我的订单</a></li>
+
+                        </ul>
+                    </li>
+                </ul>
+
+                <ul class="nav navbar-nav" style="margin-left: 500px">
+                    <li><a href="#"><span>购物车<span class="badge" style="margin-left: 5px">0</span></span></a></li>
+                    <li><a href="/jsp/information.jsp">个人中心</a></li>
+                    <li><a href="#">注销</a></li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+
+</section>
+
+<!--<section id="logoSection" style="margin-top: 60px;border-bottom: 1px solid gray" >-->
+        <!--<div class=" container">-->
+        <!--<div class="row">-->
+            <!--<h2 style="font-weight: bold;">聊天界面</h2>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</section>-->
+<div id="chatSection" style="margin-top: 52px">
+
+    <div class="row">
+    <div  style="border:1px solid #e7e7e7;font-weight: bold" class="col-md-3 text-center text-muted">
+        <h3>用户列表</h3>
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#userOnlinePage" aria-controls="home" role="tab" data-toggle="tab">在线用户<span class="badge">0</span></a></li>
+            <li role="presentation"><a href="#userDisOnlinePage" aria-controls="profile" role="tab" data-toggle="tab">不在线用户<span class="badge">0</span></a></li>
+        </ul>
+    </div>
+        <div  style="margin-top:50px;font-weight: bold ;font-size: 21px" class="col-md-9 text-muted">
+            <div class="row">
+                <div class="col-md-3">聊天窗口</div>
+                <div class="col-md-6 col-md-offset-2">
+                    <div class="input-group">
+                        <input type="text" id="searchFriendInput" class="form-control" placeholder="请输入好友的昵称或账号id">
+                        <span class="input-group-btn">
+                            <button id="searchBtn" onclick="queryFriend()" class="btn btn-success" type="button">查询好友</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3" style="overflow: scroll;height: 650px">
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane  fade in active" id="userOnlinePage">
+                    <div class="media" style="width: 95%;margin-top: 20px;margin-left: 20px;cursor: pointer;border: 1px solid #e7e7e7;padding: 10px" >
+                        <div class="media-left">
+                            <a href="#">
+                                <img class="media-object" style="width: 64px;height: 64px;" src="images/userLogo/wink.png">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading text-muted">Media heading</h4>
+                            <span style="font-size: 21px">something</span>
+                        </div>
+                    </div>
+
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="userDisOnlinePage">
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-9"  style="border-top: 1px solid #e3d2d2;overflow-y:auto;height: 700px;"  >
+            <div style="height: 450px;overflow-y: auto" id="msgBox" class="col-md-11" >
+            </div>
+            <div id="editBox" style="height:199px;border-top: 1px solid #ededed;padding: 5px">
+                <textarea id="chatMsg" style="color:black;background: #e7e7e7;font-size: 17px;border: none;padding: 10px" autofocus="autofocus" cols="95" rows="6" placeholder="在此处输入消息"></textarea>
+                <div>
+                    <button type="button" class= "btn btn-success btn-md text-center" onclick=" clear()" style="margin-left: 650px;width: 100px">清空消息</button>
+                    <button type="button" class="btn btn-primary btn-md text-center" onclick="sendMsg()" style="width: 100px">发送消息</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="modal fade" id="addFriendModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="addFriendModalLabel">选择好友界面</h4>
+            </div>
+            <div class="modal-body" id="searchModal">
+                <div class="row" style="margin-left: 10px;margin-right:10px;margin-bottom: 10px;padding:20px;border: 1px solid #e7e7e7">
+                    <div  class="media col-md-offset-1 col-md-6">
+                        <div class="media-left">
+                            <a href="#">
+                                <img class="media-object" src="images/userLogo/wink.png" alt="用户头像">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading">昵称</h4>
+                            <h6>用户账号</h6>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <button type="button" class="btn btn-md btn-success" onclick="addFriend()">添加好友</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

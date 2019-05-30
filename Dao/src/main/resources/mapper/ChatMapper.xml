@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bookShop.mapper.ChatMapper">
+    <resultMap id="FriendMap" type="Friend">
+        <result property="userId" column="userId"></result>
+        <association property="friendInfo" column="friendId" select="com.bookShop.mapper.UserMapper.queryUserInfoById"></association>
+    </resultMap>
+    <resultMap id="TempMsgMap" type="TempMsg">
+        <result property="userId" column="userId"></result>
+        <result property="friendId" column="friendId"></result>
+        <result property="date" column="date"></result>
+        <result property="tempMsg" column="tempMsg"></result>
+    </resultMap>
+
+<!--    //查询离线记录-->
+<!--    public List<TempMsg> getTempMsg(@Param("userId") int userId,@Param("friendId") int friendId);-->
+    <select id="getTempMsg" resultMap="TempMsgMap">
+        select * from tempmsg where userId = #{userId}
+        and friendId = #{friendId} order  by date desc;
+    </select>
+
+    <!--    //清空指定朋友的所有离线记录-->
+<!--    public boolean clearTempMsg(@Param("userId") int userId,@Param("friendId") int friendId);-->
+    <delete id="clearTempMsg">
+        delete from tempmsg where userId = #{userId}
+        and friendId = #{friendId}
+    </delete>
+
+    <!--    //插入离线记录-->
+<!--    public int addTempMsg(TempMsg tempMsg);-->
+    <insert id="addTempMsg">
+        insert into tempmsg values(
+           #{userId},#{friendId},#{date},#{tempMsg}
+        );
+    </insert>
+<!--    //添加好友-->
+<!--    public boolean addFriend(@Param("userId") int userId,@Param("friendId") int friendId);-->
+    <insert id="addFriend">
+        insert into friends values (
+        #{userId},#{friendId}
+        );
+    </insert>
+<!--    //删除指定好友-->
+<!--    public boolean deleteFriend(@Param("userId") int userId,@Param("friendId") int friendId);-->
+    <delete id="deleteFriend">
+        delete from friends where userId = #{userId} and friendId = #{friendId};
+    </delete>
+
+<!--    //获取所有的好友-->
+<!--    public List<Friend> queryAllFriends(@Param("userId")int userId);-->
+    <select id="queryAllFriends" resultMap="FriendMap">
+        select * from friends where userId = #{userId}
+    </select>
+
+</mapper>
