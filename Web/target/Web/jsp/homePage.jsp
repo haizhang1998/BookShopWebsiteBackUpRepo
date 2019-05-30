@@ -173,9 +173,9 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">信息管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">收藏夹</a></li>
+                            <li><a href="/enshrineInterface">收藏夹</a></li>
                             <li><a href="#">反馈信息<span class="badge"></span> </a> </li>
-                            <li><a href="#">我的足迹</a></li>
+                            <li><a href="/goods/myfootprint">我的足迹</a></li>
                             <li><a href="#">我的订单</a></li>
                         </ul>
                     </li>
@@ -196,11 +196,11 @@
         <div class="row">
             <img src="/images/logo.jpg" class="pull-left"><span class="searchFont col-md-2" style="margin-top: 40px">海淘商城</span>
             <div >
-                <form class="form-horizontal">
+                <form class="form-horizontal" action="/goods/searchGoods" method="post">
                     <div class="form-group" style="display: inline-block;margin-left: 150px;">
-                        <input type="text" class="form-control" style="width: 390px" placeholder="Search">
+                        <input type="text" class="form-control" style="width: 390px" placeholder="Search" name="searchgoods">
                     </div>
-                    <button type="submit"class="btn btn-default" style="width:100px;display: inline-block;margin-left: 10px;margin-top: -2px">Submit</button>
+                    <button type="submit"class="btn btn-default" style="width:100px;display: inline-block;margin-left: 10px;margin-top: -2px">搜索</button>
                 </form>
             </div>
 
@@ -271,20 +271,20 @@
                 <div class="row" style="margin-top:30px">
                     <c:forEach varStatus="index" var="book" items="${booksCatagory}">
                     <c:if test="${book.type=='儿童书籍'}">
-                            <div class="col-sm-4 col-md-3">
-                                <div class="thumbnail">
-                                    <img src="${book.imgDir}" style="width: 134px;height: 180px" alt="儿童1" class="tab_img">
-                                    <div class="caption">
-                                        <h4 class="tab_content">${book.detail}</h4>
-                                        <p><span style="color: #f40;" class="text-center">价格${book.price}</span></p>
-                                        <p><a href="/goods/enshrine/${book.goodsId}" class="btn btn-primary" role="button">收藏</a>
-                                           <a href="/goods/buy/${book.goodsId}" class="btn btn-default" role="button">购买</a>
-                                        </p>
-                                    </div>
+                        <div class="col-sm-4 col-md-3">
+                            <div class="thumbnail">
+                                <img src="${book.imgDir}" style="width: 134px;height: 180px" alt="儿童1" class="tab_img">
+                                <div class="caption">
+                                    <h4 class="tab_content">${book.detail}</h4>
+                                    <p><span style="color: #f40;" class="text-center">价格${book.price}</span></p>
+                                    <p><a href="/goods/enshrine/${book.goodsId}" class="btn btn-primary" role="button">收藏</a>
+                                        <a href="/goods/buy/${book.goodsId}" class="btn btn-default" role="button">购买</a>
+                                    </p>
                                 </div>
                             </div>
+                        </div>
                     </c:if>
-                    </c:forEach>
+                </c:forEach>
                 </div>
             </div>
 
