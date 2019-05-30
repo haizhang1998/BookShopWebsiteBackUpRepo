@@ -25,7 +25,7 @@ public class TestFootPrintService {
 
     @Test
     public void getAllFootPrint(){
-        List<FootPrintItem> footPrintItem=footPrintService.getAllFootPrint(1);
+        List<FootPrintItem> footPrintItem=footPrintService.getAllFootPrint(21);
         for(FootPrintItem f:footPrintItem)
             System.out.println(f);
     }
