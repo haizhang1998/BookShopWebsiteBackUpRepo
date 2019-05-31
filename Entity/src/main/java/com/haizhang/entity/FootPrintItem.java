@@ -1,6 +1,7 @@
 package com.haizhang.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 我的足迹项
@@ -11,7 +12,25 @@ import java.io.Serializable;
 public class FootPrintItem implements Serializable {
     private int goodsId;
     private int id;
-    private String time;
+    private Date time;
+    private String imgDir;
+    private String goodsName;
+
+    public String getImgDir() {
+        return imgDir;
+    }
+
+    public void setImgDir(String imgDir) {
+        this.imgDir = imgDir;
+    }
+
+    public String getGoodsName() {
+        return goodsName;
+    }
+
+    public void setGoodsName(String goodsName) {
+        this.goodsName = goodsName;
+    }
 
     public int getGoodsId() {
         return goodsId;
@@ -29,11 +48,23 @@ public class FootPrintItem implements Serializable {
         this.id = id;
     }
 
-    public String getTime() {
+
+    public Date getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(Date time) {
         this.time = time;
+    }
+
+    @Override
+    public String toString() {
+        return "FootPrintItem{" +
+                "goodsId=" + goodsId +
+                ", id=" + id +
+                ", time='" + time + '\'' +
+                ", imgDir='" + imgDir + '\'' +
+                ", goodsName='" + goodsName + '\'' +
+                '}';
     }
 }
