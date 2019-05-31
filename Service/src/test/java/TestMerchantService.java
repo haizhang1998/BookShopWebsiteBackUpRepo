@@ -8,6 +8,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.io.File;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -31,6 +32,8 @@ public class TestMerchantService {
             System.out.println(m);
         }
     }
+
+
 
 //    //上架货物
 //    public boolean upGoods(GoodsInfo goodsInfo);
