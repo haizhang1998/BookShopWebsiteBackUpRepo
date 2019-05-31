@@ -157,13 +157,14 @@
                          </c:otherwise>
                          </c:choose>
                     </li>
-                    <li><a href="/chat/chatPage">消息<span class="badge">0</span></a></li>
-
+                    <c:if test="${sessionScope.userInfo!=null}">
+                        <li><a href="/chat/chatPage">消息<span class="badge">${sessionScope.tmpmsgNumber}</span></a></li>
+                    </c:if>
                     <c:if test="${sessionScope.userInfo.merchantFlag==0}">
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">商家管理<span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="/shop/${sessionScope.userInfo.id}">店铺管理</a></li>
+                                <li><a href="/merchant/shop/${sessionScope.userInfo.id}">店铺管理</a></li>
                                 <li><a href="/order/getManagerOrder">货物管理</a></li>
                             </ul>
                         </li>
@@ -186,6 +187,7 @@
                 <ul class="nav navbar-nav" style="margin-left: 500px">
                     <li><a href="#"><span>购物车<span class="badge" style="margin-left: 5px">0</span></span></a></li>
                     <li><a href="/user/revise">个人中心</a></li>
+                    <li><a href="/goods/homepage">返回首界面</a> </li>
                     <li><a href="/user/logout">注销</a></li>
                 </ul>
             </div><!-- /.navbar-collapse -->
@@ -198,7 +200,7 @@
         <div class="row">
             <img src="/images/logo.jpg" class="pull-left"><span class="searchFont col-md-2" style="margin-top: 40px">海淘商城</span>
 
-                <form class="form-horizontal" action="/goods/searchGoods/2">
+                <form class="form-horizontal" style="margin-top: 30px" action="/goods/searchGoods/2">
                     <div class="form-group" style="display: inline-block;margin-left: 150px;">
                         <input type="text" id="searchGoodsText" class="form-control" style="width: 390px" placeholder="Search">
                     </div>

@@ -143,7 +143,6 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-
                     <li>
                         <c:choose>
                         <c:when test="${sessionScope.userInfo==null}">
@@ -158,13 +157,14 @@
                          </c:otherwise>
                          </c:choose>
                     </li>
-                    <li><a href="/chat/chatPage">消息<span class="badge">0</span></a></li>
-
+                    <c:if test="${sessionScope.userInfo!=null}">
+                        <li><a href="/chat/chatPage">消息<span class="badge">${sessionScope.tmpmsgNumber}</span></a></li>
+                    </c:if>
                     <c:if test="${sessionScope.userInfo.merchantFlag==0}">
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">商家管理<span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">店铺管理</a></li>
+                                <li><a href="/merchant/shop/${sessionScope.userInfo.id}">店铺管理</a></li>
                                 <li><a href="/order/getManagerOrder">货物管理</a></li>
                             </ul>
                         </li>
@@ -184,10 +184,10 @@
                         </ul>
                     </li>
                 </ul>
-
                 <ul class="nav navbar-nav" style="margin-left: 500px">
                     <li><a href="#"><span>购物车<span class="badge" style="margin-left: 5px">0</span></span></a></li>
                     <li><a href="/user/revise">个人中心</a></li>
+                    <li><a href="/goods/homepage">返回首界面</a> </li>
                     <li><a href="/user/logout">注销</a></li>
                 </ul>
             </div><!-- /.navbar-collapse -->
@@ -200,44 +200,14 @@
         <div class="row">
             <img src="/images/logo.jpg" class="pull-left"><span class="searchFont col-md-2" style="margin-top: 40px">海淘商城</span>
 
-            <%--<div class="row">--%>
-                    <%--<div class="input-group">--%>
-                        <%--<div class="input-group-btn col-md-2">--%>
-                            <%--<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>--%>
-                            <%--<ul class="dropdown-menu">--%>
-                                <%--<li><a href="#">Action</a></li>--%>
-                                <%--<li><a href="#">Another action</a></li>--%>
-                                <%--<li><a href="#">Something else here</a></li>--%>
-                            <%--</ul>--%>
-                            <%--<select class="dropdown-menu" id="require">--%>
-                                <%--<option value="shoppingName" selected>书籍名称</option>--%>
-                                <%--<option value="shoppingFeild">书籍类别</option>--%>
-                                <%--<option value="merchantShop">卖家店铺</option>--%>
-                            <%--</select>--%>
-                        <%--</div><!-- /btn-group -->--%>
-
-                        <%--<div class="col-md-8" style="margin-left: 40px;width: 500px"><input type="text" class="form-control" aria-label="..."></div>--%>
-                        <%--<div class="col-md-2"><input type="button" class="btn btn-default" value="search" style="margin-left: -33px"></div>--%>
-
-
-                    <%--</div><!-- /input-group -->--%>
-            <%--</div><!-- /.row -->--%>
-
-
-
-
-                <form class="form-horizontal" action="/goods/searchGoods/2">
+                <form class="form-horizontal" style="margin-top: 30px" action="/goods/searchGoods/2">
                     <div class="form-group" style="display: inline-block;margin-left: 150px;">
                         <input type="text" id="searchGoodsText" class="form-control" style="width: 390px" placeholder="Search">
                     </div>
                     <input type="button" class="btn btn-default" style="width:100px;display: inline-block;margin-left: 10px;margin-top: -2px" value="Submit">
-                    <%--<button type="submit"class="btn btn-default" style="width:100px;display: inline-block;margin-left: 10px;margin-top: -2px" onclick="goSearch()">Submit</button>--%>
                 </form>
-<<<<<<< HEAD
             </div>
-=======
 
->>>>>>> 9354ae8eacdde675f742f181f01bc10a1fce0410
         </div>
     </div>
 </section>

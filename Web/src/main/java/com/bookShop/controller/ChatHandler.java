@@ -2,14 +2,19 @@ package com.bookShop.controller;
 
 import com.bookShop.service.ChatService;
 import com.bookShop.service.UserService;
+import com.haizhang.entity.Friend;
 import com.haizhang.entity.TempMsg;
 import com.haizhang.entity.UserInfo;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller("chatHandler")
@@ -63,6 +68,22 @@ public class ChatHandler {
         System.err.println("addFriend");
         String msg=chatService.addFriend(userId,friendId);
         return "{\"msg\":\""+msg+"\"}";
+    }
+
+
+    /**
+     * 与卖家联系的时候自定添加对方为好友
+     * @param userId
+     * @return
+     */
+    @RequestMapping(value = "/singleTalkAddFriend/{userId}/{possesserId}")
+    public String singleTalkAddFriend(@PathVariable("userId") int userId, @PathVariable("possesserId") int possesserId,Model model){
+             if(chatService.queryExistFriend(userId,possesserId)<=0)
+                 chatService.addFriend(userId,possesserId);
+             //将添加或已存在的好友查询出来
+             Friend f=chatService.queryFriendById(userId,possesserId);
+             model.addAttribute("singleFriend",f);
+             return "chatWithSingle";
     }
 
     /**

@@ -1,9 +1,6 @@
 package com.bookShop.controller;
 
-import com.bookShop.service.CommentService;
-import com.bookShop.service.GoodService;
-import com.bookShop.service.MerchantService;
-import com.bookShop.service.SaledGoodsService;
+import com.bookShop.service.*;
 import com.haizhang.entity.CommentItem;
 import com.haizhang.entity.GoodsInfo;
 import com.haizhang.entity.MerchantShop;
@@ -34,6 +31,7 @@ public class GoodsHandler {
     MerchantService merchantServiceImpl;
     @Resource
     CommentService commentServiceImpl;
+
 
 
 

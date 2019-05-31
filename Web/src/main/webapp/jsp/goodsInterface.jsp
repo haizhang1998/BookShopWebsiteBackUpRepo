@@ -279,7 +279,7 @@
                                 <h3 class="text-center">${goodsInfo.goodsName}</h3>
                                 <p class="text-center">声明:此书绝对正版，读者朋友们请放心购买！</p>
                                 <p><a href="/goods/enshrine/${goodsInfo.goodsId}" class="btn btn-danger col-md-6" role="button">点击收藏</a>
-                                    <a href="/merchant/chat/${goodsInfo.possesserId}" class="btn btn-primary  col-md-6"  role="button">联系卖家</a>
+                                    <a href="/chat/singleTalkAddFriend/${sessionScope.userInfo.id}/${goodsInfo.possesserId}" class="btn btn-primary  col-md-6"  role="button">联系卖家</a>
                                 </p>
                             </div>
                         </div>

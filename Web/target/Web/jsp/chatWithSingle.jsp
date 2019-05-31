@@ -1,15 +1,21 @@
-<!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html lang="en">
-
 <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+<!-- jQuery -->
 <script src="http://code.jquery.com/jquery.js"></script>
 <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 <head>
     <meta charset="UTF-8">
     <title>聊天界面</title>
 </head>
-
 <script type="text/javascript">
+    // 正在聊天的人的名字
+    var talkingNikename;
+    // 正在聊天的人的id
+    var talkingUserId;
+    // 正在聊天人的头像
+    var talkingImageLogo;
 
     $(function(){
         $("#clearBtn").click(function () {
@@ -28,31 +34,18 @@
         };
         //监听消息;用来获取服务端传的消息
         websocket.onmessage = function (event) {
-
             var v=JSON.parse(event.data);
-            var nikeName = v.fromName;
-            var imageLogo = v.transportImageLogo;
-            var userId = v.from;
+            //初始化时判断所交流的卖家是否在线
+            if(v.msgType === 2){
+                talkingNikename="\"${singleFriend.friendInfo.nikeName}\"";
+                talkingImageLogo="\"${singleFriend.friendInfo.imageLogo}\"";
+                talkingUserId=${singleFriend.friendInfo.id}
+            }
 
-            //判断消息如果是text带初始化列表的则是用户刚刚启动初始化列表的消息
-            if(v.msgType === 2)
-                updateUserList(v);
             if(v.msgType === 0){
                 //普通的信息
-                receiveMsg(v);
+                appendMsgFromFriend(v);
             }
-            //有人添加了你,要求更新用户列表
-            if(v.msgType===4){
-                //添加成功后发送信息给websocket更新用户列表
-                //检测是否已经连接到服务器
-                if(websocket == null) {
-                    alert("连接已被断开，请重新登入!");
-                    return;
-                }
-                alert("用户："+nikeName+"，刚刚加了你！");
-                updateFriendByType(6,userId,nikeName,imageLogo);
-            }
-
         };
         //监听Sokcet关闭(不管是客户端还是服务端关闭，都会触发此时间)
         websocket.onclose = function (event) {
@@ -71,33 +64,61 @@
             }
         }
     });
-    
-    function appendMsgFromFriend() {
+
+
+
+
+    //v是message的json对象
+    function appendMsgFromFriend(v) {
+        var text=v.text;
         var str="<div class=\"media\" style=\"margin-top: 10px;margin-left: 10px\">\n" +
             "                <div class=\"media-left\">\n" +
             "                <a href=\"#\">\n" +
-            "                   <img class=\"media-object\" style=\"width: 30px;height: 30px;\" src=\"images/image1.jpg\">\n" +
+            "                   <img class=\"media-object\" style=\"width: 30px;height: 30px;\" src="+talkingImageLogo+" >\n" +
             "                </a>\n" +
             "                </div>\n" +
             "                <div class=\"media-body\">\n" +
-            "                <h6 class=\"media-heading text-muted\">haizhang</h6>\n" +
-            "                <p style=\"font-size: 20px\">aasd</p>\n" +
+            "                <h6 class=\"media-heading text-muted\">"+talkingNikename+"</h6>\n" +
+            "                <p style=\"font-size: 20px\">"+text+"</p>\n" +
             "                </div>\n" +
             "                </div>";
         $("#msgBox").append(str);
     }
 
+
+
     //发送消息
     function  sendMsg() {
-
-        var str="    <div class=\"media\" style=\"margin-top: 10px;margin-right: 10px\">\n" +
+        //检测是否已经连接到服务器
+        if(websocket == null){
+            alert("连接已被断开，请重新登入!");
+            return;
+        }
+        var m = document.getElementById("chatMsg").value;
+        if (m === "") {
+            alert("请输入信息！");
+            return;
+        }
+        var data={};
+        //Json格式,键值对
+        data["from"]=${sessionScope.userInfo.id};
+        //发送给谁(id) -1代表全体好友
+        data["to"]=parseInt(talkingUserId);
+        //文本内容
+        data["text"]=m;
+        //发送人的昵称
+        data["fromName"]="\"${sessionScope.userInfo.nikeName}\"";
+        //发送消息
+        websocket.send(JSON.stringify(data));
+        //添加自己发送的内容
+        var str="    <div class=\"media\" style=\"margin-top:10px;margin-right:10px;\">\n" +
             "                    <div class=\"media-body\">\n" +
-            "                        <h6 style=\"float: right\" class=\"media-heading text-muted\">123</h6>\n"+
-            "                        <p  style=\"float:right;font-size: 20px;margin-top: 5px\" >"+$("#chatMsg").val()+"</p>\n" +
+            "                        <h6 style=\"float: right\" class=\"media-heading text-muted\">${sessionScope.userInfo.nikeName}</h6>\n"+
+            "                        <p  style=\"float:right;font-size: 20px;margin-top: 5px\" >"+m+"</p>\n" +
             "                    </div>\n" +
             "                    <div class=\"media-right\">\n" +
             "                        <a href=\"#\">\n" +
-            "                            <img class=\"media-object\" style=\"width: 50px;height: 50px;\" src=\"images/logo.jpg\">\n" +
+            "                            <img class=\"media-object\" style=\"width: 30px;height: 30px;\" src=\"${sessionScope.userInfo.imageLogo}\">\n" +
             "                        </a>\n" +
             "                    </div>\n" +
             "                </div>";
@@ -166,48 +187,38 @@
 
 </section>
 
-<!--<section id="logoSection" style="margin-top: 60px;border-bottom: 1px solid gray" >-->
-        <!--<div class=" container">-->
-        <!--<div class="row">-->
-            <!--<h2 style="font-weight: bold;">聊天界面</h2>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</section>-->
-    <div id="chatSection" style="margin-top: 70px;margin-bottom: 50px">
-         <div class="container">
-             <div class="row"  style="padding: 10px ;padding-left: 80px;border: 1px solid #e7e7e7" >
-                 <div class="media" style="margin-top: 10px">
-                     <div class="media-left">
-                         <a href="#">
-                             <img class="media-object" style="width: 50px;height: 50px;" src="images/userLogo/wink.png">
-                         </a>
-                     </div>
-                     <div class="media-body">
-                          <h4 class="media-heading text-muted">talkingNikename</h4>
-                          <p style="font-size: 18px">123</p>
-                     </div>
-                 </div>
-             </div>
+<div id="chatSection" style="margin-top: 70px;margin-bottom: 50px">
+    <div class="container">
+        <div class="row"  style="padding: 10px ;padding-left: 80px;border: 1px solid #e7e7e7" >
+            <div class="media" style="margin-top: 10px">
+                <div class="media-left">
+                    <a href="#">
+                        <img class="media-object" style="width: 50px;height: 50px;" src="${singleFriend.friendInfo.imageLogo}">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading text-muted">${singleFriend.friendInfo.nikeName}</h4>
+                    <p style="font-size: 18px">${singleFriend.friendInfo.addr}</p>
+                </div>
+            </div>
+        </div>
 
-             <div class="row">
-                 <div id="msgBox" style="height: 600px;margin-top: 10px;border: 1px solid #e7e7e7;overflow-y: auto" >
-                 </div>
-             </div>
+        <div class="row">
+            <div id="msgBox" style="height: 600px;margin-top: 10px;border: 1px solid #e7e7e7;overflow-y: auto" >
+            </div>
+        </div>
 
-             <div class="row">
-                 <div id="editBox">
-                     <textarea id="chatMsg" style="margin-top: 10px;color:black;font-size: 17px;border: 1px solid #e7e7e7;padding: 10px" autofocus="autofocus" cols="147" rows="6" placeholder="在此处输入消息"></textarea>
-                     <div>
-                         <button type="button" class= "btn btn-success btn-md text-center col-md-offset-9"  id="clearBtn" style="width: 100px">清空消息</button>
-                         <button type="button" class="btn btn-primary btn-md text-center" onclick="sendMsg()" style="width: 100px">发送消息</button>
-                     </div>
-                 </div>
-             </div>
-         </div>
+        <div class="row">
+            <div id="editBox">
+                <textarea id="chatMsg" style="margin-top: 10px;color:black;font-size: 17px;border: 1px solid #e7e7e7;padding: 10px" autofocus="autofocus" cols="147" rows="6" placeholder="在此处输入消息"></textarea>
+                <div>
+                    <button type="button" class= "btn btn-success btn-md text-center col-md-offset-9"  id="clearBtn" style="width: 100px">清空消息</button>
+                    <button type="button" class="btn btn-primary btn-md text-center" onclick="sendMsg()" style="width: 100px">发送消息</button>
+                </div>
+            </div>
+        </div>
     </div>
-
-
-
+</div>
 
 </body>
 </html>
