@@ -2,8 +2,10 @@ package com.bookShop.controller;
 
 import com.alibaba.druid.sql.visitor.functions.Bin;
 import com.bookShop.mapper.GoodsMapper;
+import com.bookShop.service.EnshrineService;
 import com.bookShop.service.GoodService;
 import com.bookShop.service.MerchantService;
+import com.bookShop.service.SaledGoodsService;
 import com.bookShop.utils.CommonUtil;
 import com.haizhang.ValidateGroup.UpdatePriceGroup;
 import com.haizhang.entity.GoodsInfo;
@@ -11,16 +13,22 @@ import com.haizhang.entity.MerchantShop;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/merchant")
@@ -29,6 +37,14 @@ public class MerchantHandler {
     GoodService goodService;
     @Resource
     MerchantService merchantService;
+    @Resource
+    EnshrineService enshrineService;
+    @Resource
+    SaledGoodsService saledGoodsService;
+
+    public MerchantHandler(GoodService goodService) {
+        this.goodService=goodService;
+    }
 
     /**
      * 与卖家联系
@@ -63,7 +79,6 @@ public class MerchantHandler {
     public List<GoodsInfo> queryAllGoodsInShop(int merchantId){
         //接受json数据
         List<GoodsInfo> goodsInfos= goodService.queryShopGoods(merchantId);
-        System.out.println(goodsInfos);
         return goodsInfos;
     }
 
@@ -74,53 +89,102 @@ public class MerchantHandler {
      */
     @RequestMapping(value = "/updateGoodsPrice",produces ="application/json;charset=utf-8")
     @ResponseBody
-    public String queryAllGoodsInShop(@Validated(UpdatePriceGroup.class) GoodsInfo goodsInfo, BindingResult bindingResult){
+    public String updateGoodsPrice(@RequestParam("oldPrice") double oldPrice,@Validated(UpdatePriceGroup.class) GoodsInfo goodsInfo, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
-            return  "{\"msg\":\"somthing error\"}";
+            return  "{\"msg\":\""+bindingResult.getFieldError().getDefaultMessage()+"\"}";
         }
+
         boolean flag=goodService.updateGoodsPrice(goodsInfo.getGoodsId(),goodsInfo.getPrice());
-        return "{\"msg\":\""+flag+"\"}";
+        //更新收藏货物价格
+        flag=flag&&enshrineService.updatePriceFlagStatus(goodsInfo.getPrice(),oldPrice,goodsInfo.getGoodsId());
+        return flag? "{\"msg\":\"更新成功\"}": "{\"msg\":\"更新失败,请重试！\"}";
     }
 
 
     /**
      * 跟新店铺信息
-     * @param shopLogo
      * @param merchantShop
      * @param bindingResult
      * @return
      */
     @RequestMapping(value = "/updateShopInfo",produces ="application/json;charset=utf-8")
     @ResponseBody
-    public String updateShopInfo(MultipartFile shopLogo, @Valid MerchantShop merchantShop, BindingResult bindingResult) throws IOException {
-
+    public Map<String,String> updateShopInfo(HttpServletRequest request, @RequestParam(value="picture",required = false) MultipartFile picture, @Valid MerchantShop merchantShop, BindingResult bindingResult) throws IOException {
+        Map<String,String> data=new HashMap<String, String>();
         System.err.println(merchantShop);
         if(bindingResult.hasErrors()){
-              System.out.println(bindingResult.getFieldError());
-              return "{\"msg\":\"somthing error\"}";
+            for(FieldError error:bindingResult.getFieldErrors()){
+                data.put(error.getField()+"Error",error.getDefaultMessage());
+                System.err.println(error.getField()+"Error"+":"+error.getDefaultMessage());
+            }
+            return data;
           }
-          //如果图片不为空，保存图片
-          System.err.println(shopLogo==null);
-          MerchantShop merchantShop1=null;
-          if(!shopLogo.isEmpty()){
-               merchantShop1=CommonUtil.getInstance().updateShopImage(merchantShop,shopLogo);
-          }
-          boolean flag=merchantService.updateShopInfo(merchantShop1);
-          return "{\"msg\":\""+flag+"\"}";
+
+          boolean flag=false;
+            try {
+                if(!picture.isEmpty()){
+                    //查询之前店铺图片地址，以便删除
+                    merchantShop=CommonUtil.getInstance().updateShopImage(merchantShop,picture, merchantService.getShopInfoByMerchantId(merchantShop.getMerchantId()).getShopLogo());
+                    merchantService.updateShopInfo(merchantShop);
+                }
+            }catch (NullPointerException exp){
+            }
+            //添加更新后的数据
+
+            data.put("msg","更新成功！");
+            data.put("shopName",merchantShop.getShopName());
+            data.put("addr",merchantShop.getAddr());
+            data.put("shopLogo",merchantShop.getShopLogo());
+            return data;
     }
 
+
     /**
-     * 上架货物
+     * 下架货物
+     * @param goodsInfo 货物信息
+     * @return
+     * @throws IOException
      */
+    @RequestMapping(value ="/downGoods",produces ="application/json;charset=utf-8")
+    @ResponseBody
+    public String downGoods(GoodsInfo goodsInfo) throws IOException {
+       //仓库下架货物
+       boolean flag=goodService.downGoods(goodsInfo.getGoodsId(),goodsInfo.getPossesserId());
+       //修改收藏列表
+       if(flag)
+           flag=enshrineService.updateValidStatus(goodsInfo.getGoodsId());
+
+       return flag?"{\"msg\":\"下架成功!\"}":"{\"msg\":\"下架是失败!请检查是否该货物已被下架！\"}";
+    }
+
+
+
+
+
+        /**
+         * 上架货物
+         */
     @RequestMapping(value ="/upGoods",produces ="application/json;charset=utf-8")
     @ResponseBody
-    public String upGoods(MultipartFile imgDir, @Valid GoodsInfo goodsInfo, BindingResult bindingResult) throws IOException {
+    public Map<String,String> upGoods(MultipartFile img, @Valid GoodsInfo goodsInfo, BindingResult bindingResult) throws IOException {
+        Map<String,String> data=new HashMap<>();
         if(bindingResult.hasErrors()){
-            return "{\"msg\":\"somthing error\"}";
+            for(FieldError error:bindingResult.getFieldErrors()){
+                data.put(error.getField()+"Error",error.getDefaultMessage());
+            }
+            data.put("msg","上架失败！请检查你的上架货物信息！");
+            return data;
         }
-        GoodsInfo goodsInfo1=CommonUtil.getInstance().upGoodsImage(goodsInfo,imgDir);
+
+        GoodsInfo goodsInfo1=CommonUtil.getInstance().upGoodsImage(goodsInfo,img);
         boolean flag=goodService.upGoods(goodsInfo1);
-        return  "{\"msg\":\""+flag+"\"}";
+        if(flag) {
+            //初始化销售记录
+            saledGoodsService.addSaledGoodsRecord(goodsInfo.getGoodsId(),goodsInfo.getPossesserId());
+            data.put("msg","上架成功！");
+        }
+        else  data.put("msg","上传失败！请检查网络连接！");
+        return data;
     }
 
 }

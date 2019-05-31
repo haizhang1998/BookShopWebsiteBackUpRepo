@@ -8,10 +8,27 @@ package com.haizhang.entity;
  */
 public class EnshrineItem {
     private int goodsId;  //货物id
-    private int id;       //评论人id
-    private int decreaseFlag=0; //降价标志   0为有效1为无效
+    private int id;       //收藏id
+    private int updatePriceFlag=0; //降价标志   -1为降价0为正常1为升价
     private int validFlag=0;  //无效标志   0为有效1为无校
+    private double changePrice=0; //价格较上次降低或升高多少
+    private String goodsName; //货物名称
 
+    public String getGoodsName() {
+        return goodsName;
+    }
+
+    public void setGoodsName(String goodsName) {
+        this.goodsName = goodsName;
+    }
+
+    public double getChangePrice() {
+        return changePrice;
+    }
+
+    public void setChangePrice(double changePrice) {
+        this.changePrice = changePrice;
+    }
 
     public int getGoodsId() {
         return goodsId;
@@ -29,12 +46,12 @@ public class EnshrineItem {
         this.id = id;
     }
 
-    public int getDecreaseFlag() {
-        return decreaseFlag;
+    public int getUpdatePriceFlag() {
+        return updatePriceFlag;
     }
 
-    public void setDecreaseFlag(int decreaseFlag) {
-        this.decreaseFlag = decreaseFlag;
+    public void setUpdatePriceFlag(int updatePriceFlag) {
+        this.updatePriceFlag = updatePriceFlag;
     }
 
     public int getValidFlag() {

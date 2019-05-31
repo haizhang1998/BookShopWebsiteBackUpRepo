@@ -66,25 +66,26 @@ public class CommonUtil {
      * @return
      * @throws IOException
      */
-    public MerchantShop updateShopImage(MerchantShop merchantShop,MultipartFile profilePicture) throws IOException {
+    public MerchantShop updateShopImage(MerchantShop merchantShop,MultipartFile profilePicture,String curPic) throws IOException {
+        System.err.println("cur:"+curPic);
 
         synchronized (CommonUtil.class){
 
             //删除原先的图片
             String path="F:\\uploads\\";
             String pathInProject="F:\\BookShopWebsite\\Web\\src\\main\\webapp\\images\\shopImage\\";
-            if(merchantShop.getShopLogo()!=null){
-                System.err.println(merchantShop.getShopLogo().substring(merchantShop.getShopLogo().lastIndexOf('/')));
-                File file = new File(path+merchantShop.getShopLogo().substring(merchantShop.getShopLogo().lastIndexOf('/')));
+            if(curPic!=null){
+
+                File file = new File(path+curPic.substring(curPic.lastIndexOf('/')+1));
                 if(file.exists() && file.isFile()){
                     System.err.println(file.getName().substring(file.getName().lastIndexOf('.')));
                     file.delete();
                 }
 
-                File relativeFile = new File(pathInProject+merchantShop.getShopLogo().substring(merchantShop.getShopLogo().lastIndexOf('/')));
-                if(relativeFile.exists() && relativeFile.isFile()){
-                    System.err.println(file.getName().substring(file.getName().lastIndexOf('.')));
-                    file.delete();
+                File relativeFile = new File(pathInProject+curPic.substring(curPic.lastIndexOf('/')+1));
+                if(relativeFile.exists() && relativeFile.isFile()&&!file.getName().equals("defaultShopImag.jpg")){
+                    System.out.println(relativeFile.getName());
+                    relativeFile.delete();
                 }
             }
 
@@ -93,8 +94,8 @@ public class CommonUtil {
                 String originalName=profilePicture.getOriginalFilename();
                 if(originalName!=null && originalName.trim().length()>0){
                     newFilename= UUID.randomUUID()+originalName.substring(originalName.lastIndexOf("."));
-                    profilePicture.transferTo(new File(path+newFilename));
                     profilePicture.transferTo(new File(pathInProject+newFilename));
+                    profilePicture.transferTo(new File(path+newFilename));
                 }
             }
 
@@ -120,17 +121,16 @@ public class CommonUtil {
                 String originalName=profilePicture.getOriginalFilename();
                 if(originalName!=null && originalName.trim().length()>0){
                     String path="F:\\uploads\\";
-
-                    String pathInProject="F:\\BookShopWebsite\\Web\\src\\main\\webapp\\images\\\\"+goodsInfo.getType()+"\\\\";
+                    String pathInProject="F:\\BookShopWebsite\\Web\\src\\main\\webapp\\images\\"+goodsInfo.getType()+"\\";
                     newFilename= UUID.randomUUID()+originalName.substring(originalName.lastIndexOf("."));
-                    profilePicture.transferTo(new File(path+newFilename));
                     profilePicture.transferTo(new File(pathInProject+newFilename));
+                    profilePicture.transferTo(new File(path+newFilename));
                 }
             }
-
             //更新数据库
             if(newFilename!=null && newFilename.trim().length()>0){
                 goodsInfo.setImgDir("/images/"+goodsInfo.getType()+"/"+newFilename);
+                goodsInfo.setUpTime(new Date());
             }
         }
         return goodsInfo;

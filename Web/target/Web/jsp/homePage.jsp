@@ -164,13 +164,13 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">商家管理<span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">店铺管理</a></li>
-                                <li><a href="/order/getManagerOrder">货物管理</a></li>
+                                <li><a href="/merchant/shop/${sessionScope.userInfo.id}">店铺管理</a></li>
+                                <li><a href="/order/queryAllManagerOrderByUserId">货物管理</a></li>
                             </ul>
                         </li>
                     </c:if>
 
-                    <c:if test="${sessionScope.requestRecordShop==null}">
+                    <c:if test="${sessionScope.requestRecordShop==null && sessionScope.userInfo.merchantFlag!=0}">
                         <li><a onclick="openShop()">我要开店</a></li>
                     </c:if>
 
@@ -180,7 +180,7 @@
                             <li><a href="#">收藏夹</a></li>
                             <li><a href="#">反馈信息<span class="badge"></span> </a> </li>
                             <li><a href="#">我的足迹</a></li>
-                            <li><a href="/order/allOrder">我的订单</a></li>
+                            <li><a href="/order/queryAllUserOrderByUserId">我的订单</a></li>
                         </ul>
                     </li>
                 </ul>

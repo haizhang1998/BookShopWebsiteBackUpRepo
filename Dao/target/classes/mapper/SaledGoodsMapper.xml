@@ -46,4 +46,9 @@
         delete from goodsrecord where goodsId=#{goodsId}
     </delete>
 
+    <!--    //新增销售货物记录(上架一个商品时新增)-->
+    <!--    public boolean addSaledGoodsRecord(SaledInfo saledInfo);-->
+    <insert id="addSaledGoodsRecord">
+        insert into goodsrecord values(#{goodsId},#{merchantId},#{saledNumber},#{saledDate});
+    </insert>
 </mapper>

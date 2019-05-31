@@ -18,5 +18,6 @@ public interface SaledGoodsMapper {
     public boolean deleteSaledInfoByGoodsId(int goodsId);
     //更新出售货物
     public boolean updateSaledGoods(@Param("goodsId")int goodsId,@Param("saledNumber") int saledNumber);
-
+    //新增销售货物记录(上架一个商品时新增)
+    public boolean addSaledGoodsRecord(SaledInfo saledInfo);
 }
