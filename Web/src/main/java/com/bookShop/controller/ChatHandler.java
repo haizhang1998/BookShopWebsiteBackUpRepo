@@ -110,4 +110,16 @@ public class ChatHandler {
         return userInfos;
     }
 
+    /**
+     * 查询指定好友的全部历史记录
+     */
+    @RequestMapping(value="/queryFriendsHistory",produces = "application/json;charset=utf-8")
+    @ResponseBody
+    public List<TempMsg> queryFriend(int userId,int friendId) throws Exception {
+        //根据昵称，用户账号，id查询用户
+        List<TempMsg> tempMsgList= chatService.getTempMsg(userId,friendId);
+        return tempMsgList;
+    }
+
+
 }

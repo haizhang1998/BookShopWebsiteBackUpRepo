@@ -137,9 +137,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-
             </div>
-
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
@@ -164,17 +162,8 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">商家管理<span class="caret"></span></a>
                             <ul class="dropdown-menu">
-<<<<<<< HEAD
                                 <li><a href="/merchant/shop/${sessionScope.userInfo.id}">店铺管理</a></li>
-<<<<<<< HEAD
-=======
                                 <li><a href="/order/queryAllManagerOrderByUserId">货物管理</a></li>
->>>>>>> b81d41f1c9382b6319b8e79f802a5f99a5ddee6f
-=======
-                                <li><a href="/shop/${sessionScope.userInfo.id}">店铺管理</a></li>
->>>>>>> f68eacdddf3d56198421207684c7ff907210832a
-                                <li><a href="/order/getManagerOrder">货物管理</a></li>
->>>>>>> origin/master
                             </ul>
                         </li>
                     </c:if>
@@ -188,13 +177,8 @@
                         <ul class="dropdown-menu">
                             <li><a href="#">收藏夹</a></li>
                             <li><a href="#">反馈信息<span class="badge"></span> </a> </li>
-<<<<<<< HEAD
-                            <li><a href="#">我的足迹</a></li>
-                            <li><a href="/order/queryAllUserOrderByUserId">我的订单</a></li>
-=======
                             <li><a href="/goods/myfootprint">我的足迹</a></li>
-                            <li><a href="/order/allOrder">我的订单</a></li>
->>>>>>> origin/master
+                            <li><a href="/order/queryAllUserOrderByUserId">我的订单</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -213,26 +197,16 @@
     <div class="container" >
         <div class="row">
             <img src="/images/logo.jpg" class="pull-left"><span class="searchFont col-md-2" style="margin-top: 40px">海淘商城</span>
-<<<<<<< HEAD
 
                 <form class="form-horizontal" style="margin-top: 30px" action="/goods/searchGoods/2">
-=======
-            <div >
-                <form class="form-horizontal" action="/goods/searchGoods" method="post">
->>>>>>> f68eacdddf3d56198421207684c7ff907210832a
                     <div class="form-group" style="display: inline-block;margin-left: 150px;">
-                        <input type="text" class="form-control" style="width: 390px" placeholder="Search" name="searchgoods">
+                        <input type="text" id="searchGoodsText" class="form-control" style="width: 390px" placeholder="Search">
                     </div>
-<<<<<<< HEAD
                     <input type="button" class="btn btn-default" style="width:100px;display: inline-block;margin-left: 10px;margin-top: -2px" value="Submit">
-=======
-                    <button type="submit"class="btn btn-default" style="width:100px;display: inline-block;margin-left: 10px;margin-top: -2px">搜索</button>
->>>>>>> f68eacdddf3d56198421207684c7ff907210832a
                 </form>
             </div>
 
         </div>
-
     </div>
 </section>
 

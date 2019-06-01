@@ -100,7 +100,7 @@ public class OrderServiceImpl implements OrderService {
         for(OrderDetailDTO orderDetailDTO:orderDetailDTOList){
             OrderDetail orderDetail = new OrderDetail();
             orderDetail.setOrderId(orderId);
-            orderDetail.setPrice(orderDetailDTO.getGoodsId());
+            orderDetail.setGoodsId(orderDetailDTO.getGoodsId());
             orderDetail.setNum(orderDetailDTO.getNum());
             flag2 = OrderMapper.insertOrderDetail(orderDetail);
         }

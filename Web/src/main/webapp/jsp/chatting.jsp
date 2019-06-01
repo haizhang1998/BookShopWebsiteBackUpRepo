@@ -24,6 +24,10 @@
     var websocket;
     //存放对应用户的离线消息记录
     var tempMsg={};
+    //存放当你在线的时候是否有朋友发来信息你却没看到，false没看到，则要重新访问数据库拿到他发的信息
+    var friendMsg={};
+    //存放当前用户id对应的实时离线记录条数
+    var firendMsgNumber={};
 
     //type代表是离线还是在线列表追加用户
     function updateFriendByType(type,id,nikeName,imageLogo){
@@ -151,54 +155,65 @@
 
     //当点击用户列表指定的用户时，talk将动态绑定该用户端信息
     //index是坐标，status代表是userDisOnlineList坐标还是userOnlineList坐标
-    function talk(index,status,id,nikeName,imageLogo){
-
+    function talk(id,nikeName,imageLogo){
         $("#msgBox").empty();
+        firendMsgNumber[id]=0;
         var tempmsgList=[];
         talkingNikename=nikeName;
         // 正在聊天的人的id
         talkingUserId=id;
         // 正在聊天人的头像
         talkingImageLogo=imageLogo;
-        //0代表是不在线列表
-        if(status === 0){
-            tempmsgList =userDisOnlineList[index].tempMsg;
-        }
-        else
-            tempmsgList=userOnlineList[index].tempMsg;
-           for(var i=0;i<tempmsgList.length;i++){
-               //点击后显示出离线消息
-               var str="<div class=\"media\" style=\"margin-top: 10px;margin-left: 10px\">\n" +
-                   "                <div class=\"media-left\">\n" +
-                   "                <a href=\"#\">\n" +
-                   "                   <img class=\"media-object\" style=\"width: 30px;height: 30px;\" src=\""+talkingImageLogo+"\">\n" +
-                   "                </a>\n" +
-                   "                </div>\n" +
-                   "                <div class=\"media-body\">\n" +
-                   "                <h6 class=\"media-heading text-muted\">"+talkingNikename+"</h6>\n" +
-                   "                <p style=\"font-size: 20px\">"+tempmsgList[i].tempMsg+"</p>\n" +
-                   "                </div>\n" +
-                   "                </div>";
-               $("#msgBox").append(str);
-            }
-           $("#badege"+talkingUserId).html(0);
-            //清空记录,ajax请求后端同步数据库
-            if(tempmsgList.length>0){
-                $.ajax({
-                    url:"/chat/delTempMsg",
-                    type:"POST",
-                    data:{
-                        //留言信息
-                        userId:${sessionScope.userInfo.id},
-                        //朋友的id
-                        friendId:id
-                    },
-                    dataType:"json"
-                }).done(function(data){
-                    }
-                );
-        }
-        $("#curNikeName").html(talkingNikename);
+            //利用ajax技术请求后台传递最新的历史数据
+            $.ajax({
+                url:"/chat/queryFriendsHistory",
+                type:"POST",
+                data:{
+                    //朋友的id
+                    userId:${sessionScope.userInfo.id},
+                    //本人的id
+                    friendId:id
+                },
+                dataType:"json"
+            }).done(function(data){
+               tempmsgList=data;
+                for(var i=0;i<tempmsgList.length;i++){
+                    //点击后显示出离线消息
+                    var str="<div class=\"media\" style=\"margin-top: 10px;margin-left: 10px\">\n" +
+                        "                <div class=\"media-left\">\n" +
+                        "                <a href=\"#\">\n" +
+                        "                   <img class=\"media-object\" style=\"width: 30px;height: 30px;\" src=\""+talkingImageLogo+"\">\n" +
+                        "                </a>\n" +
+                        "                </div>\n" +
+                        "                <div class=\"media-body\">\n" +
+                        "                <h6 class=\"media-heading text-muted\">"+talkingNikename+"</h6>\n" +
+                        "                <p style=\"font-size: 20px\">"+tempmsgList[i].tempMsg+"</p>\n" +
+                        "                </div>\n" +
+                        "                </div>";
+                    $("#msgBox").append(str);
+                }
+                $("#badege"+talkingUserId).html(0);
+                //清空记录,ajax请求后端同步数据库
+
+                if(tempmsgList.length>0){
+                    $.ajax({
+                        url:"/chat/delTempMsg",
+                        type:"POST",
+                        data:{
+                            //留言信息
+                            userId:id,
+                            //朋友的id
+                            friendId:${sessionScope.userInfo.id}
+                        },
+                        dataType:"json"
+                    }).done(function(data){
+
+                        }
+                    );
+                }
+                $("#curNikeName").html(talkingNikename);
+            });
+
     }
 
     //初始化时更新全部用户列表
@@ -214,8 +229,11 @@
         //下线列表
             //遍历
             for(var i=0;i<disOnlineNumber;i++){
+                friendMsg[userDisOnlineList[i].friendInfo.id]=false;
+                //设置离线记录条数
+                firendMsgNumber[userDisOnlineList[i].friendInfo.id]=userDisOnlineList[i].tempMsg.length;
                 $("#userDisOnlinePage").append(
-                    "<div class=\"media\"  id=\""+userDisOnlineList[i].friendInfo.id+"\"  onclick='talk(\""+i+"\",0,\""+userDisOnlineList[i].friendInfo.id+"\",\""+userDisOnlineList[i].friendInfo.nikeName+"\",\""+userDisOnlineList[i].friendInfo.imageLogo+"\")' style=\"width: 95%;margin-top: 20px;margin-left: 20px;cursor: pointer;border: 1px solid #e7e7e7;padding:10px\">\n" +
+                    "<div class=\"media\"  id=\""+userDisOnlineList[i].friendInfo.id+"\"  onclick='talk(\""+userDisOnlineList[i].friendInfo.id+"\",\""+userDisOnlineList[i].friendInfo.nikeName+"\",\""+userDisOnlineList[i].friendInfo.imageLogo+"\")' style=\"width: 95%;margin-top: 20px;margin-left: 20px;cursor: pointer;border: 1px solid #e7e7e7;padding:10px\">\n" +
                     "                        <div class=\"media-left\">\n" +
                     "                            <a href=\"#\">\n" +
                     "                                <img class=\"media-object\" style=\"width: 64px;height: 64px;\" src=\""+userDisOnlineList[i].friendInfo.imageLogo+"\">\n" +
@@ -229,8 +247,10 @@
             }
         //在线列表
         for(var i=0;i<onlineNumber;i++){
+            friendMsg[userOnlineList[i].friendInfo.id]=false;
+            firendMsgNumber[userOnlineList[i].friendInfo.id]=userOnlineList[i].tempMsg.length;
             $("#userOnlinePage").append(
-                "<div class=\"media\"  id=\""+userOnlineList[i].friendInfo.id+"\"  onclick='talk(\""+i+"\",1,\""+userOnlineList[i].friendInfo.id+"\",\""+userOnlineList[i].friendInfo.nikeName+"\",\""+userOnlineList[i].friendInfo.imageLogo+"\")' style=\"width: 95%;margin-top: 20px;margin-left: 20px;cursor: pointer;border: 1px solid #e7e7e7;padding:10px\">\n" +
+                "<div class=\"media\"  id=\""+userOnlineList[i].friendInfo.id+"\"  onclick='talk(\""+userOnlineList[i].friendInfo.id+"\",\""+userOnlineList[i].friendInfo.nikeName+"\",\""+userOnlineList[i].friendInfo.imageLogo+"\")' style=\"width: 95%;margin-top: 20px;margin-left: 20px;cursor: pointer;border: 1px solid #e7e7e7;padding:10px\">\n" +
                 "                        <div class=\"media-left\">\n" +
                 "                            <a href=\"#\">\n" +
                 "                                <img class=\"media-object\" style=\"width: 64px;height: 64px;\" src=\""+userOnlineList[i].friendInfo.imageLogo+"\">\n" +
@@ -255,7 +275,7 @@
             "                        </div>\n" +
             "                        <div class=\"media-body\">\n" +
             "                            <h5 class=\"media-heading text-muted\">"+nikeName+"</h4>\n" +
-            "                            <span class=\"text-muted\" style=\"font-size: 17px;color:red\">离线记录<span class=\"badge\" id=\"badege"+userId+"\" style=\"font-size:13px;\" >0</span></span>\n\n" +
+            "                            <span class=\"text-muted\" style=\"font-size: 17px;color:red\">离线记录<span class=\"badge\" id=\"badege"+userId+"\" style=\"font-size:13px;\" >"+firendMsgNumber[userId]+"</span></span>\n\n" +
             "                        </div>\n" +
             "                    </div>\n";
         $("#userOnlinePage").append(str);
@@ -276,7 +296,7 @@
             "                        </div>\n" +
             "                        <div class=\"media-body\">\n" +
             "                            <h5 class=\"media-heading text-muted\">"+nikeName+"</h4>\n" +
-            "                            <span class=\"text-muted\" style=\"font-size: 17px;color:red\">离线记录<span class=\"badge\" id=\"badege"+userId+"\" style=\"font-size:13px;\" >0</span></span>\n\n" +
+            "                            <span class=\"text-muted\" style=\"font-size: 17px;color:red\">离线记录<span class=\"badge\" id=\"badege"+userId+"\" style=\"font-size:13px;\" >"+firendMsgNumber[userId]+"</span></span>\n\n" +
             "                        </div>\n" +
             "                    </div>\n";
         $("#userDisOnlinePage").append(str);
@@ -329,10 +349,7 @@
     function receiveMsg(v) {
         //检查是否是当前正在聊天的用户发的
         var from = v.from;
-        alert(from);
-
         if(from == talkingUserId){
-
         //拿到消息信息
         var text = v.text;
         //更新msgBox显示
@@ -351,6 +368,14 @@
         }
         //如果不是，需要将消息加入数据库
         else{
+            console.log("friendMsg:",friendMsg);
+            firendMsgNumber[v.from]+=1;
+            console.log("firendsMsgNumber:"+firendMsgNumber);
+            $("#badege"+v.from).html(firendMsgNumber[v.from]);
+            $("#"+v.from+"").addClass("warnMsg");
+
+
+            //并且将firendMsgNumber数目加一
             //利用ajax将消息内容放入数据库
             $.ajax({
                 url:"/chat/saveTempMsg",
@@ -489,11 +514,15 @@
     a{
         color:#6c6c6c;
     }
+    .warnMsg{
+        background: cornsilk;
+    }
 
 </style>
 <body>
+<%--导航栏--%>
 <section id="navbarSection">
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav id="nav-head" class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -509,35 +538,56 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-
-                    <li><a href="#">
+                    <li>
+                        <c:choose>
+                        <c:when test="${sessionScope.userInfo==null}">
+                        <a href="/user/login">
                     <li>亲，请登录</li>
                     <span class="sr-only">(current)</span></a>
+                    </c:when>
+                    <c:otherwise>
+                        <a href="/user/revise">
+                            <li>欢迎，${sessionScope.userInfo.nikeName}</li>
+                            <span class="sr-only">(current)</span></a>
+                    </c:otherwise>
+                    </c:choose>
                     </li>
+                    <c:if test="${sessionScope.userInfo!=null}">
+                        <li><a href="/chat/chatPage">消息<span class="badge">${sessionScope.tmpmsgNumber}</span></a></li>
+                    </c:if>
+                    <c:if test="${sessionScope.userInfo.merchantFlag==0}">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">商家管理<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/merchant/shop/${sessionScope.userInfo.id}">店铺管理</a></li>
+                                <li><a href="/order/queryAllManagerOrderByUserId">货物管理</a></li>
+                            </ul>
+                        </li>
+                    </c:if>
 
-                    <li><a href="#" style="color:white">消息</a></li>
-                    <li><a href="#">店铺管理</a></li>
-                    <li><a href="#">我要开店</a></li>
+                    <c:if test="${sessionScope.requestRecordShop==null && sessionScope.userInfo.merchantFlag!=0}">
+                        <li><a onclick="openShop()">我要开店</a></li>
+                    </c:if>
 
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">信息管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="#">收藏夹</a></li>
+                            <li><a href="#">反馈信息<span class="badge"></span> </a> </li>
                             <li><a href="#">我的足迹</a></li>
-                            <li><a href="#">我的订单</a></li>
+                            <li><a href="/order/queryAllUserOrderByUserId">我的订单</a></li>
                         </ul>
                     </li>
                 </ul>
-
                 <ul class="nav navbar-nav" style="margin-left: 500px">
                     <li><a href="#"><span>购物车<span class="badge" style="margin-left: 5px">0</span></span></a></li>
-                    <li><a href="/jsp/information.jsp">个人中心</a></li>
-                    <li><a href="#">注销</a></li>
+                    <li><a href="/user/revise">个人中心</a></li>
+                    <li><a href="/goods/homepage">返回首界面</a> </li>
+                    <li><a href="/user/logout">注销</a></li>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
-
 </section>
 
 <div id="chatSection" style="margin-top: 52px">
